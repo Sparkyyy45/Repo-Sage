@@ -1,0 +1,18 @@
+
+> reposage@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.112.144.182:3000
+- Environments: .env.local
+✓ Ready in 1276ms
+
+ GET / 200 in 1806ms (next.js: 314ms, proxy.ts: 606ms, application-code: 885ms)
+ GET / 200 in 224ms (next.js: 24ms, proxy.ts: 12ms, application-code: 188ms)
+ GET /this-does-not-exist 404 in 1410ms (next.js: 1286ms, proxy.ts: 19ms, application-code: 105ms)
+ GET /repo/vllm-project/vllm 200 in 11.9s (next.js: 1502ms, proxy.ts: 1590ms, application-code: 8.8s)
+ GET /this-does-not-exist 404 in 108ms (next.js: 17ms, proxy.ts: 12ms, application-code: 79ms)
+ GET /dashboard 200 in 3.7s (next.js: 118ms, proxy.ts: 32ms, application-code: 3.5s)
+ GET /dashboard 200 in 3.5s (next.js: 8ms, proxy.ts: 25ms, application-code: 3.5s)
+ GET /dashboard 200 in 6.0s (next.js: 8ms, proxy.ts: 35ms, application-code: 5.9s)
