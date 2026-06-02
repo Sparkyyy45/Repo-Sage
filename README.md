@@ -47,7 +47,7 @@ The gap between wanting to contribute to open-source and actually merging your f
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
 - 🎯 **Smart Issue Matching:** Algorithmic curation based on your GitHub history and languages.
 - 📐 **Automated Architecture Diagrams:** Real-time Mermaid diagram generation for external repositories.
@@ -59,27 +59,25 @@ The gap between wanting to contribute to open-source and actually merging your f
 
 ## 🧠 How It Works
 
+We designed RepoSage to be incredibly simple to use. Here is the exact flow:
+
 ```mermaid
-sequenceDiagram
-    participant U as User
-    participant R as RepoSage
-    participant G as GitHub API
-    participant AI as LLM Provider
+flowchart TD
+    A[👤 Sign in with GitHub] --> B(🔍 RepoSage Scans Profile);
+    B -->|Analyzes languages & history| C[📋 Personalized Issue Feed];
+    C --> D{Select an Issue};
     
-    U->>R: Log in with GitHub
-    R->>G: Fetch user stack & history
-    G-->>R: User context
-    R->>U: Display matched `good-first-issues`
+    D -->|Instant Context| E[🤖 AI Issue Analysis];
+    E --> F[📐 Auto-Gen Architecture Diagram];
+    E --> G[📖 Repo Onboarding Guide];
+    E --> H[💬 Interactive 'What to change?' Chat];
     
-    U->>R: Clicks an issue
-    R->>G: Fetch repo tree & issue details
-    R->>AI: Send repo context for analysis
-    AI-->>R: Return Architecture & Onboarding Guide
-    R-->>U: Display rich, AI-explained issue context
+    D -->|Track Progress| I[📌 Save to Kanban Board];
+    I --> J[🚀 Submit PR];
+    J --> K[🎉 Merged!];
     
-    U->>R: "How do I fix this?"
-    R->>AI: RAG query against repo context
-    AI-->>U: "Edit line 42 in src/utils.ts..."
+    style A fill:#000,color:#fff,stroke:#333,stroke-width:2px
+    style K fill:#2ea043,color:#fff,stroke:#333,stroke-width:2px
 ```
 
 ---
@@ -124,10 +122,24 @@ Visit `http://localhost:3000` and start contributing!
 
 RepoSage leverages a highly scalable, edge-ready architecture designed for performance and maintainability.
 
-- **Frontend:** Next.js 16 (App Router), React 19, Tailwind CSS v4, shadcn/ui
-- **Backend:** Next.js API Routes, NextAuth v5
-- **Integrations:** Octokit (GitHub REST API), OpenRouter/Groq
-- **State & Caching:** Upstash Redis (Optional), LocalStorage for stateless progress tracking
+```mermaid
+graph TD
+    Client[Client Browser / UI] --> NextJS[Next.js App Router]
+    
+    subgraph NextJS Architecture
+        Pages[Dashboard, Issue Pages, Learning Hub]
+        Middleware[Edge Middleware Auth Guard]
+        API[API Routes]
+    end
+    
+    NextJS --> Middleware
+    Middleware --> Pages
+    Pages --> API
+    
+    API -->|Octokit REST| GitHub[(GitHub API)]
+    API -->|Streaming LLM Prompts| AI[(AI Providers: OpenRouter / Groq)]
+    API -->|Optional Caching| Redis[(Upstash Redis)]
+```
 
 ---
 
