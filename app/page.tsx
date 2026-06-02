@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { Nav } from "@/components/landing/nav";
 import { Hero } from "@/components/landing/hero";
 import { ProblemSection } from "@/components/landing/problem-section";
@@ -7,17 +8,20 @@ import { SocialProof } from "@/components/landing/social-proof";
 import { CtaSection } from "@/components/landing/cta-section";
 import { Footer } from "@/components/landing/footer";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const signedIn = !!session?.user;
+
   return (
     <div className="flex min-h-full flex-col bg-white">
       <Nav />
       <main className="flex-1">
-        <Hero />
+        <Hero signedIn={signedIn} />
         <ProblemSection />
         <HowItWorks />
         <Features />
         <SocialProof />
-        <CtaSection />
+        <CtaSection signedIn={signedIn} />
       </main>
       <Footer />
     </div>

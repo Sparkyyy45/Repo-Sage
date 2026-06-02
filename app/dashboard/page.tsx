@@ -8,6 +8,9 @@ import { ProfileSidebar } from "@/components/dashboard/profile-sidebar";
 import { IssueFeedClient } from "@/components/dashboard/issue-feed-client";
 import { WelcomeSection } from "@/components/dashboard/welcome-section";
 import { RepoSearch } from "@/components/dashboard/repo-search";
+import { LearnSidebarSection } from "@/components/learn/sidebar-section";
+import { SavedIssuesSection } from "@/components/dashboard/saved-issues-section";
+import { FirstVisitOnboarding } from "@/components/dashboard/first-visit-onboarding";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -52,7 +55,7 @@ export default async function DashboardPage() {
   }
 
   const topLanguages = profile.languages.map((l) => l.name);
-  const feed = await fetchGoodFirstIssues(octokit, topLanguages).catch(
+  const feed = await fetchGoodFirstIssues(octokit, topLanguages, { page: 1, perPage: 10 }).catch(
     () => ({ issues: [], reposWithIssues: 0 })
   );
 
@@ -73,15 +76,21 @@ export default async function DashboardPage() {
             reposCount={profile.publicRepos}
           />
 
+          <SavedIssuesSection />
+
           <IssueFeedClient
             issues={feed.issues}
+            topLanguages={topLanguages}
           />
         </div>
 
         <div className="lg:col-span-4 space-y-6">
           <ProfileSidebar profile={profile} />
+          <LearnSidebarSection />
         </div>
       </div>
+
+      <FirstVisitOnboarding />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, Code2, CheckCircle, GitBranch } from "lucide-react";
+import { Sparkles, Code2, CheckCircle, GitBranch, LayoutDashboard } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { SignInButton } from "@/components/sign-in-button";
 
@@ -113,7 +113,7 @@ function HeroMockup() {
   );
 }
 
-export function Hero() {
+export function Hero({ signedIn = false }: { signedIn?: boolean }) {
   return (
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden pt-16">
       <HeroBackground />
@@ -154,7 +154,17 @@ export function Hero() {
             variants={fadeUp}
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
           >
-            <SignInButton size="lg" label="Explore Issues" showArrow />
+            {signedIn ? (
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ size: "lg" })}
+              >
+                <LayoutDashboard className="size-4" />
+                Go to Dashboard
+              </Link>
+            ) : (
+              <SignInButton size="lg" label="Explore Issues" showArrow />
+            )}
             <Link
               href="#how-it-works"
               className={buttonVariants({ size: "lg", variant: "outline" })}

@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { SignInButton } from "@/components/sign-in-button";
-import { Sparkles } from "lucide-react";
+import { Sparkles, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
-export function CtaSection() {
+export function CtaSection({ signedIn = false }: { signedIn?: boolean }) {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -38,7 +38,17 @@ export function CtaSection() {
         </p>
 
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-          <SignInButton size="lg" label="Get Started Free" showArrow />
+          {signedIn ? (
+            <Link
+              href="/dashboard"
+              className={buttonVariants({ size: "lg" })}
+            >
+              <LayoutDashboard className="size-4" />
+              Go to Dashboard
+            </Link>
+          ) : (
+            <SignInButton size="lg" label="Get Started Free" showArrow />
+          )}
           <Link
             href="#features"
             className={buttonVariants({ size: "lg", variant: "outline" })}

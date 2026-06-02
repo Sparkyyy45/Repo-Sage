@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/dashboard", "/favorites", "/repo", "/issue", "/settings"];
+const protectedRoutes = ["/dashboard", "/favorites", "/repo", "/issue", "/settings", "/learn"];
 const publicRoutes = ["/", "/api/auth"];
 
 export default async function proxy(req: NextRequest) {

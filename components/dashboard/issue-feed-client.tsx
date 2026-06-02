@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { RefreshCw } from "lucide-react";
+import { useState, useMemo, useEffect, useCallback } from "react";
+import { RefreshCw, Loader2 } from "lucide-react";
 import type { Issue } from "@/lib/github/issues";
 import { IssueFeed } from "./issue-feed";
 import { IssueFilters } from "./issue-filters";
@@ -13,23 +12,69 @@ type SortOrder = "newest" | "oldest" | "comments";
 const PAGE_SIZE = 10;
 
 export function IssueFeedClient({
-  issues,
+  issues: initialIssues,
+  topLanguages,
 }: {
   issues: Issue[];
+  topLanguages: string[];
 }) {
-  const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [allIssues, setAllIssues] = useState(initialIssues);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialIssues.length >= PAGE_SIZE);
 
-  const handleRefresh = () => {
+  const fetchPage = useCallback(async (pageNum: number) => {
+    const res = await fetch("/api/issues/feed", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ languages: topLanguages, page: pageNum }),
+    });
+    const data = await res.json();
+    return (data.issues ?? []) as Issue[];
+  }, [topLanguages]);
+
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    router.refresh();
-  };
+    try {
+      const fresh = await fetchPage(1);
+      setAllIssues(fresh);
+      setPage(1);
+      setHasMore(fresh.length >= PAGE_SIZE);
+    } catch {
+      setAllIssues(initialIssues);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [fetchPage, initialIssues]);
+
+  const handleLoadMore = useCallback(async () => {
+    setLoadingMore(true);
+    try {
+      const nextPage = page + 1;
+      const newIssues = await fetchPage(nextPage);
+      if (newIssues.length === 0) {
+        setHasMore(false);
+      } else {
+        setAllIssues((prev) => {
+          const seen = new Set(prev.map((i) => i.htmlUrl));
+          const deduped = newIssues.filter((i) => !seen.has(i.htmlUrl));
+          return [...prev, ...deduped];
+        });
+        setPage(nextPage);
+        setHasMore(newIssues.length >= PAGE_SIZE);
+      }
+    } catch {
+      setHasMore(false);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [page, fetchPage]);
 
   const filtered = useMemo(() => {
-    let result = [...issues];
+    let result = [...allIssues];
 
     if (difficulty !== "all") {
       result = result.filter((issue) => {
@@ -55,19 +100,12 @@ export function IssueFeedClient({
     });
 
     return result;
-  }, [issues, difficulty, sortOrder]);
-
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE);
-  }, [difficulty, sortOrder]);
+  }, [allIssues, difficulty, sortOrder]);
 
   const filteredRepos = useMemo(
     () => new Set(filtered.map((i) => i.repoFullName)).size,
     [filtered]
   );
-
-  const visible = filtered.slice(0, visibleCount);
-  const hasMore = visibleCount < filtered.length;
 
   return (
     <div className="space-y-4">
@@ -88,20 +126,28 @@ export function IssueFeedClient({
           Refresh
         </button>
       </div>
-      <IssueFeed issues={visible} reposWithIssues={filteredRepos} />
+      <IssueFeed issues={filtered} reposWithIssues={filteredRepos} />
       {hasMore && (
         <div className="flex justify-center pt-2">
           <button
-            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-6 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-muted/50 transition-all shadow-sm"
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-6 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-muted/50 transition-all shadow-sm disabled:opacity-50"
           >
-            Load More ({filtered.length - visibleCount} remaining)
+            {loadingMore ? (
+              <>
+                <Loader2 className="size-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Load More"
+            )}
           </button>
         </div>
       )}
-      {!hasMore && filtered.length > PAGE_SIZE && (
+      {!hasMore && page > 1 && (
         <p className="text-center text-xs text-muted-foreground pt-1">
-          Showing all {filtered.length} issues
+          Showing all {allIssues.length} loaded issues
         </p>
       )}
     </div>

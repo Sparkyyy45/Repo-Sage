@@ -1,6 +1,7 @@
 import { ExternalLink, MessageCircle, Search, GitBranch, Clock, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import type { Issue } from "@/lib/github/issues";
+import { IssueBookmarkButton } from "./issue-bookmark-button";
 
 export function IssueFeed({
   issues,
@@ -43,15 +44,10 @@ export function IssueFeed({
         </span>
       </div>
       <div className="space-y-4">
-        {issues.slice(0, 10).map((issue) => (
+        {issues.map((issue) => (
           <IssueCard key={issue.htmlUrl} issue={issue} />
         ))}
       </div>
-      {issues.length > 10 && (
-        <p className="text-center text-sm text-muted-foreground">
-          +{issues.length - 10} more issues available
-        </p>
-      )}
     </div>
   );
 }
@@ -77,21 +73,24 @@ function IssueCard({ issue }: { issue: Issue }) {
             </Link>
           </div>
 
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-2">
             <Link
               href={`/issue/${owner}/${repoName}/${issue.number}`}
               className="text-base font-semibold text-foreground hover:text-primary hover:underline leading-snug transition-colors"
             >
               {issue.title}
             </Link>
-            <Link
-              href={issue.htmlUrl}
-              target="_blank"
-              className="shrink-0 mt-0.5 text-muted-foreground hover:text-foreground transition-colors"
-              title="Open on GitHub"
-            >
-              <ExternalLink className="size-4" />
-            </Link>
+            <div className="flex items-center gap-1 shrink-0 mt-0.5">
+              <IssueBookmarkButton issue={issue} />
+              <Link
+                href={issue.htmlUrl}
+                target="_blank"
+                className="flex size-8 items-center justify-center rounded-xl text-muted-foreground/40 hover:text-muted-foreground hover:border-border hover:bg-muted/50 transition-colors"
+                title="Open on GitHub"
+              >
+                <ExternalLink className="size-3.5" />
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 text-xs text-muted-foreground">

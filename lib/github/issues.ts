@@ -95,8 +95,11 @@ export async function fetchIssueDetail(
 
 export async function fetchGoodFirstIssues(
   octokit: Octokit,
-  topLanguages: string[]
+  topLanguages: string[],
+  options?: { page?: number; perPage?: number }
 ): Promise<IssueFeed> {
+  const page = options?.page ?? 1;
+  const perPage = options?.perPage ?? 10;
   const allIssues: Issue[] = [];
   const seenUrls = new Set<string>();
 
@@ -120,7 +123,8 @@ export async function fetchGoodFirstIssues(
           q,
           sort: "updated",
           order: "desc",
-          per_page: 30,
+          per_page: perPage,
+          page,
         })
         .then(({ data }) => data.items)
     )
@@ -161,7 +165,7 @@ export async function fetchGoodFirstIssues(
   const uniqueRepos = new Set(allIssues.map((i) => i.repoFullName));
 
   return {
-    issues: allIssues.slice(0, 30),
+    issues: allIssues,
     reposWithIssues: uniqueRepos.size,
   };
 }
