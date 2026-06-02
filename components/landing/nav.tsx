@@ -7,31 +7,28 @@ export async function Nav() {
   const session = await auth();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-lg">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-10">
           <Link
             href={session ? "/dashboard" : "/"}
             className="flex items-center gap-2.5 font-semibold text-lg tracking-tight text-foreground"
           >
-            <span className="flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-sm">
+            <span className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background text-xs font-bold">
               RS
             </span>
             <span>RepoSage</span>
           </Link>
           {!session && (
             <nav className="hidden md:flex items-center gap-8">
-              <a
-                href="#features"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Features
+              <a href="#problem" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
+                Why
               </a>
-              <a
-                href="#flow"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
+              <a href="#how-it-works" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
                 How it works
+              </a>
+              <a href="#features" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
+                Features
               </a>
             </nav>
           )}
@@ -39,7 +36,7 @@ export async function Nav() {
         {session?.user ? (
           <UserMenu user={session.user} />
         ) : (
-          <SignInButton />
+          <SignInButton size="sm" />
         )}
       </div>
     </header>

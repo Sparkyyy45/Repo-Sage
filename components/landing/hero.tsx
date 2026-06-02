@@ -2,202 +2,189 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Star, GitBranch, Code2, ExternalLink } from "lucide-react";
+import { Sparkles, Code2, CheckCircle, GitBranch } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { SignInButton } from "@/components/sign-in-button";
-import { AnimatedCounter } from "@/components/landing/animated-counter";
 
-const containerVariants = {
+const stagger = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.2 },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
 };
 
-const itemVariants = {
+const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] as const } },
 };
 
-const floatingOrb = (delay: number) => ({
-  animate: {
-    y: [0, -20, 0] as number[],
-    scale: [1, 1.05, 1] as number[],
-    opacity: [0.3, 0.5, 0.3] as number[],
-    transition: { duration: 6, repeat: Infinity, ease: "easeInOut" as const, delay },
-  },
-});
+function HeroBackground() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/80 via-white to-white" />
+      <svg className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[800px] opacity-[0.04]" viewBox="0 0 1200 800" fill="none">
+        <defs>
+          <pattern id="hero-grid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M48 0H0V48" stroke="currentColor" strokeWidth="0.5" className="text-foreground" />
+          </pattern>
+        </defs>
+        <rect width="1200" height="800" fill="url(#hero-grid)" />
+      </svg>
+      <motion.div
+        className="absolute -top-40 right-0 size-[600px] rounded-full bg-gradient-to-br from-blue-100/60 via-indigo-100/30 to-transparent blur-3xl"
+        animate={{ opacity: [0.4, 0.6, 0.4], scale: [1, 1.03, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute -bottom-40 left-0 size-[500px] rounded-full bg-gradient-to-tr from-sky-100/40 via-blue-50/20 to-transparent blur-3xl"
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
+    </div>
+  );
+}
 
-function CodeWindow() {
+function HeroMockup() {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative mx-auto mt-14 max-w-2xl"
+      transition={{ duration: 0.9, delay: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className="relative mx-auto mt-16 max-w-5xl"
     >
-      <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/80 shadow-2xl shadow-primary/5 backdrop-blur-sm">
-        <div className="flex items-center gap-1.5 border-b border-border/60 px-4 py-3">
+      <div className="overflow-hidden rounded-xl border border-border/60 bg-white shadow-2xl shadow-blue-500/5 ring-1 ring-black/[0.02]">
+        <div className="flex items-center gap-1.5 border-b border-border/40 px-4 py-3 bg-muted/20">
           <span className="size-2.5 rounded-full bg-red-400" />
           <span className="size-2.5 rounded-full bg-amber-400" />
           <span className="size-2.5 rounded-full bg-green-400" />
-          <span className="ml-3 text-xs text-muted-foreground/60 font-mono">good-first-issues — README.md</span>
+          <span className="ml-3 text-xs text-muted-foreground/50 font-mono">RepoSage &mdash; Dashboard</span>
         </div>
-        <div className="flex">
-          <div className="hidden border-r border-border/60 bg-muted/30 p-3 text-xs text-muted-foreground/40 font-mono sm:block">
-            {Array.from({ length: 12 }, (_, i) => (
-              <div key={i} className="px-2 py-0.5 text-right">{i + 1}</div>
-            ))}
+        <div className="grid grid-cols-[240px_1fr] min-h-[320px]">
+          <div className="border-r border-border/40 p-4 space-y-3 bg-muted/10">
+            <div className="h-3 w-20 bg-muted rounded" />
+            <div className="space-y-2">
+              {["javascript", "python", "rust", "go"].map((lang) => (
+                <div key={lang} className="flex items-center gap-2 text-xs text-muted-foreground/60">
+                  <span className="size-2 rounded-full bg-blue-400/40" />
+                  {lang}
+                </div>
+              ))}
+            </div>
+            <div className="pt-3 border-t border-border/30">
+              <div className="h-3 w-16 bg-muted rounded mb-2" />
+              <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
+                <GitBranch className="size-3" />
+                42 issues found
+              </div>
+            </div>
           </div>
-          <div className="space-y-1.5 p-4 text-xs font-mono leading-relaxed">
-            <span className="text-muted-foreground/40">#</span> <span className="text-muted-foreground/60">RepoSage — Issue Overview</span>
-            <div>
-              <span className="text-muted-foreground/40"># </span>
-              <span className="text-emerald-500 dark:text-emerald-400">repo</span>
-              <span className="text-muted-foreground/60">: facebook/react</span>
-            </div>
-            <div>
-              <span className="text-muted-foreground/40"># </span>
-              <span className="text-emerald-500 dark:text-emerald-400">difficulty</span>
-              <span className="text-muted-foreground/60">: </span>
-              <span className="rounded bg-green-500/10 px-1.5 py-0.5 text-green-600 dark:text-green-400">beginner</span>
-            </div>
-            <div className="pt-1" />
-            <span className="text-muted-foreground/40"># Files you'll touch</span>
-            <div className="pl-4 text-blue-500 dark:text-blue-400">
-              src/components/Button.tsx
-            </div>
-            <div className="pl-4 text-blue-500 dark:text-blue-400">
-              src/styles/button.css
-            </div>
-            <div className="pt-1" />
-            <span className="text-muted-foreground/40"># Architecture overview</span>
-            <div className="pl-4 text-muted-foreground/60">
-              Button is a presentational component...
-            </div>
-            <div className="pt-1 border-t border-border/40 mt-2" />
-            <span className="text-muted-foreground/40">✨ Ready to contribute</span>
+          <div className="p-4 space-y-3">
+            {[
+              { repo: "facebook/react", title: "Add aria labels to Button component", labels: ["good first issue", "beginner"], comments: 3 },
+              { repo: "vercel/next.js", title: "Fix typo in documentation sidebar", labels: ["good first issue", "docs"], comments: 1 },
+              { repo: "microsoft/vscode", title: "Improve error message for missing config", labels: ["good first issue", "help wanted"], comments: 5 },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-lg border border-border/40 p-3 hover:border-border/80 transition-colors">
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
+                    <GitBranch className="size-3" />
+                    {item.repo}
+                  </div>
+                  <div className="text-sm font-medium text-foreground">{item.title}</div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {item.labels.map((label) => (
+                      <span key={label} className="rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-600">
+                        {label}
+                      </span>
+                    ))}
+                    <span className="text-xs text-muted-foreground/60">{item.comments} comments</span>
+                  </div>
+                </div>
+                <div className="shrink-0 flex items-center">
+                  <div className="size-6 rounded-full bg-blue-100 flex items-center justify-center">
+                    <CheckCircle className="size-3.5 text-blue-600" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+      <div className="absolute -bottom-3 -right-3 -z-10 size-full rounded-xl border border-border/30 bg-muted/20" />
     </motion.div>
   );
 }
 
 export function Hero() {
   return (
-    <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(35%_30%_at_50%_0%,#DBEAFE,transparent_70%)] dark:bg-[radial-gradient(35%_30%_at_50%_0%,#1E3A5F,transparent_70%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(25%_25%_at_70%_20%,#C7D2FE,transparent_60%)] dark:bg-[radial-gradient(25%_25%_at_70%_20%,#2E3A59,transparent_60%)]" />
-
+    <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden pt-16">
+      <HeroBackground />
+      <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-6 pt-16 pb-28 text-center">
         <motion.div
-          className="absolute top-1/4 left-[15%] size-80 rounded-full bg-gradient-to-br from-blue-400/20 to-indigo-400/10 blur-3xl"
-          variants={floatingOrb(0)}
-          animate="animate"
-        />
-        <motion.div
-          className="absolute top-1/3 right-[15%] size-64 rounded-full bg-gradient-to-br from-violet-400/15 to-purple-400/5 blur-3xl"
-          variants={floatingOrb(1.5)}
-          animate="animate"
-        />
-        <motion.div
-          className="absolute bottom-1/4 left-[40%] size-96 rounded-full bg-gradient-to-br from-sky-400/10 to-blue-500/10 blur-3xl"
-          variants={floatingOrb(3)}
-          animate="animate"
-        />
-
-        <svg className="absolute inset-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-foreground" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      <motion.div
-        className="mx-auto flex w-full max-w-6xl flex-col items-center px-6 pt-20 pb-28 text-center md:pt-24 md:pb-32"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.span
-          variants={itemVariants}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-background/70 px-4 py-1.5 text-xs text-muted-foreground shadow-sm backdrop-blur-md"
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col items-center"
         >
-          <Sparkles className="size-3.5 text-primary" />
-          <span>From <span className="font-semibold text-foreground">good first issue</span> to first PR</span>
-        </motion.span>
-
-        <motion.h1
-          variants={itemVariants}
-          className="max-w-4xl text-balance text-4xl font-semibold tracking-tight text-foreground md:text-6xl lg:text-7xl leading-[1.08]"
-        >
-          Find your first{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
-            open source
-          </span>
-          {" "}contribution.
-        </motion.h1>
-
-        <motion.p
-          variants={itemVariants}
-          className="mt-6 max-w-2xl text-balance text-base text-muted-foreground md:text-lg leading-relaxed"
-        >
-          Discover beginner-friendly issues matched to your skills. RepoSage reads the
-          codebase for you — from architecture diagram to what needs to change — so you
-          can contribute with confidence.
-        </motion.p>
-
-        <motion.div
-          variants={itemVariants}
-          className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
-        >
-          <SignInButton size="lg" label="Explore Issues" showArrow />
-          <Link
-            href="#features"
-            className={buttonVariants({ size: "lg", variant: "outline" })}
+          <motion.div
+            variants={fadeUp}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/50 bg-white/70 px-4 py-1.5 text-xs text-muted-foreground shadow-sm backdrop-blur-md"
           >
-            <Code2 className="size-4" />
-            How It Works
-          </Link>
+            <Sparkles className="size-3.5 text-blue-500" />
+            From &ldquo;good first issue&rdquo; to merged PR
+          </motion.div>
+
+          <motion.h1
+            variants={fadeUp}
+            className="max-w-5xl text-balance text-5xl font-semibold tracking-tight text-foreground md:text-7xl lg:text-8xl leading-[0.95]"
+          >
+            Your first{" "}
+            <span className="text-blue-600">open source</span>
+            {" "}contribution.
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 max-w-2xl text-balance text-base text-muted-foreground md:text-lg leading-relaxed"
+          >
+            RepoSage finds good-first-issues matched to your exact tech stack and
+            uses AI to walk you through the codebase — so you know exactly what
+            to change before you start coding.
+          </motion.p>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
+          >
+            <SignInButton size="lg" label="Explore Issues" showArrow />
+            <Link
+              href="#how-it-works"
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
+              <Code2 className="size-4" />
+              See how it works
+            </Link>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground"
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle className="size-3.5 text-green-500" />
+              Read-only access
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle className="size-3.5 text-green-500" />
+              Free for everyone
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle className="size-3.5 text-green-500" />
+              No setup required
+            </span>
+          </motion.div>
         </motion.div>
 
-        <motion.div
-          variants={itemVariants}
-          className="mt-16 grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-border/50 rounded-2xl border border-border/50 bg-background/60 backdrop-blur-sm px-8 py-5 shadow-sm"
-        >
-          {[
-            { icon: Star, label: "Issues Analyzed", value: 1247, suffix: "+" },
-            { icon: GitBranch, label: "Repos Indexed", value: 892, suffix: "+" },
-            { icon: ExternalLink, label: "Open Source Projects", value: 156, suffix: "+" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex items-center gap-3 px-6 py-3 sm:py-0 justify-center">
-              <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                <stat.icon className="size-4" />
-              </div>
-              <div className="text-left">
-                <div className="text-lg font-bold text-foreground tabular-nums">
-                  <AnimatedCounter from={0} to={stat.value} />{stat.suffix}
-                </div>
-                <div className="text-xs text-muted-foreground whitespace-nowrap">{stat.label}</div>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-
-        <CodeWindow />
-
-        <motion.p
-          variants={itemVariants}
-          className="mt-10 text-xs text-muted-foreground/50"
-        >
-          Read-only access &middot; We never modify your repos &middot; Free for everyone
-        </motion.p>
-      </motion.div>
+        <HeroMockup />
+      </div>
     </section>
   );
 }
