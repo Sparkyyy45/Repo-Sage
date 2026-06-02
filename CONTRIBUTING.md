@@ -1,9 +1,14 @@
 # Contributing to RepoSage
 
-Thanks for your interest in contributing! RepoSage is a community-driven project that helps developers find and contribute to open source. Whether you're fixing a bug, adding a feature, improving documentation, or writing guides — your help is welcome.
+Welcome! RepoSage is a tool *about* open source contribution, built *by* people who care about it. Whether you're fixing a bug, adding a feature, improving the guides, or writing documentation — your help is valuable.
+
+**If you're new to open source contribution, this is the perfect place to start.** The codebase is intentionally small, the architecture is documented, and there are issues tagged with `good first issue` to help you find your footing.
+
+> **🐶 Dogfooding:** We use RepoSage to understand and contribute to RepoSage. Before opening a PR, run the app, load this repo into it, and use the AI agent to understand the codebase. You'll experience exactly what our users do — and you'll write a better PR because of it.
 
 ## Table of Contents
 
+- [First time? Start here](#first-time-start-here)
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
 - [Development Setup](#development-setup)
@@ -15,6 +20,16 @@ Thanks for your interest in contributing! RepoSage is a community-driven project
 
 ---
 
+## First time? Start here
+
+1. **Set up RepoSage locally** — follow the [Quick Start](README.md#quick-start) to get the app running.
+2. **Search for `good first issue`** in the [issues tab](https://github.com/Sparkyyy45/Repo-Sage/issues) — these are curated for beginners.
+3. **Use RepoSage to analyze itself** — once it's running, search for `Sparkyyy45/Repo-Sage` in the repo search bar. The AI agent will generate an architecture diagram and onboarding guide for you.
+4. **Find something to fix** — look for issues labeled `bug`, `docs`, or `good first issue`. Comment on the issue before you start working.
+5. **Open a PR** — follow the guidelines below.
+
+---
+
 ## Code of Conduct
 
 This project is governed by the [Contributor Covenant](CODE_OF_CONDUCT.md). By participating, you agree to uphold its terms. Be respectful, inclusive, and constructive.
@@ -23,7 +38,7 @@ This project is governed by the [Contributor Covenant](CODE_OF_CONDUCT.md). By p
 
 ## Getting Started
 
-1. **Find something to work on** — browse [open issues](https://github.com/yourusername/reposage/issues) or check the [Roadmap](README.md#roadmap) for planned features.
+1. **Find something to work on** — browse [open issues](https://github.com/Sparkyyy45/Repo-Sage/issues) or check the [Roadmap](README.md#impact--whats-next) for planned features.
 2. **Claim an issue** — comment on the issue to let others know you're working on it.
 3. **Fork the repo** and create a branch for your work.
 
@@ -41,7 +56,7 @@ This project is governed by the [Contributor Covenant](CODE_OF_CONDUCT.md). By p
 
 ```bash
 # Clone your fork
-git clone https://github.com/yourusername/reposage.git
+git clone https://github.com/Sparkyyy45/Repo-Sage.git
 cd reposage
 
 # Install dependencies
