@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, BookOpen, BarChart3, MessageCircle, GitBranch, Shield } from "lucide-react";
+import { Search, BookOpen, BarChart3, MessageCircle, GitBranch, Shield, GraduationCap, BookmarkCheck, SearchCode } from "lucide-react";
 
 const features = [
   {
@@ -34,11 +34,26 @@ const features = [
     title: "Read-only & safe",
     description: "We never modify your repos, create branches, or take any action on your behalf. Just browse and learn.",
   },
+  {
+    icon: GraduationCap,
+    title: "Interactive Learning Hub",
+    description: "6 hands-on guides with progress tracking, exercises, and real examples. Learn Git, codebase reading, PR etiquette, and more.",
+  },
+  {
+    icon: BookmarkCheck,
+    title: "Issue progress tracking",
+    description: "Bookmark any issue and track its status from Saved to Merged. Your contribution pipeline in one place.",
+  },
+  {
+    icon: SearchCode,
+    title: "Repository insights",
+    description: "Search any repo for a beginner-friendliness score, language match analysis, activity trends, and matching good-first-issues.",
+  },
 ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
 };
 
 const cardVariants = {
@@ -61,12 +76,12 @@ export function Features() {
           Find, understand, and contribute.
         </h2>
         <p className="mt-4 text-muted-foreground text-base leading-relaxed">
-          RepoSage connects issue discovery with codebase understanding — the missing layer between &ldquo;good first issue&rdquo; and merged PR.
+          Issue discovery, AI-powered understanding, progress tracking, and interactive learning — the complete open source companion.
         </p>
       </motion.div>
 
       <motion.div
-        className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -76,13 +91,15 @@ export function Features() {
           <motion.div
             key={f.title}
             variants={cardVariants}
-            className="group rounded-xl border border-border/60 bg-white p-6 shadow-sm hover:shadow-md hover:border-border transition-all duration-200"
+            className="group relative overflow-hidden rounded-2xl border border-border/60 bg-white p-7 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
           >
-            <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500/0 via-blue-500/15 to-blue-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 opacity-[0.015] bg-[radial-gradient(#000_1px,transparent_1px)] bg-[length:16px_16px]" />
+            <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-600 group-hover:from-blue-500 group-hover:to-indigo-500 group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md">
               <f.icon className="size-5" />
             </div>
             <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.description}</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.description}</p>
           </motion.div>
         ))}
       </motion.div>
