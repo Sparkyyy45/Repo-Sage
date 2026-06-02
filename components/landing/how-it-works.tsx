@@ -87,12 +87,19 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="relative mx-auto max-w-5xl pb-16" ref={containerRef}>
-          {/* Animated Central Line - Thick "Road" structure */}
-          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-1.5 bg-slate-100 rounded-full transform md:-translate-x-1/2 hidden md:block z-0">
+          {/* Animated Central Line - Professional Pipe structure */}
+          <div className="absolute left-6 md:left-1/2 top-4 bottom-12 w-[3px] bg-slate-200/50 transform md:-translate-x-1/2 hidden md:block z-0">
             <motion.div 
-              className="absolute top-0 left-0 right-0 bg-indigo-600 w-full rounded-full origin-top"
-              style={{ height: lineHeight }}
-            />
+              className="absolute top-0 left-0 right-0 w-full origin-top"
+              style={{ 
+                height: lineHeight,
+                background: "linear-gradient(to bottom, #a5b4fc, #4f46e5)",
+                boxShadow: "0 0 15px rgba(79, 70, 229, 0.3)"
+              }}
+            >
+              {/* Glowing tip representing current scroll progress */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-10 bg-indigo-500 rounded-full blur-[6px] opacity-80" />
+            </motion.div>
           </div>
 
           <motion.div
@@ -117,18 +124,22 @@ export function HowItWorks() {
                   <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-20 order-3" : "md:justify-end md:pr-20 order-1"}`}>
                     
                     {/* Horizontal Connector Branch - High visibility road */}
-                    <div className={`absolute top-1/2 h-1.5 w-20 bg-slate-100 hidden md:block z-10 ${isEven ? 'left-0 origin-left' : 'right-0 origin-right'} -translate-y-1/2`}>
+                    <div className={`absolute top-1/2 h-[3px] w-20 bg-slate-200/50 hidden md:block z-10 ${isEven ? 'left-0 origin-left' : 'right-0 origin-right'} -translate-y-1/2`}>
                       <motion.div 
-                        className={`h-full w-full bg-indigo-600`}
+                        className={`h-full w-full`}
+                        style={{
+                          background: isEven ? "linear-gradient(to right, #4f46e5, #a5b4fc)" : "linear-gradient(to left, #4f46e5, #a5b4fc)",
+                          boxShadow: "0 0 12px rgba(79, 70, 229, 0.3)"
+                        }}
                         initial={{ scaleX: 0 }}
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                       />
                     </div>
 
                     {/* Vercel/Notion Style Card */}
-                    <div className="relative w-full max-w-[440px] rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 text-left z-20 hover:-translate-y-1">
+                    <div className="relative w-full max-w-[440px] rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 text-left z-20 hover:-translate-y-1 group-hover/step:border-indigo-200">
                       
                       {/* Subtle, sharp typography background number */}
                       <span className="absolute top-6 right-8 font-mono text-6xl font-bold text-slate-100 select-none pointer-events-none tracking-tighter">
@@ -148,11 +159,11 @@ export function HowItWorks() {
                   </div>
 
                   {/* Center Node - Clean, elegant junction */}
-                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-indigo-50 shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex">
+                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-white shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex">
                     <motion.div 
-                      className="size-3 rounded-full bg-indigo-600"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
+                      className="size-3.5 rounded-full bg-indigo-600"
+                      initial={{ scale: 0, boxShadow: "0 0 0px rgba(79,70,229,0)" }}
+                      whileInView={{ scale: 1, boxShadow: "0 0 12px rgba(79,70,229,0.5)" }}
                       viewport={{ once: true, margin: "-100px" }}
                       transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
                     />
