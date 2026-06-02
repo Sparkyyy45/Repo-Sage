@@ -28,6 +28,25 @@ export function Footer() {
               </a>
             </div>
             <div className="flex flex-col gap-3">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Community</span>
+              <a
+                href="https://github.com/anomalyco/reposage/blob/main/CONTRIBUTING.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Contributing
+              </a>
+              <a
+                href="https://github.com/anomalyco/reposage/blob/main/CODE_OF_CONDUCT.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Code of Conduct
+              </a>
+            </div>
+            <div className="flex flex-col gap-3">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Connect</span>
               <a
                 href="https://github.com/anomalyco/reposage"
