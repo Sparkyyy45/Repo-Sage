@@ -101,9 +101,9 @@ export function HowItWorks() {
           </p>
         </motion.div>
 
-        <div className="relative mx-auto max-w-5xl" ref={containerRef}>
-          {/* Animated Central Line (Thicker and more visible) */}
-          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-[3px] bg-slate-200 rounded-full transform md:-translate-x-1/2 hidden md:block shadow-inner overflow-hidden">
+        <div className="relative mx-auto max-w-5xl pb-16" ref={containerRef}>
+          {/* Animated Central Line (Thick and unmistakable) */}
+          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-2 bg-slate-200 shadow-inner rounded-full transform md:-translate-x-1/2 hidden md:block overflow-hidden z-0">
             <motion.div 
               className="absolute top-0 left-0 right-0 bg-gradient-to-b from-indigo-500 via-fuchsia-500 to-teal-500 w-full rounded-full"
               style={{ height: lineHeight }}
@@ -111,7 +111,7 @@ export function HowItWorks() {
           </div>
 
           <motion.div
-            className="space-y-12 md:space-y-0"
+            className="w-full"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -123,28 +123,27 @@ export function HowItWorks() {
                 <motion.div
                   key={s.title}
                   variants={stepVariants}
-                  className="relative flex flex-col md:flex-row items-center w-full md:min-h-[220px]"
+                  className="relative flex flex-col md:flex-row items-center w-full mb-16 md:mb-24 last:mb-0"
                 >
                   {/* Spacer for alternating layout */}
                   <div className={`hidden md:block w-1/2 ${isEven ? 'order-1' : 'order-3'}`} />
                   
                   {/* Card Container */}
-                  <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-12 order-3" : "md:justify-end md:pr-12 order-1"}`}>
+                  <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-20 order-3" : "md:justify-end md:pr-20 order-1"}`}>
                     
                     {/* Horizontal Connector Branch (Desktop only) */}
-                    <div className={`absolute top-1/2 h-[3px] w-12 bg-slate-200 hidden md:block z-0 overflow-hidden ${isEven ? 'left-0' : 'right-0'} -translate-y-1/2`}>
+                    <div className={`absolute top-1/2 h-2 w-20 bg-slate-200 hidden md:block z-10 overflow-hidden ${isEven ? 'left-0 origin-left' : 'right-0 origin-right'} -translate-y-1/2`}>
                       <motion.div 
-                        className={`h-full w-full bg-gradient-to-r ${s.gradient}`}
-                        initial={{ scaleX: 0, opacity: 0 }}
-                        whileInView={{ scaleX: 1, opacity: 1 }}
+                        className={`h-full w-full bg-gradient-to-r ${isEven ? s.gradient : s.gradient.split(' ').reverse().join(' ')}`}
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6, delay: 0.3 }}
-                        style={{ transformOrigin: isEven ? 'left' : 'right' }}
                       />
                     </div>
 
                     {/* Card */}
-                    <div className="group relative w-full max-w-[440px] rounded-[2rem] border border-white/80 bg-white/60 backdrop-blur-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] transition-all duration-500 text-left z-20">
+                    <div className="group relative w-full max-w-[440px] rounded-[2rem] border border-slate-200/60 bg-white/70 backdrop-blur-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 text-left z-20">
                       <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/80 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       
                       <div className="relative z-10">
@@ -163,8 +162,8 @@ export function HowItWorks() {
                   </div>
 
                   {/* Center Node */}
-                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-12 items-center justify-center rounded-full border-[4px] border-white bg-slate-50 shadow-md transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex transition-transform duration-500 hover:scale-110">
-                    <div className={`size-4 rounded-full bg-gradient-to-br ${s.gradient} shadow-sm animate-pulse`} />
+                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-14 items-center justify-center rounded-full border-[6px] border-white bg-slate-50 shadow-md transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex transition-transform duration-500 hover:scale-110">
+                    <div className={`size-5 rounded-full bg-gradient-to-br ${s.gradient} shadow-sm animate-pulse`} />
                   </div>
                 </motion.div>
               );
