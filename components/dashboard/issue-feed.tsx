@@ -17,10 +17,17 @@ export function IssueFeed({
         </div>
         <h3 className="text-lg font-semibold text-foreground">No issues found yet</h3>
         <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-          RepoSage searches GitHub for &ldquo;good first issue&rdquo; labels
-          matching your tech stack. Issues will appear here as they&rsquo;re
-          found.
+          Issues tagged with &ldquo;good first issue&rdquo; matching your tech stack will
+          appear here. Try searching for a specific repo above.
         </p>
+        <Link
+          href="https://github.com/topics/good-first-issue"
+          target="_blank"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors"
+        >
+          Browse good first issues on GitHub
+          <ExternalLink className="size-4" />
+        </Link>
       </div>
     );
   }
@@ -56,7 +63,8 @@ function IssueCard({ issue }: { issue: Issue }) {
   const effort = estimateEffort(issue);
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="group relative rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+      <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex items-center gap-2 text-sm">
@@ -112,13 +120,13 @@ function IssueCard({ issue }: { issue: Issue }) {
             </div>
           )}
 
-          <div className="flex items-start gap-2 rounded-xl bg-secondary/50 p-3">
-            <AlertCircle className="size-4 mt-0.5 shrink-0 text-secondary-foreground" />
-            <p className="text-sm text-secondary-foreground leading-relaxed">
-              <span className="font-medium">Why this matches:</span>{" "}
-              This issue is in a repo that uses{" "}
-              {issue.labels.slice(0, 2).join(" and ") || "your tech stack"} —
-              a great fit for your skills.
+          <div className="flex items-start gap-2 rounded-xl bg-primary/5 p-3">
+            <AlertCircle className="size-4 mt-0.5 shrink-0 text-primary" />
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              <span className="font-medium text-foreground">Why this matches:</span>{" "}
+              {issue.labels.length > 0
+                ? `Labeled as "${issue.labels.slice(0, 3).join('", "')}" — aligned with beginner-friendly open source contributions.`
+                : "Tagged with good first issue — a great starting point for your first contribution."}
             </p>
           </div>
         </div>

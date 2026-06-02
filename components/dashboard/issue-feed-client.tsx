@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import type { Issue } from "@/lib/github/issues";
@@ -9,6 +9,8 @@ import { IssueFilters } from "./issue-filters";
 
 type DifficultyFilter = "all" | "Beginner" | "Intermediate" | "Advanced";
 type SortOrder = "newest" | "oldest" | "comments";
+
+const PAGE_SIZE = 10;
 
 export function IssueFeedClient({
   issues,
@@ -19,6 +21,7 @@ export function IssueFeedClient({
   const [refreshing, setRefreshing] = useState(false);
   const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -54,10 +57,17 @@ export function IssueFeedClient({
     return result;
   }, [issues, difficulty, sortOrder]);
 
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [difficulty, sortOrder]);
+
   const filteredRepos = useMemo(
     () => new Set(filtered.map((i) => i.repoFullName)).size,
     [filtered]
   );
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <div className="space-y-4">
@@ -78,7 +88,22 @@ export function IssueFeedClient({
           Refresh
         </button>
       </div>
-      <IssueFeed issues={filtered} reposWithIssues={filteredRepos} />
+      <IssueFeed issues={visible} reposWithIssues={filteredRepos} />
+      {hasMore && (
+        <div className="flex justify-center pt-2">
+          <button
+            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-6 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-muted/50 transition-all shadow-sm"
+          >
+            Load More ({filtered.length - visibleCount} remaining)
+          </button>
+        </div>
+      )}
+      {!hasMore && filtered.length > PAGE_SIZE && (
+        <p className="text-center text-xs text-muted-foreground pt-1">
+          Showing all {filtered.length} issues
+        </p>
+      )}
     </div>
   );
 }
