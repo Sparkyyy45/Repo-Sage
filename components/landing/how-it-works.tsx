@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { LogIn, Search, Bot, BookmarkCheck, GraduationCap, FileText } from "lucide-react";
-import { useRef } from "react";
 
 const steps = [
   {
@@ -45,23 +44,15 @@ const steps = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
 const stepVariants = {
-  hidden: { opacity: 0, y: 20 },
-   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export function HowItWorks() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"],
-  });
-
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
   return (
     <section id="how-it-works" className="relative overflow-hidden bg-white py-24 md:py-32">
       {/* High-contrast architectural grid background */}
@@ -73,7 +64,7 @@ export function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto mb-24 max-w-2xl text-center"
+          className="mx-auto mb-20 max-w-2xl text-center"
         >
           <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700 mb-6 shadow-sm tracking-tight">
             Story of a Contributor
@@ -86,87 +77,48 @@ export function HowItWorks() {
           </p>
         </motion.div>
 
-        <div className="relative mx-auto max-w-5xl pb-16" ref={containerRef}>
-          {/* Animated Central Line - Professional Pipe structure */}
-          <div className="absolute left-6 md:left-1/2 top-4 bottom-12 w-[3px] bg-slate-200/50 transform md:-translate-x-1/2 hidden md:block z-0">
-            <motion.div 
-              className="absolute top-0 left-0 right-0 w-full origin-top"
-              style={{ 
-                height: lineHeight,
-                background: "linear-gradient(to bottom, #a5b4fc, #4f46e5)",
-                boxShadow: "0 0 15px rgba(79, 70, 229, 0.3)"
-              }}
-            >
-              {/* Glowing tip representing current scroll progress */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-10 bg-indigo-500 rounded-full blur-[6px] opacity-80" />
-            </motion.div>
-          </div>
-
+        <div className="mx-auto max-w-6xl">
           <motion.div
-            className="w-full"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
           >
             {steps.map((s, idx) => {
-              const isEven = idx % 2 === 0;
+              const bentoClass = [
+                "md:col-span-2",
+                "md:col-span-1",
+                "md:col-span-1",
+                "md:col-span-2",
+                "md:col-span-2",
+                "md:col-span-1",
+              ][idx];
+
               return (
                 <motion.div
                   key={s.title}
                   variants={stepVariants}
-                  className="relative flex flex-col md:flex-row items-center w-full mb-16 md:mb-24 last:mb-0 group/step"
+                  className={`relative flex flex-col rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 group overflow-hidden ${bentoClass}`}
                 >
-                  {/* Spacer for alternating layout */}
-                  <div className={`hidden md:block w-1/2 ${isEven ? 'order-1' : 'order-3'}`} />
+                  {/* Subtle, sharp typography background number */}
+                  <span className="absolute -bottom-6 -right-4 font-mono text-[120px] leading-none font-bold text-slate-50 select-none pointer-events-none tracking-tighter group-hover:text-indigo-50/50 transition-colors duration-500">
+                    {s.number}
+                  </span>
                   
-                  {/* Card Container */}
-                  <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-20 order-3" : "md:justify-end md:pr-20 order-1"}`}>
+                  {/* Glowing hover gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-indigo-500/0 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+                  <div className="relative z-10 flex flex-col h-full">
+                    {/* Minimalist Icon Box */}
+                    <div className="mb-12 flex size-14 items-center justify-center rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600 transition-all duration-500 group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] group-hover:scale-110 origin-left">
+                      <s.icon className="size-6" strokeWidth={2} />
+                    </div>
                     
-                    {/* Horizontal Connector Branch - High visibility road */}
-                    <div className={`absolute top-1/2 h-[3px] w-20 bg-slate-200/50 hidden md:block z-10 ${isEven ? 'left-0 origin-left' : 'right-0 origin-right'} -translate-y-1/2`}>
-                      <motion.div 
-                        className={`h-full w-full`}
-                        style={{
-                          background: isEven ? "linear-gradient(to right, #4f46e5, #a5b4fc)" : "linear-gradient(to left, #4f46e5, #a5b4fc)",
-                          boxShadow: "0 0 12px rgba(79, 70, 229, 0.3)"
-                        }}
-                        initial={{ scaleX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                        transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                      />
+                    <div className="mt-auto">
+                      <h3 className="text-2xl font-bold text-slate-900 mb-3 tracking-tight group-hover:text-indigo-600 transition-colors duration-300">{s.title}</h3>
+                      <p className="text-base leading-relaxed text-slate-600 font-medium max-w-[90%]">{s.body}</p>
                     </div>
-
-                    {/* Vercel/Notion Style Card */}
-                    <div className="relative w-full max-w-[440px] rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 text-left z-20 hover:-translate-y-1 group-hover/step:border-indigo-200">
-                      
-                      {/* Subtle, sharp typography background number */}
-                      <span className="absolute top-6 right-8 font-mono text-6xl font-bold text-slate-100 select-none pointer-events-none tracking-tighter">
-                        {s.number}
-                      </span>
-                      
-                      <div className="relative z-10">
-                        {/* Minimalist Icon Box */}
-                        <div className="mb-6 flex size-12 items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 transition-colors duration-300 group-hover/step:bg-indigo-100">
-                          <s.icon className="size-5" strokeWidth={2} />
-                        </div>
-                        
-                        <h3 className="text-xl font-bold text-slate-900 mb-3 tracking-tight">{s.title}</h3>
-                        <p className="text-[15px] leading-relaxed text-slate-600 font-medium">{s.body}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Center Node - Clean, elegant junction */}
-                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-white shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex">
-                    <motion.div 
-                      className="size-3.5 rounded-full bg-indigo-600"
-                      initial={{ scale: 0, boxShadow: "0 0 0px rgba(79,70,229,0)" }}
-                      whileInView={{ scale: 1, boxShadow: "0 0 12px rgba(79,70,229,0.5)" }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
-                    />
                   </div>
                 </motion.div>
               );
