@@ -57,7 +57,7 @@ const steps = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
 const stepVariants = {
@@ -77,9 +77,9 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="relative overflow-hidden bg-slate-50/50 py-24 md:py-32">
       {/* Sophisticated Background */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-50" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-blue-100/40 to-transparent blur-[100px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-b from-indigo-100/50 via-fuchsia-100/20 to-transparent blur-[120px]" />
       </div>
 
       <div className="mx-auto w-full max-w-7xl px-6">
@@ -90,8 +90,8 @@ export function HowItWorks() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto mb-24 max-w-2xl text-center"
         >
-          <div className="inline-flex items-center rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-sm font-medium text-indigo-600 mb-6">
-            Workflow
+          <div className="inline-flex items-center rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-sm font-medium text-indigo-600 mb-6 shadow-sm">
+            Story of a Contributor
           </div>
           <h2 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl">
             From zero to contributor.
@@ -102,16 +102,16 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="relative mx-auto max-w-5xl" ref={containerRef}>
-          {/* Animated Central Line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-slate-200 transform md:-translate-x-1/2 hidden md:block">
+          {/* Animated Central Line (Thicker and more visible) */}
+          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-[3px] bg-slate-200 rounded-full transform md:-translate-x-1/2 hidden md:block shadow-inner overflow-hidden">
             <motion.div 
-              className="absolute top-0 left-0 right-0 bg-gradient-to-b from-indigo-500 to-purple-500 w-full"
+              className="absolute top-0 left-0 right-0 bg-gradient-to-b from-indigo-500 via-fuchsia-500 to-teal-500 w-full rounded-full"
               style={{ height: lineHeight }}
             />
           </div>
 
           <motion.div
-            className="space-y-16 md:space-y-24"
+            className="space-y-12 md:space-y-0"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -123,32 +123,48 @@ export function HowItWorks() {
                 <motion.div
                   key={s.title}
                   variants={stepVariants}
-                  className={`relative flex flex-col md:flex-row items-center gap-8 md:gap-16 ${
-                    isEven ? "md:flex-row-reverse" : ""
-                  }`}
+                  className="relative flex flex-col md:flex-row items-center w-full md:min-h-[220px]"
                 >
-                  <div className={`w-full md:w-1/2 flex ${isEven ? "md:justify-start" : "md:justify-end"}`}>
-                    <div className="group relative w-full max-w-[440px] rounded-[2rem] border border-white/40 bg-white/40 backdrop-blur-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-500 text-left">
-                      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/60 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  {/* Spacer for alternating layout */}
+                  <div className={`hidden md:block w-1/2 ${isEven ? 'order-1' : 'order-3'}`} />
+                  
+                  {/* Card Container */}
+                  <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-12 order-3" : "md:justify-end md:pr-12 order-1"}`}>
+                    
+                    {/* Horizontal Connector Branch (Desktop only) */}
+                    <div className={`absolute top-1/2 h-[3px] w-12 bg-slate-200 hidden md:block z-0 overflow-hidden ${isEven ? 'left-0' : 'right-0'} -translate-y-1/2`}>
+                      <motion.div 
+                        className={`h-full w-full bg-gradient-to-r ${s.gradient}`}
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        whileInView={{ scaleX: 1, opacity: 1 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{ transformOrigin: isEven ? 'left' : 'right' }}
+                      />
+                    </div>
+
+                    {/* Card */}
+                    <div className="group relative w-full max-w-[440px] rounded-[2rem] border border-white/80 bg-white/60 backdrop-blur-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)] transition-all duration-500 text-left z-20">
+                      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-white/80 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       
                       <div className="relative z-10">
                         <span className="absolute -top-4 -right-2 text-[120px] font-black text-slate-900/[0.03] select-none leading-none pointer-events-none transition-transform duration-700 group-hover:-translate-y-2 group-hover:translate-x-2">
                           {s.number}
                         </span>
                         
-                        <div className={`mb-8 inline-flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br ${s.gradient} text-white shadow-lg ${s.shadow} ring-1 ring-white/20 transition-transform duration-500 group-hover:scale-105`}>
+                        <div className={`mb-8 inline-flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br ${s.gradient} text-white shadow-lg ${s.shadow} ring-1 ring-white/40 transition-transform duration-500 group-hover:scale-105`}>
                           <s.icon className="size-6" />
                         </div>
                         
                         <h3 className="text-xl font-semibold text-slate-900 mb-3 tracking-tight">{s.title}</h3>
-                        <p className="text-base leading-relaxed text-slate-600 group-hover:text-slate-700 transition-colors duration-300">{s.body}</p>
+                        <p className="text-base leading-relaxed text-slate-600 group-hover:text-slate-800 transition-colors duration-300">{s.body}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Center Node */}
-                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-12 items-center justify-center rounded-full border-[4px] border-white bg-slate-50 shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-10 hidden md:flex transition-transform duration-500 hover:scale-110">
-                    <div className={`size-3.5 rounded-full bg-gradient-to-br ${s.gradient} shadow-sm`} />
+                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-12 items-center justify-center rounded-full border-[4px] border-white bg-slate-50 shadow-md transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex transition-transform duration-500 hover:scale-110">
+                    <div className={`size-4 rounded-full bg-gradient-to-br ${s.gradient} shadow-sm animate-pulse`} />
                   </div>
                 </motion.div>
               );
