@@ -118,28 +118,16 @@ Visit `http://localhost:3000` and start contributing!
 
 ---
 
-## 🏗️ Architecture
+## 🛠️ Built With
 
-RepoSage leverages a highly scalable, edge-ready architecture designed for performance and maintainability.
+RepoSage is built on a modern, edge-ready stack designed for speed and scalability.
 
-```mermaid
-graph TD
-    Client[Client Browser / UI] --> NextJS[Next.js App Router]
-    
-    subgraph NextJS Architecture
-        Pages[Dashboard, Issue Pages, Learning Hub]
-        Middleware[Edge Middleware Auth Guard]
-        API[API Routes]
-    end
-    
-    NextJS --> Middleware
-    Middleware --> Pages
-    Pages --> API
-    
-    API -->|Octokit REST| GitHub[(GitHub API)]
-    API -->|Streaming LLM Prompts| AI[(AI Providers: OpenRouter / Groq)]
-    API -->|Optional Caching| Redis[(Upstash Redis)]
-```
+- **Framework:** [Next.js 16](https://nextjs.org) (App Router) & React 19
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com) & [shadcn/ui](https://ui.shadcn.com)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
+- **AI Integration:** OpenRouter & Groq (DeepSeek V3 / Qwen 2.5)
+- **Authentication:** [NextAuth v5](https://authjs.dev) (GitHub OAuth)
+- **Data & APIs:** Octokit (GitHub REST API) & Upstash Redis
 
 ---
 
