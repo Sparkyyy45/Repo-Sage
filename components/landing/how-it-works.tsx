@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { LogIn, Search, Bot, BookmarkCheck, GraduationCap, FileText } from "lucide-react";
 
 const steps = [
@@ -42,12 +42,12 @@ const steps = [
   },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
-const stepVariants = {
+const stepVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
 };
@@ -98,7 +98,10 @@ export function HowItWorks() {
 
                 {/* Left side: Icon */}
                 <div className="relative z-10 flex shrink-0 items-center justify-center size-16 rounded-2xl border border-slate-100 bg-slate-50 text-slate-500 transition-all duration-500 group-hover:scale-110 group-hover:border-indigo-500 group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] origin-left md:origin-center">
-                  <s.icon className="size-7" strokeWidth={2} />
+                  {(() => {
+                    const Icon = s.icon;
+                    return <Icon className="size-7" strokeWidth={2} />;
+                  })()}
                 </div>
 
                 {/* Right side: Content */}
