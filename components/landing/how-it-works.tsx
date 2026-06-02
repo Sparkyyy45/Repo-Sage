@@ -88,10 +88,10 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="relative mx-auto max-w-5xl pb-16" ref={containerRef}>
-          {/* Animated Central Line - Crisp, distinct 2px track */}
-          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-[2px] bg-slate-200 transform md:-translate-x-1/2 hidden md:block z-0">
+          {/* Animated Central Line - Thick "Road" structure */}
+          <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-2 bg-indigo-100 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)] rounded-full transform md:-translate-x-1/2 hidden md:block z-0">
             <motion.div 
-              className="absolute top-0 left-0 right-0 bg-indigo-600 w-full origin-top"
+              className="absolute top-0 left-0 right-0 bg-indigo-600 w-full rounded-full origin-top shadow-[0_0_15px_rgba(79,70,229,0.5)]"
               style={{ height: lineHeight }}
             />
           </div>
@@ -117,10 +117,10 @@ export function HowItWorks() {
                   {/* Card Container */}
                   <div className={`w-full md:w-1/2 flex relative ${isEven ? "md:justify-start md:pl-20 order-3" : "md:justify-end md:pr-20 order-1"}`}>
                     
-                    {/* Horizontal Connector Branch (Desktop only) */}
-                    <div className={`absolute top-1/2 h-[2px] w-20 bg-slate-200 hidden md:block z-10 ${isEven ? 'left-0 origin-left' : 'right-0 origin-right'} -translate-y-1/2`}>
+                    {/* Horizontal Connector Branch - High visibility road */}
+                    <div className={`absolute top-1/2 h-2 w-20 bg-indigo-100 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)] hidden md:block z-10 ${isEven ? 'left-0 origin-left rounded-r-full' : 'right-0 origin-right rounded-l-full'} -translate-y-1/2`}>
                       <motion.div 
-                        className="h-full w-full bg-indigo-600"
+                        className={`h-full w-full bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)] ${isEven ? 'rounded-r-full' : 'rounded-l-full'}`}
                         initial={{ scaleX: 0 }}
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true, margin: "-100px" }}
@@ -148,12 +148,12 @@ export function HowItWorks() {
                     </div>
                   </div>
 
-                  {/* Center Node - Clean, elegant glass dot */}
-                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-10 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex">
+                  {/* Center Node - Clean, elegant junction */}
+                  <div className="absolute left-6 md:left-1/2 top-8 md:top-1/2 flex size-12 items-center justify-center rounded-full border-[4px] border-white bg-indigo-50 shadow-sm transform md:-translate-x-1/2 md:-translate-y-1/2 z-30 hidden md:flex">
                     <motion.div 
-                      className="size-2.5 rounded-full bg-slate-300"
-                      initial={{ backgroundColor: "#cbd5e1", scale: 1 }}
-                      whileInView={{ backgroundColor: "#4f46e5", scale: 1.2 }}
+                      className="size-3.5 rounded-full bg-indigo-200"
+                      initial={{ backgroundColor: "#c7d2fe", scale: 1, boxShadow: "0 0 0px rgba(79,70,229,0)" }}
+                      whileInView={{ backgroundColor: "#4f46e5", scale: 1.2, boxShadow: "0 0 12px rgba(79,70,229,0.5)" }}
                       viewport={{ once: true, margin: "-100px" }}
                       transition={{ duration: 0.4, delay: 0.1 }}
                     />
