@@ -71,7 +71,7 @@ function IssueCard({ issue }: { issue: Issue }) {
 
           <div className="flex items-start justify-between gap-4">
             <Link
-              href={repoPath}
+              href={`/issue/${owner}/${repoName}/${issue.number}`}
               className="text-base font-semibold text-foreground hover:text-primary hover:underline leading-snug transition-colors"
             >
               {issue.title}

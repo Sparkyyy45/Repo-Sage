@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 export function DashboardNav({
@@ -44,6 +44,13 @@ export function DashboardNav({
             {(user.name || user.login || "?").charAt(0).toUpperCase()}
           </div>
         )}
+        <Link
+          href="/settings"
+          className="flex size-8 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          title="Settings"
+        >
+          <Settings className="size-4" />
+        </Link>
         <button
           onClick={() => signOut({ redirectTo: "/" })}
           className="flex size-8 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
