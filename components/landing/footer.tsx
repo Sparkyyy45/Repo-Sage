@@ -8,7 +8,7 @@ export function Footer() {
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
           <div className="flex flex-col gap-3">
             <Link href="/" className="flex items-center gap-2.5 font-semibold text-lg tracking-tight text-foreground">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-foreground text-background text-[10px] font-bold">
+              <span className="flex size-7 items-center justify-center rounded-lg bg-indigo-600 text-white text-[10px] font-bold shadow-sm">
                 RS
               </span>
               <span>RepoSage</span>

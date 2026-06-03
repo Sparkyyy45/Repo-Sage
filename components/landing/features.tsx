@@ -82,10 +82,10 @@ export function Features() {
         transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
         className="relative mx-auto mb-20 max-w-2xl text-center"
       >
-        <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground mb-6 backdrop-blur-sm">
-          <SearchCode className="mr-2 size-3.5" />
-          Everything you need
-        </div>
+        <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 mb-6 shadow-sm">
+            <SearchCode className="mr-2 size-3.5 text-indigo-500" />
+            Everything you need
+          </div>
         <h2 className="text-4xl font-bold tracking-tighter text-foreground md:text-5xl lg:text-6xl mb-6">
           Find, understand, <br className="hidden sm:block" /> and contribute.
         </h2>
@@ -105,11 +105,12 @@ export function Features() {
           <motion.div
             key={f.title}
             variants={cardVariants}
-            className={`group relative overflow-hidden rounded-xl border border-border bg-card p-8 hover:border-foreground/20 transition-all duration-300 ${f.span}`}
+            className={`group relative overflow-hidden rounded-xl border border-border bg-card p-8 hover:border-indigo-200 hover:shadow-sm transition-all duration-300 ${f.span}`}
           >
             <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="mb-6 flex size-12 items-center justify-center rounded-lg border border-border bg-muted/30 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
-                <f.icon className="size-5 text-foreground" />
+              <div className="absolute top-0 left-6 right-6 h-0.5 rounded-full bg-indigo-500/0 group-hover:bg-indigo-500/20 transition-all duration-300" />
+              <div className="mb-6 flex size-12 items-center justify-center rounded-lg border border-border bg-muted/30 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-indigo-200 group-hover:bg-indigo-50">
+                <f.icon className="size-5 text-foreground group-hover:text-indigo-600 transition-colors duration-300" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">{f.title}</h3>

@@ -92,7 +92,7 @@ export function HowItWorks() {
                 className="group relative flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-indigo-100 hover:shadow-xl"
               >
                 {/* Giant aesthetic watermark number */}
-                <span className="absolute -bottom-8 -right-4 select-none text-[160px] font-bold leading-none tracking-tighter text-slate-50 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-50/60 font-mono pointer-events-none z-0">
+                <span className="absolute -bottom-6 -right-2 select-none text-[120px] font-bold leading-none tracking-tighter text-slate-50/70 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-50/60 font-mono pointer-events-none z-0">
                   {s.number}
                 </span>
 

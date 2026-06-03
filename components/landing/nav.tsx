@@ -14,20 +14,20 @@ export async function Nav() {
             href={session ? "/dashboard" : "/"}
             className="flex items-center gap-2.5 font-semibold text-lg tracking-tight text-foreground"
           >
-            <span className="flex size-8 items-center justify-center rounded-lg bg-foreground text-background text-xs font-bold">
+            <span className="flex size-8 items-center justify-center rounded-lg bg-indigo-600 text-white text-xs font-bold shadow-sm">
               RS
             </span>
             <span>RepoSage</span>
           </Link>
           {!session && (
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#problem" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
+              <a href="#problem" className="text-sm text-muted-foreground/80 hover:text-indigo-600 transition-colors">
                 Why
               </a>
-              <a href="#how-it-works" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
+              <a href="#how-it-works" className="text-sm text-muted-foreground/80 hover:text-indigo-600 transition-colors">
                 How it works
               </a>
-              <a href="#features" className="text-sm text-muted-foreground/80 hover:text-foreground transition-colors">
+              <a href="#features" className="text-sm text-muted-foreground/80 hover:text-indigo-600 transition-colors">
                 Features
               </a>
             </nav>

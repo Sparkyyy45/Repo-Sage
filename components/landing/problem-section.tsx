@@ -61,8 +61,8 @@ export function ProblemSection() {
           transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground mb-6 backdrop-blur-sm">
-            <ArrowRight className="mr-1.5 size-3.5" />
+          <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 mb-6 shadow-sm">
+            <ArrowRight className="mr-1.5 size-3.5 text-indigo-500" />
             The gap
           </div>
           <h2 className="text-3xl font-bold tracking-tighter text-foreground md:text-4xl lg:text-5xl">
@@ -83,11 +83,11 @@ export function ProblemSection() {
           <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
             <div className="grid grid-cols-3 border-b border-border bg-muted/50">
               <div className="p-4 text-sm font-semibold text-foreground">Capability</div>
-              <div className="p-4 text-sm font-medium text-muted-foreground text-center border-x border-border">
+              <div className="p-4 text-sm font-medium text-muted-foreground/60 text-center border-x border-border">
                 <Search className="size-3.5 inline mr-1.5" />
                 Issue Matchers
               </div>
-              <div className="p-4 text-sm font-medium text-foreground text-center">
+              <div className="p-4 text-sm font-semibold text-indigo-700 text-center bg-indigo-50/60">
                 <BookOpen className="size-3.5 inline mr-1.5" />
                 RepoSage
               </div>
@@ -130,7 +130,7 @@ export function ProblemSection() {
                       whileInView={{ scale: 1 }}
                       transition={{ type: "spring", stiffness: 400, damping: 20, delay: 0.15 }}
                     >
-                      <Check className="size-4 text-foreground" />
+                      <Check className="size-4 text-indigo-600" />
                     </motion.div>
                   </div>
                 </motion.div>

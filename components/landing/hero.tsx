@@ -21,6 +21,7 @@ function HeroBackground() {
     <div className="absolute inset-0 -z-10 overflow-hidden bg-background">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-foreground opacity-[0.03] blur-[100px]" />
+      <div className="absolute left-1/2 top-0 -z-10 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-indigo-500 opacity-[0.04] blur-[120px]" />
     </div>
   );
 }
@@ -90,7 +91,7 @@ function HeroMockup() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1 + i * 0.15, duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-                className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-lg border border-border p-4 hover:border-foreground/20 transition-colors"
+                className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-lg border border-border p-4 hover:border-indigo-200 hover:bg-indigo-50/30 transition-all duration-200"
               >
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -139,9 +140,9 @@ export function Hero({ signedIn = false }: { signedIn?: boolean }) {
         >
           <motion.div
             variants={fadeUp}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-md"
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 shadow-sm"
           >
-            <Sparkles className="size-3.5" />
+            <Sparkles className="size-3.5 text-indigo-500" />
             From &ldquo;good first issue&rdquo; to merged PR
           </motion.div>
 
@@ -149,7 +150,7 @@ export function Hero({ signedIn = false }: { signedIn?: boolean }) {
             variants={fadeUp}
             className="max-w-4xl text-balance text-5xl font-bold tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
           >
-            Your first open source contribution.
+            Ship your first open source contribution.
           </motion.h1>
 
           <motion.p
@@ -189,15 +190,15 @@ export function Hero({ signedIn = false }: { signedIn?: boolean }) {
             className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-muted-foreground"
           >
             <span className="flex items-center gap-2">
-              <CheckCircle className="size-4" />
+              <CheckCircle className="size-4 text-indigo-500" />
               Read-only access
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle className="size-4" />
+              <CheckCircle className="size-4 text-indigo-500" />
               Free for everyone
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle className="size-4" />
+              <CheckCircle className="size-4 text-indigo-500" />
               No setup required
             </span>
           </motion.div>
