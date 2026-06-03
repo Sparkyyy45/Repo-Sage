@@ -105,11 +105,11 @@ export function Features() {
           <motion.div
             key={f.title}
             variants={cardVariants}
-            className={`group relative overflow-hidden rounded-xl border border-border bg-card p-8 hover:border-indigo-200 hover:shadow-sm transition-all duration-300 ${f.span}`}
+            className={`group relative overflow-hidden rounded-xl border border-border bg-card p-8 hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ${f.span}`}
           >
             <div className="relative z-10 h-full flex flex-col justify-between">
-              <div className="absolute top-0 left-6 right-6 h-0.5 rounded-full bg-indigo-500/0 group-hover:bg-indigo-500/20 transition-all duration-300" />
-              <div className="mb-6 flex size-12 items-center justify-center rounded-lg border border-border bg-muted/30 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-indigo-200 group-hover:bg-indigo-50">
+              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/0 group-hover:via-indigo-500/40 to-indigo-500/0 transition-all duration-500" />
+              <div className="mb-6 flex size-12 items-center justify-center rounded-xl border border-border bg-muted/30 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-indigo-200 group-hover:bg-indigo-50 group-hover:shadow-indigo-500/10">
                 <f.icon className="size-5 text-foreground group-hover:text-indigo-600 transition-colors duration-300" />
               </div>
               <div>

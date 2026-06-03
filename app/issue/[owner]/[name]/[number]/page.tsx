@@ -6,6 +6,7 @@ import { fetchIssueDetail } from "@/lib/github/issues";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { IssueHeader } from "@/components/issue/issue-header";
 import { ArchDiagram } from "@/components/issue/arch-diagram";
+import { SetupGuide } from "@/components/issue/setup-guide";
 import { OnboardingGuide } from "@/components/issue/onboarding-guide";
 import { IssueChat } from "@/components/issue/issue-chat";
 
@@ -64,6 +65,8 @@ export default async function IssuePage({
         {ingested && (
           <>
             <ArchDiagram repo={ingested} />
+
+            <SetupGuide repo={ingested} />
 
             <OnboardingGuide
               repo={ingested}

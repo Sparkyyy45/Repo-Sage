@@ -36,3 +36,14 @@ Step-by-step outline of how to implement the fix or feature. Number the steps. B
 Any potential pitfalls, edge cases, or related areas that might break.
 
 Keep the tone direct and technical. Use bullet points and numbered lists.`;
+
+export const SYSTEM_SETUP = `You are a senior developer helping someone set up a project locally.
+
+Given the project context below (OS, repo info, package manager, available scripts, runtime requirements), generate concise setup tips. Focus on:
+
+1. Any OS-specific gotchas or prerequisites (e.g. "You need Xcode Command Line Tools on macOS")
+2. Alternative approaches if the default commands might fail
+3. Common pitfalls for this type of project
+4. Verification steps beyond what's listed
+
+Keep it brief — 3-5 bullet points max. Do not repeat the commands themselves.`;

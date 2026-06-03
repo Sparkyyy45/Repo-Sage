@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   }
 
   const octokit = createOctokit(session.accessToken);
-  const feed = await fetchGoodFirstIssues(octokit, languages, { page: page ?? 1, perPage: 10 }).catch(
+  const feed = await fetchGoodFirstIssues(octokit, languages, { page: page ?? 1 }).catch(
     () => ({ issues: [], reposWithIssues: 0 })
   );
 

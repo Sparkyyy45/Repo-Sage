@@ -3,7 +3,8 @@ import { Heart, ExternalLink } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-white">
+    <footer className="border-t border-border/40 bg-white relative">
+      <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
       <div className="mx-auto w-full max-w-7xl px-6 py-12">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
           <div className="flex flex-col gap-3">
@@ -20,10 +21,10 @@ export function Footer() {
           <div className="flex gap-10">
             <div className="flex flex-col gap-3">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Product</span>
-              <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-indigo-600 transition-colors">
                 How it works
               </a>
-              <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href="#features" className="text-sm text-muted-foreground hover:text-indigo-600 transition-colors">
                 Features
               </a>
             </div>
@@ -33,7 +34,7 @@ export function Footer() {
                 href="https://github.com/anomalyco/reposage/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-indigo-600 transition-colors"
               >
                 Contributing
               </a>
@@ -41,7 +42,7 @@ export function Footer() {
                 href="https://github.com/anomalyco/reposage/blob/main/CODE_OF_CONDUCT.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-indigo-600 transition-colors"
               >
                 Code of Conduct
               </a>
@@ -52,7 +53,7 @@ export function Footer() {
                 href="https://github.com/anomalyco/reposage"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-indigo-600 transition-colors"
               >
                 <ExternalLink className="size-3.5" />
                 GitHub

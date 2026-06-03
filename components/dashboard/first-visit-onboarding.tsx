@@ -1,178 +1,141 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, BookOpen, Cpu, Code2, Sparkles, ArrowRight, Check } from "lucide-react";
+import { Search, BookOpen, Cpu, Sparkles, ArrowRight, ChevronDown, ChevronRight, Check, X } from "lucide-react";
 import Link from "next/link";
 
-const ONBOARDING_KEY = "reposage-onboarded";
+const GUIDE_KEY = "reposage-guide-dismissed";
 
-const steps: {
-  title: string;
-  subtitle: string;
-  cards?: { icon: React.ElementType; label: string; desc: string }[];
-  body?: string;
-  action?: { label: string; href: string };
-}[] = [
+const steps = [
   {
-    title: "Welcome to RepoSage",
-    subtitle: "Here's what you can do",
-    cards: [
-      { icon: Search, label: "Discover Issues", desc: "Good-first issues matched to your exact tech stack, with difficulty and effort estimates." },
-      { icon: BookOpen, label: "Learn the Ropes", desc: "Six interactive guides that take you from zero to your first merged PR." },
-      { icon: Cpu, label: "AI-Powered Analysis", desc: "Get an AI-generated onboarding guide and chat for every issue you explore." },
-    ],
+    icon: Search,
+    title: "Find your issue",
+    desc: "Browse issues matched to your tech stack below, or search any repo.",
   },
   {
-    title: "Configure AI (optional)",
-    subtitle: "Unlock issue analysis & chat",
-    body: "Configure an AI provider in Settings to get personalized onboarding guides and an interactive issue chat for every issue you explore. Supports OpenRouter and Groq.",
-    action: { label: "Go to Settings", href: "/settings" },
+    icon: BookOpen,
+    title: "Understand the code",
+    desc: "Every issue comes with an architecture diagram, onboarding guide, and AI chat.",
   },
   {
-    title: "You're all set!",
-    subtitle: "Your first issue is waiting",
-    body: "Your dashboard is populated with good-first-issues matched to your profile. Pick one, save it, and start your open source journey.",
+    icon: Cpu,
+    title: "Track your progress",
+    desc: "Save issues and move them through your pipeline: Saved → Working → PR → Merged.",
   },
 ];
 
 export function FirstVisitOnboarding() {
-  const [open, setOpen] = useState(false);
-  const [step, setStep] = useState(0);
+  const [dismissed, setDismissed] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const [hasSavedIssue, setHasSavedIssue] = useState(false);
 
   useEffect(() => {
-    const done = localStorage.getItem(ONBOARDING_KEY);
-    if (!done) setOpen(true);
+    const stored = localStorage.getItem(GUIDE_KEY);
+    if (!stored) setDismissed(false);
+    const checkSaved = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem("reposage-saved-issues") || "[]");
+        setHasSavedIssue(saved.length > 0);
+      } catch {
+        setHasSavedIssue(false);
+      }
+    };
+    checkSaved();
+    window.addEventListener("storage", checkSaved);
+    return () => window.removeEventListener("storage", checkSaved);
   }, []);
 
   const dismiss = () => {
-    localStorage.setItem(ONBOARDING_KEY, "true");
-    setOpen(false);
+    localStorage.setItem(GUIDE_KEY, "true");
+    setDismissed(true);
   };
 
-  const next = () => {
-    if (step < steps.length - 1) {
-      setStep((s) => s + 1);
-    } else {
-      dismiss();
-    }
-  };
-
-  if (!open) return null;
-
-  const current = steps[step];
+  if (dismissed || hasSavedIssue) {
+    return (
+      <button
+        onClick={() => {
+          setDismissed(false);
+          setExpanded(true);
+        }}
+        className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-indigo-500 transition-colors"
+        title="Show getting started guide"
+      >
+        <Sparkles className="size-3" />
+        Guide
+      </button>
+    );
+  }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={dismiss} />
-      <div className="relative w-full max-w-lg rounded-2xl border border-border bg-card p-8 shadow-2xl animate-in fade-in zoom-in-95">
-        <div className="flex items-center gap-1.5 mb-8">
-          {steps.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                i <= step ? "bg-primary" : "bg-muted"
-              }`}
-            />
-          ))}
-        </div>
+    <div className="relative rounded-2xl border border-indigo-200/50 bg-gradient-to-br from-indigo-50/80 to-white p-5 md:p-6 shadow-sm">
+      <button
+        onClick={dismiss}
+        className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-lg text-muted-foreground/40 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
+        title="Dismiss guide"
+      >
+        <X className="size-3.5" />
+      </button>
 
-        {step === 0 && (
-          <div className="space-y-6">
-            <div>
-              <div className="inline-flex items-center justify-center size-10 rounded-xl bg-primary/10 text-primary mb-4">
-                <Sparkles className="size-5" />
-              </div>
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">{current.title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{current.subtitle}</p>
-            </div>
-            <div className="space-y-3">
-              {current.cards!.map((card) => (
-                <div key={card.label} className="flex gap-3 rounded-xl border border-border bg-muted/20 p-3">
-                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/5 text-primary">
-                    <card.icon className="size-4" />
+      <div className="flex items-start gap-4">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+          <Sparkles className="size-5" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-base font-semibold text-foreground tracking-tight">
+            Welcome to RepoSage
+          </h3>
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            Your personal guide to finding and contributing to open source. Here&rsquo;s how it works:
+          </p>
+
+          {expanded && (
+            <div className="mt-4 space-y-3">
+              {steps.map((s, i) => (
+                <div key={s.title} className="flex items-start gap-3">
+                  <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
+                    <s.icon className="size-3.5" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">{card.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{card.desc}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Step {i + 1}: {s.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{s.desc}</p>
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
-
-        {step === 1 && (
-          <div className="space-y-6">
-            <div>
-              <div className="inline-flex items-center justify-center size-10 rounded-xl bg-amber-50 text-amber-600 mb-4">
-                <Cpu className="size-5" />
+              <div className="flex items-center gap-3 pt-2">
+                <Link
+                  href="/learn"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 transition-colors shadow-sm"
+                >
+                  <BookOpen className="size-3.5" />
+                  Start Learning
+                  <ArrowRight className="size-3.5" />
+                </Link>
+                <button
+                  onClick={dismiss}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Got it
+                </button>
               </div>
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">{current.title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{current.subtitle}</p>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{current.body}</p>
-            <div className="flex items-center gap-3">
-              <Link
-                href="/settings"
-                onClick={dismiss}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm"
-              >
-                <Cpu className="size-4" />
-                Go to Settings
-              </Link>
-              <button
-                onClick={next}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-border px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              >
-                Skip for now
-              </button>
-            </div>
-          </div>
-        )}
+          )}
 
-        {step === 2 && (
-          <div className="space-y-6">
-            <div>
-              <div className="inline-flex items-center justify-center size-10 rounded-xl bg-emerald-50 text-emerald-600 mb-4">
-                <Check className="size-5" />
-              </div>
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">{current.title}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{current.subtitle}</p>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{current.body}</p>
-            <div className="flex flex-wrap gap-2">
-              {["Bookmark issues you like", "Track your progress", "Learn with interactive guides", "Get AI-powered help"].map(
-                (tip) => (
-                  <span
-                    key={tip}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-muted/50 border border-border px-3 py-1.5 text-xs text-muted-foreground"
-                  >
-                    <Check className="size-3 text-primary" />
-                    {tip}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-8 flex items-center justify-between">
           <button
-            onClick={dismiss}
-            className="text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            onClick={() => setExpanded(!expanded)}
+            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
           >
-            Skip all
-          </button>
-          <button
-            onClick={next}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-foreground px-5 py-2 text-sm font-medium text-background hover:opacity-90 transition-opacity shadow-sm"
-          >
-            {step < steps.length - 1 ? (
+            {expanded ? (
               <>
-                Next <ArrowRight className="size-4" />
+                <ChevronDown className="size-3.5" />
+                Hide guide
               </>
             ) : (
-              "Get Started"
+              <>
+                <ChevronRight className="size-3.5" />
+                Show me around
+              </>
             )}
           </button>
         </div>

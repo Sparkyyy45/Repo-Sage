@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { GitBranch } from "lucide-react";
 import type { IngestedRepo } from "@/lib/github/ingest";
 import { generateMermaidDiagram } from "@/lib/repo/diagram";
 
@@ -47,7 +48,7 @@ export function ArchDiagram({ repo }: { repo: IngestedRepo }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-sm">🏗️</span>
+        <GitBranch className="size-4 text-indigo-500" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           Repo Architecture
         </h2>

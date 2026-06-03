@@ -55,7 +55,7 @@ export default async function DashboardPage() {
   }
 
   const topLanguages = profile.languages.map((l) => l.name);
-  const feed = await fetchGoodFirstIssues(octokit, topLanguages, { page: 1, perPage: 10 }).catch(
+  const feed = await fetchGoodFirstIssues(octokit, topLanguages).catch(
     () => ({ issues: [], reposWithIssues: 0 })
   );
 
@@ -63,8 +63,9 @@ export default async function DashboardPage() {
     <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-6">
       <DashboardNav user={session.user} />
 
-      <div className="mt-8 mb-8">
+      <div className="mt-8 mb-6 space-y-4">
         <RepoSearch />
+        <FirstVisitOnboarding />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-12">
@@ -74,6 +75,8 @@ export default async function DashboardPage() {
             languages={profile.languages}
             totalStars={profile.totalStars}
             reposCount={profile.publicRepos}
+            issuesCount={feed.issues.length}
+            reposWithIssues={feed.reposWithIssues}
           />
 
           <SavedIssuesSection />
@@ -89,8 +92,6 @@ export default async function DashboardPage() {
           <LearnSidebarSection />
         </div>
       </div>
-
-      <FirstVisitOnboarding />
     </div>
   );
 }

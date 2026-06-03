@@ -55,11 +55,11 @@ export function SocialProof() {
             <motion.div
               key={s.label}
               variants={statVariants}
-              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-white p-6 text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-200/50 transition-all duration-300"
+              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-white p-6 text-center shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-indigo-200/50 transition-all duration-300"
             >
               <div className={`absolute inset-0 bg-gradient-to-b ${s.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               <div className="relative z-10">
-                <div className={`mx-auto mb-3 flex size-12 items-center justify-center rounded-xl bg-white border border-border/50 shadow-sm group-hover:scale-110 transition-transform duration-300 ${s.iconColor}`}>
+                <div className={`mx-auto mb-3 flex size-12 items-center justify-center rounded-xl bg-white border border-border/50 shadow-sm group-hover:scale-110 group-hover:shadow-indigo-500/10 group-hover:border-indigo-200 transition-all duration-300 ${s.iconColor}`}>
                   <s.icon className="size-5" />
                 </div>
                 <div className="text-2xl font-bold text-foreground tabular-nums md:text-3xl">

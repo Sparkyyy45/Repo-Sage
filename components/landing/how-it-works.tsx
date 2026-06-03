@@ -69,10 +69,10 @@ export function HowItWorks() {
           <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700 mb-6 shadow-sm tracking-tight">
             Story of a Contributor
           </div>
-          <h2 className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl tracking-[-0.02em]">
+          <h2 className="text-4xl font-bold text-foreground md:text-5xl tracking-[-0.02em]">
             From zero to contributor.
           </h2>
-          <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
+          <p className="mt-6 text-muted-foreground text-lg md:text-xl leading-relaxed">
             A seamless, professional workflow designed to take you from signing in to merging your first pull request.
           </p>
         </motion.div>
@@ -89,15 +89,15 @@ export function HowItWorks() {
               <motion.div
                 key={s.title}
                 variants={stepVariants}
-                className="group relative flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-indigo-100 hover:shadow-xl"
+                className="group relative flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 overflow-hidden rounded-3xl border border-border bg-card p-8 md:p-10 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
               >
                 {/* Giant aesthetic watermark number */}
-                <span className="absolute -bottom-6 -right-2 select-none text-[120px] font-bold leading-none tracking-tighter text-slate-50/70 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-50/60 font-mono pointer-events-none z-0">
+                <span className="absolute -bottom-6 -right-2 select-none text-[120px] font-bold leading-none tracking-tighter text-muted/40 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-100/60 font-mono pointer-events-none z-0">
                   {s.number}
                 </span>
 
                 {/* Left side: Icon */}
-                <div className="relative z-10 flex shrink-0 items-center justify-center size-16 rounded-2xl border border-slate-100 bg-slate-50 text-slate-500 transition-all duration-500 group-hover:scale-110 group-hover:border-indigo-500 group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] origin-left md:origin-center">
+                <div className="relative z-10 flex shrink-0 items-center justify-center size-16 rounded-2xl border border-border bg-muted/50 text-muted-foreground transition-all duration-500 group-hover:scale-110 group-hover:border-indigo-500 group-hover:bg-indigo-600 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(79,70,229,0.4)] origin-left md:origin-center">
                   {(() => {
                     const Icon = s.icon;
                     return <Icon className="size-7" strokeWidth={2} />;
@@ -106,10 +106,10 @@ export function HowItWorks() {
 
                 {/* Right side: Content */}
                 <div className="relative z-10 flex-grow">
-                  <h3 className="mb-3 text-2xl font-bold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-indigo-700">
+                  <h3 className="mb-3 text-2xl font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-indigo-700">
                     {s.title}
                   </h3>
-                  <p className="max-w-2xl text-lg font-medium leading-relaxed text-slate-600">
+                  <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
                     {s.body}
                   </p>
                 </div>

@@ -36,19 +36,38 @@ export function RepoSearch() {
           type="text"
           value={input}
           onChange={(e) => { setInput(e.target.value); setError(false); }}
-          placeholder="Explore any repository... e.g. vercel/next.js"
-          className={`flex h-12 w-full rounded-2xl border bg-card pl-11 pr-4 text-sm placeholder:text-muted-foreground/60 transition-all focus:outline-none ${
+          placeholder="Search any GitHub repo (e.g. vercel/next.js)"
+          className={`flex h-12 w-full rounded-2xl border bg-card pl-11 pr-4 text-sm placeholder:text-muted-foreground/50 transition-all focus:outline-none ${
             error
               ? "border-destructive ring-1 ring-destructive/20"
-              : "border-border focus:border-primary focus:ring-2 focus:ring-primary/20"
+              : "border-border focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/15"
           }`}
         />
       </div>
-      {error && (
-        <p className="mt-2 text-xs text-destructive font-medium">
-          Enter a repo as owner/name (e.g. vercel/next.js)
-        </p>
-      )}
+      <div className="mt-1.5 flex items-center justify-between">
+        {error && (
+          <p className="text-xs text-destructive font-medium">
+            Enter a repo as owner/name (e.g. vercel/next.js)
+          </p>
+        )}
+        {!error && (
+          <p className="text-xs text-muted-foreground/50">
+            Paste a GitHub repo URL or type owner/name
+          </p>
+        )}
+        <div className="flex gap-2">
+          {["facebook/react", "vercel/next.js", "microsoft/vscode"].map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setInput(r)}
+              className="text-[10px] text-muted-foreground/40 hover:text-indigo-500 transition-colors"
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+      </div>
     </form>
   );
 }

@@ -29,10 +29,11 @@ export function CtaSection({ signedIn = false }: { signedIn?: boolean }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="relative mx-auto flex max-w-3xl flex-col items-center rounded-2xl border border-border/50 bg-white/60 backdrop-blur-sm p-10 text-center shadow-xl shadow-indigo-500/5 md:p-16"
+          className="relative mx-auto flex max-w-3xl flex-col items-center rounded-2xl border border-border/50 bg-white/70 backdrop-blur-sm p-10 text-center shadow-2xl shadow-indigo-500/10 md:p-16"
         >
-          <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-          <div className="absolute -bottom-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
+          <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+          <div className="absolute -bottom-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+          <div className="absolute left-1/2 top-1/2 -z-10 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/5 blur-[80px]" />
 
           <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-indigo-50 px-4 py-1.5 text-xs font-semibold text-indigo-700 shadow-sm">
             <Sparkles className="size-3.5 text-indigo-500" />

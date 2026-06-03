@@ -21,7 +21,8 @@ function HeroBackground() {
     <div className="absolute inset-0 -z-10 overflow-hidden bg-background">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
       <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-foreground opacity-[0.03] blur-[100px]" />
-      <div className="absolute left-1/2 top-0 -z-10 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-indigo-500 opacity-[0.04] blur-[120px]" />
+      <div className="absolute left-1/2 top-0 -z-10 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500 opacity-[0.06] blur-[140px]" />
+      <div className="absolute left-1/2 top-1/2 -z-10 h-[350px] w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-400 opacity-[0.03] blur-[100px]" />
     </div>
   );
 }
@@ -40,7 +41,7 @@ function HeroMockup() {
       transition={{ duration: 0.9, delay: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
       className="relative mx-auto mt-24 max-w-5xl"
     >
-      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-indigo-500/5 ring-1 ring-indigo-500/5">
         <div className="flex items-center gap-1.5 border-b border-border px-4 py-3 bg-muted/50">
           <span className="size-3 rounded-full bg-muted-foreground/20" />
           <span className="size-3 rounded-full bg-muted-foreground/20" />
@@ -148,7 +149,7 @@ export function Hero({ signedIn = false }: { signedIn?: boolean }) {
 
           <motion.h1
             variants={fadeUp}
-            className="max-w-4xl text-balance text-5xl font-bold tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
+            className="max-w-4xl text-balance text-5xl font-bold tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-7xl leading-[1.05]"
           >
             Ship your first open source contribution.
           </motion.h1>

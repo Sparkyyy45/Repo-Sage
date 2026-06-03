@@ -93,41 +93,51 @@ export async function fetchIssueDetail(
   };
 }
 
+async function searchIssues(
+  octokit: Octokit,
+  query: string,
+  page: number
+): Promise<any[]> {
+  try {
+    const { data } = await octokit.rest.search.issuesAndPullRequests({
+      q: query,
+      sort: "updated",
+      order: "desc",
+      per_page: 50,
+      page,
+    });
+    return data.items;
+  } catch {
+    return [];
+  }
+}
+
 export async function fetchGoodFirstIssues(
   octokit: Octokit,
   topLanguages: string[],
-  options?: { page?: number; perPage?: number }
+  options?: { page?: number }
 ): Promise<IssueFeed> {
   const page = options?.page ?? 1;
-  const perPage = options?.perPage ?? 10;
   const allIssues: Issue[] = [];
   const seenUrls = new Set<string>();
 
-  const langFilter = topLanguages
-    .slice(0, 5)
-    .map((l) => `language:${l}`)
-    .join(" ");
+  const queries: string[] = [];
 
-  const queries = [
-    `label:"good first issue" is:issue is:open ${langFilter}`.trim(),
-  ];
-
-  if (topLanguages.length === 0) {
-    queries.push('label:"good first issue" is:issue is:open');
+  if (topLanguages.length > 0) {
+    const langs = topLanguages.slice(0, 5);
+    for (const lang of langs) {
+      queries.push(`label:"good first issue" is:issue is:open language:${lang}`);
+    }
+    for (const lang of langs.slice(0, 3)) {
+      queries.push(`label:enhancement is:issue is:open language:${lang}`);
+      queries.push(`label:bug is:issue is:open language:${lang}`);
+    }
+  } else {
+    queries.push(`label:"good first issue" is:issue is:open`);
   }
 
   const results = await Promise.allSettled(
-    queries.map((q) =>
-      octokit.rest.search
-        .issuesAndPullRequests({
-          q,
-          sort: "updated",
-          order: "desc",
-          per_page: perPage,
-          page,
-        })
-        .then(({ data }) => data.items)
-    )
+    queries.map((q) => searchIssues(octokit, q, page))
   );
 
   for (const result of results) {
@@ -136,10 +146,7 @@ export async function fetchGoodFirstIssues(
       if (seenUrls.has(item.html_url)) continue;
       seenUrls.add(item.html_url);
 
-      const repoFullName = item.repository_url.replace(
-        "https://api.github.com/repos/",
-        ""
-      );
+      const repoFullName = item.repository_url.replace("https://api.github.com/repos/", "");
       const [, repoName] = repoFullName.split("/");
 
       allIssues.push({
@@ -149,7 +156,7 @@ export async function fetchGoodFirstIssues(
         htmlUrl: item.html_url,
         repoFullName,
         repoName,
-        labels: item.labels.map((l) => l.name ?? ""),
+        labels: (item.labels || []).map((l: any) => (typeof l === "string" ? l : l.name ?? "")),
         createdAt: item.created_at,
         updatedAt: item.updated_at,
         comments: item.comments,
@@ -157,15 +164,7 @@ export async function fetchGoodFirstIssues(
     }
   }
 
-  allIssues.sort(
-    (a, b) =>
-      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-  );
+  allIssues.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 
-  const uniqueRepos = new Set(allIssues.map((i) => i.repoFullName));
-
-  return {
-    issues: allIssues,
-    reposWithIssues: uniqueRepos.size,
-  };
+  return { issues: allIssues, reposWithIssues: new Set(allIssues.map((i) => i.repoFullName)).size };
 }

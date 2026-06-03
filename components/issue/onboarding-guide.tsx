@@ -81,14 +81,16 @@ export function OnboardingGuide({
     return (
       <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-3">
-          <Bot className="size-4 text-muted-foreground" />
-          <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <div className="flex size-6 items-center justify-center rounded-md bg-muted/50">
+            <Bot className="size-3.5 text-muted-foreground" />
+          </div>
+          <h2 className="text-xs font-semibold text-foreground uppercase tracking-wider">
             AI Onboarding Guide
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">
           Configure an AI provider in{" "}
-          <a href="/settings" className="text-primary underline underline-offset-2 hover:text-primary/80">
+          <a href="/settings" className="text-indigo-600 underline underline-offset-2 hover:text-indigo-500">
             Settings
           </a>{" "}
           to get an onboarding guide for this repo.
@@ -101,8 +103,10 @@ export function OnboardingGuide({
     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Bot className="size-4 text-muted-foreground" />
-          <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <div className={`flex size-6 items-center justify-center rounded-md transition-colors duration-300 ${guide && !loading ? "bg-indigo-100" : "bg-muted/50"}`}>
+            <Bot className={`size-3.5 transition-colors duration-300 ${guide && !loading ? "text-indigo-600" : "text-muted-foreground"}`} />
+          </div>
+          <h2 className="text-xs font-semibold text-foreground uppercase tracking-wider">
             AI Onboarding Guide
           </h2>
         </div>
@@ -110,7 +114,7 @@ export function OnboardingGuide({
           <button
             onClick={generate}
             disabled={loading}
-            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-indigo-600 transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`size-3 ${loading ? "animate-spin" : ""}`} />
             Regenerate
@@ -128,14 +132,14 @@ export function OnboardingGuide({
       )}
 
       {error && (
-        <div className="flex items-start gap-2 text-sm text-destructive">
-          <AlertCircle className="size-4 mt-0.5 shrink-0" />
+        <div className="flex items-start gap-3 rounded-xl border border-destructive/20 bg-destructive/5 p-4 text-sm">
+          <AlertCircle className="size-4 mt-0.5 shrink-0 text-destructive" />
           <div>
-            <p className="font-medium">Failed to generate guide</p>
-            <p className="text-muted-foreground mt-1">{error}</p>
+            <p className="font-medium text-destructive">Failed to generate guide</p>
+            <p className="text-muted-foreground mt-1 text-xs">{error}</p>
             <button
               onClick={generate}
-              className="mt-2 text-xs text-primary underline underline-offset-2 hover:text-primary/80"
+              className="mt-2 text-xs font-medium text-indigo-600 underline underline-offset-2 hover:text-indigo-500"
             >
               Try again
             </button>
