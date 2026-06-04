@@ -3,15 +3,15 @@
 </p>
 
 <p align="center">
-  <strong>Your first open-source contribution, guided end-to-end.</strong><br>
-  Find beginner-friendly issues, understand complex codebases with AI, and ship your first PR.
+  <strong>From "I want to contribute" to a real draft PR — in one click.</strong><br>
+  Find beginner-friendly issues, understand any codebase with AI, and ship your first PR.
 </p>
 
 <p align="center">
+  <a href="#-the-start-contribution-button">Start Contributing</a> •
   <a href="#-for-beginners">For Beginners</a> •
   <a href="#-for-advanced-users--maintainers">For Maintainers</a> •
-  <a href="#-quick-start">Quick Start</a> •
-  <a href="#-architecture">Architecture</a>
+  <a href="#-quick-start">Quick Start</a>
 </p>
 
 <p align="center">
@@ -32,13 +32,23 @@
 
 ## 📖 What is RepoSage?
 
-The gap between wanting to contribute to open-source and actually merging your first pull request is massive. RepoSage bridges that gap. It is an intelligent platform that acts as your personal open-source mentor, demystifying codebases and guiding you every step of the way.
+The gap between wanting to contribute to open source and actually merging your first PR is enormous. You find an interesting issue. Then what?
+
+- Which file do I even edit?
+- How do I fork this correctly?
+- What should I name my branch?
+- What do I write in the PR description?
+
+Most people quietly close the tab. **RepoSage bridges that gap.**
+
+It's an intelligent open-source mentorship platform that handles everything between finding an issue and writing the actual code — the part that stops 90% of beginners.
 
 ### 🌱 For Beginners
 - **No more searching:** We scan your GitHub profile and feed you `good-first-issues` tailored perfectly to your tech stack.
 - **Understand any codebase:** Click an issue, and our AI instantly generates an architecture diagram and an onboarding guide for that specific repository.
 - **Ask questions without fear:** Use the AI chat to ask *"Which file do I need to edit to fix this?"* before you ever write a line of code.
-- **Interactive Learning:** Learn Git, PR etiquette, and codebase navigation through our built-in interactive modules.
+- **Skip the setup chaos:** Click "Start Contribution" and go from issue page to cloned repo in under 60 seconds.
+- **Interactive Learning:** Learn Git, PR etiquette, and codebase navigation through our built-in educational hub.
 
 ### 🚀 For Advanced Users & Maintainers
 - **Grow your community:** RepoSage lowers the barrier to entry for your repository, bringing you a steady stream of capable, well-guided contributors.
@@ -47,19 +57,38 @@ The gap between wanting to contribute to open-source and actually merging your f
 
 ---
 
+## ⚡ The "Start Contribution" Button
+
+The centerpiece feature. Click it on any issue and RepoSage:
+
+1. **Forks** the repo to your GitHub account (if you haven't already)
+2. **Creates** a descriptive branch named from the issue context
+3. **Opens** a draft PR with a pre-filled description linked to the issue
+4. **Gives** you a single command to clone and checkout — ready to paste into your terminal
+
+```bash
+# What you see after clicking "Start Contribution":
+git clone git@github.com:yourusername/repo.git && cd repo && git checkout fix/issue-123-button-alignment
+```
+
+Setup that used to take 20 confused minutes now takes **under 60 seconds.**
+
+---
+
 ## ✨ Key Features
 
-- 🎯 **Smart Issue Matching:** Algorithmic curation based on your GitHub history and languages.
-- 📐 **Automated Architecture Diagrams:** Real-time Mermaid diagram generation for external repositories.
-- 🤖 **Context-Aware AI Chat:** DeepSeek/Qwen models that read the repo and answer implementation questions.
-- 🛤️ **Kanban Progress Tracking:** Track your issues from *Saved* → *Working* → *PR Submitted* → *Merged*.
-- 🎓 **Educational Hub:** 6 structured guides (50+ modules) on the philosophy and mechanics of open source.
+| | Feature | What it does |
+|---|---|---|
+| 🎯 | **Smart Issue Matching** | Scans your GitHub profile and surfaces good-first-issues matched exactly to your tech stack and languages. No more endless scrolling. |
+| 📐 | **Automated Architecture Diagrams** | Click any issue and get a real-time Mermaid architecture diagram for that repository. Understand the codebase before you touch a file. |
+| 🤖 | **Context-Aware AI Chat** | Ask "which file do I edit to fix this?" and get a real answer. DeepSeek/Qwen models read the repo and respond with actual context. |
+| ⚡ | **Start Contribution Button** | One click. Fork → branch → draft PR → clone command. The entire setup flow in under 60 seconds. |
+| 🛤️ | **Kanban Progress Tracker** | Track every issue across four stages: Saved → Working → PR Submitted → Merged. |
+| 🎓 | **Educational Hub** | 6 structured guides covering 50+ modules on Git, PR etiquette, and the philosophy of open source. |
 
 ---
 
 ## 🧠 How It Works
-
-We designed RepoSage to be incredibly simple to use. Here is the exact flow:
 
 ```mermaid
 flowchart TD
@@ -72,12 +101,17 @@ flowchart TD
     E --> G[📖 Repo Onboarding Guide];
     E --> H[💬 Interactive 'What to change?' Chat];
     
-    D -->|Track Progress| I[📌 Save to Kanban Board];
-    I --> J[🚀 Submit PR];
-    J --> K[🎉 Merged!];
+    D -->|One-Click Setup| I[⚡ Start Contribution];
+    I --> J[Fork → Branch → Draft PR → Clone Command];
+    J --> K[✏️ You write the fix];
+
+    D -->|Track Progress| L[📌 Save to Kanban Board];
+    L --> M[🚀 Submit PR];
+    M --> N[🎉 Merged!];
     
     style A fill:#000,color:#fff,stroke:#333,stroke-width:2px
-    style K fill:#2ea043,color:#fff,stroke:#333,stroke-width:2px
+    style N fill:#2ea043,color:#fff,stroke:#333,stroke-width:2px
+    style I fill:#4f46e5,color:#fff,stroke:#4338ca,stroke-width:2px
 ```
 
 ---
@@ -97,7 +131,23 @@ npm install
 ```bash
 cp .env.local.example .env.local
 ```
-Fill in the required GitHub OAuth keys in `.env.local`. 
+
+Fill in your keys in `.env.local`:
+
+```
+# GitHub OAuth (required)
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
+
+# AI (required for chat + diagrams)
+OPENROUTER_API_KEY=
+
+# Caching (optional but recommended)
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
 
 <details>
 <summary><b>Need help setting up GitHub OAuth? Click here</b></summary>
@@ -114,20 +164,23 @@ Fill in the required GitHub OAuth keys in `.env.local`.
 ```bash
 npm run dev
 ```
-Visit `http://localhost:3000` and start contributing!
+
+Visit `http://localhost:3000` — you're ready to contribute.
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Tech Stack
 
-RepoSage is built on a modern, edge-ready stack designed for speed and scalability.
-
-- **Framework:** [Next.js 16](https://nextjs.org) (App Router) & React 19
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com) & [shadcn/ui](https://ui.shadcn.com)
-- **Language:** [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
-- **AI Integration:** OpenRouter & Groq (DeepSeek V3 / Qwen 2.5)
-- **Authentication:** [NextAuth v5](https://authjs.dev) (GitHub OAuth)
-- **Data & APIs:** Octokit (GitHub REST API) & Upstash Redis
+| Layer | Technology |
+|---|---|
+| **Framework** | Next.js 16 (App Router) + React 19 |
+| **Language** | TypeScript (Strict Mode) |
+| **Styling** | Tailwind CSS v4 + shadcn/ui |
+| **AI** | OpenRouter + Groq (DeepSeek V3 / Qwen 2.5) |
+| **Auth** | NextAuth v5 — GitHub OAuth |
+| **GitHub API** | Octokit (REST) |
+| **Caching** | Upstash Redis |
+| **Deployment** | Vercel (Edge Runtime) |
 
 ---
 
@@ -137,6 +190,7 @@ RepoSage is built on a modern, edge-ready stack designed for speed and scalabili
 - [x] Intelligent issue matching algorithm
 - [x] AI-generated codebase onboarding & chat
 - [x] Interactive open-source learning hub
+- [x] One-click Start Contribution → draft PR
 - [ ] Automated PR status tracking via Webhooks
 - [ ] Multi-repo favorite collections
 - [ ] Weekly customized email digests
@@ -145,16 +199,27 @@ RepoSage is built on a modern, edge-ready stack designed for speed and scalabili
 
 ## 🤝 Contributing
 
-RepoSage is ironically the perfect place to make your first open-source contribution! 
-Check out our [Contributing Guide](CONTRIBUTING.md) to get started. 
+RepoSage is built for contributors — it's only right that contributing to RepoSage itself is painless.
 
-Please ensure you read our [Code of Conduct](CODE_OF_CONDUCT.md) to keep our community approachable and respectable.
+1. Find an open issue that interests you
+2. Click **Start Contribution** (yes, we use our own tool)
+3. Write your fix
+4. Push to your branch — your draft PR is already waiting
+
+First time contributing to open source? RepoSage will walk you through it. That's the whole point.
+
+Check out our [Contributing Guide](CONTRIBUTING.md) and please read our [Code of Conduct](CODE_OF_CONDUCT.md) to keep our community approachable and respectable.
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 <p align="center">
-  Built with ❤️ for the Open Source Community.
+  Built with obsession for the people who want to contribute but don't know where to start.
+</p>
+
+<p align="center">
+  <a href="https://the-repo-sage.vercel.app">Try RepoSage →</a>
 </p>
