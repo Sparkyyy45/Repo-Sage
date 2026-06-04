@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { UserMenu } from "@/components/user-menu";
 import { SignInButton } from "@/components/sign-in-button";
+import { MobileNav } from "./mobile-nav";
 
 export async function Nav() {
   const session = await auth();
@@ -33,11 +34,14 @@ export async function Nav() {
             </nav>
           )}
         </div>
-        {session?.user ? (
-          <UserMenu user={session.user} />
-        ) : (
-          <SignInButton size="sm" />
-        )}
+        <div className="flex items-center gap-2">
+          {!session && <MobileNav />}
+          {session?.user ? (
+            <UserMenu user={session.user} />
+          ) : (
+            <SignInButton size="sm" />
+          )}
+        </div>
       </div>
     </header>
   );

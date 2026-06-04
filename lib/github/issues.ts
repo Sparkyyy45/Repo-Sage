@@ -18,6 +18,18 @@ export interface IssueFeed {
   reposWithIssues: number;
 }
 
+interface SearchResultItem {
+  html_url: string;
+  repository_url: string;
+  id: number;
+  number: number;
+  title: string;
+  labels: Array<{ name?: string }>;
+  created_at: string;
+  updated_at: string;
+  comments: number;
+}
+
 export interface IssueDetail {
   id: number;
   number: number;
@@ -97,7 +109,7 @@ async function searchIssues(
   octokit: Octokit,
   query: string,
   page: number
-): Promise<any[]> {
+): Promise<SearchResultItem[]> {
   try {
     const { data } = await octokit.rest.search.issuesAndPullRequests({
       q: query,
@@ -106,7 +118,7 @@ async function searchIssues(
       per_page: 50,
       page,
     });
-    return data.items;
+    return (data.items ?? []) as SearchResultItem[];
   } catch {
     return [];
   }
@@ -156,7 +168,7 @@ export async function fetchGoodFirstIssues(
         htmlUrl: item.html_url,
         repoFullName,
         repoName,
-        labels: (item.labels || []).map((l: any) => (typeof l === "string" ? l : l.name ?? "")),
+        labels: (item.labels || []).map((l) => l.name ?? ""),
         createdAt: item.created_at,
         updatedAt: item.updated_at,
         comments: item.comments,

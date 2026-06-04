@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
   title: {
     default: "RepoSage — Find your first open source contribution",
     template: "%s · RepoSage",
@@ -29,12 +29,15 @@ export const metadata: Metadata = {
     description:
       "From good first issue to first PR. RepoSage reads the repo for you.",
     type: "website",
+    url: "https://the-repo-sage.vercel.app",
+    siteName: "RepoSage",
   },
   twitter: {
     card: "summary_large_image",
     title: "RepoSage",
     description:
       "From good first issue to first PR. RepoSage reads the repo for you.",
+    creator: "@reposage",
   },
 };
 

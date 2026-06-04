@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { RefreshCw, Filter, BarChart3, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 import type { Issue } from "@/lib/github/issues";
 import { estimateDifficulty } from "@/lib/difficulty";
 import type { Difficulty } from "@/lib/difficulty";
@@ -38,7 +39,7 @@ export function IssueFeedClient({
       setAllIssues(data.issues ?? []);
       setCurrentPage(1);
     } catch {
-      // keep existing
+      toast.error("Failed to refresh issues");
     } finally {
       setRefreshing(false);
     }
