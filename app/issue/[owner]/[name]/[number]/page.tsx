@@ -68,7 +68,6 @@ export default async function IssuePage({
           name={name}
           issueNumber={issueNumber}
           issueTitle={issueData.issue.title}
-          userLogin={session.user.login!}
         />
 
         {ingested && (

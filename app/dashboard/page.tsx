@@ -84,7 +84,6 @@ export default async function DashboardPage() {
           <WelcomeSection
             name={session.user.name || session.user.login || "Developer"}
             languages={profile.languages}
-            totalStars={profile.totalStars}
             reposCount={profile.publicRepos}
             issuesCount={feed.issues.length}
             reposWithIssues={feed.reposWithIssues}

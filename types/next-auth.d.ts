@@ -1,14 +1,13 @@
-import "@auth/core/types";
-import "@auth/core/jwt";
+import "next-auth";
 
-declare module "@auth/core/types" {
+declare module "next-auth" {
   interface Session {
     accessToken?: string;
-    user: {
-      id: string;
-      login?: string;
-      avatarUrl?: string;
-    } & DefaultSession["user"];
+  }
+
+  interface User {
+    login?: string;
+    avatarUrl?: string;
   }
 }
 
