@@ -80,7 +80,7 @@ export function ProblemSection() {
           transition={{ duration: 0.6, delay: 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="mx-auto max-w-3xl"
         >
-          <div className="relative rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+          <div className="relative rounded-xl border border-border bg-card shadow-sm overflow-x-auto">
             <div className="absolute -inset-px rounded-xl bg-gradient-to-b from-indigo-500/5 to-transparent opacity-50 pointer-events-none" />
             <div className="grid grid-cols-3 border-b border-border bg-muted/50">
               <div className="p-4 text-sm font-semibold text-foreground">Capability</div>

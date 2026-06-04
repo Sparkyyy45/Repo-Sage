@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://the-repo-sage.vercel.app/sitemap.xml

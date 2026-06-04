@@ -46,7 +46,7 @@ export function ProfileSidebar({ profile }: { profile: ProfileData }) {
           )}
         </div>
 
-        <div className="mt-5 grid grid-cols-4 gap-2">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
           <div className="flex flex-col items-center rounded-xl bg-muted/50 p-2.5">
             <BookOpen className="size-3.5 text-muted-foreground" />
             <div className="mt-1 text-sm font-bold text-foreground tabular-nums">
