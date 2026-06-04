@@ -2,6 +2,13 @@ import { FileCode } from "lucide-react";
 import type { RepoFile } from "@/lib/github/ingest";
 
 export function FileViewer({ files }: { files: RepoFile[] }) {
+  if (files.length === 0) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-6 text-center">
+        <p className="text-sm text-muted-foreground">No files found for this repository.</p>
+      </div>
+    );
+  }
   return (
     <div className="space-y-4">
       {files.map((file) => (

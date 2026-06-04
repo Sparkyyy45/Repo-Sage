@@ -11,6 +11,8 @@ import { RepoSearch } from "@/components/dashboard/repo-search";
 import { LearnSidebarSection } from "@/components/learn/sidebar-section";
 import { SavedIssuesSection } from "@/components/dashboard/saved-issues-section";
 import { FirstVisitOnboarding } from "@/components/dashboard/first-visit-onboarding";
+import { getRateLimitInfo } from "@/lib/rate-limit";
+import { RateLimitBanner } from "@/components/rate-limit-banner";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -37,7 +39,10 @@ export default async function DashboardPage() {
   const octokit = createOctokit(session.accessToken);
   const login = session.user.login!;
 
-  const profile = await fetchProfileData(octokit, login).catch(() => null);
+  const [profile, rateLimitInfo] = await Promise.all([
+    fetchProfileData(octokit, login).catch(() => null),
+    getRateLimitInfo(octokit),
+  ]);
 
   if (!profile) {
     return (
@@ -62,6 +67,12 @@ export default async function DashboardPage() {
   return (
     <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-6">
       <DashboardNav user={session.user} />
+
+      {rateLimitInfo?.isLimited && (
+        <div className="mt-6">
+          <RateLimitBanner info={rateLimitInfo} />
+        </div>
+      )}
 
       <div className="mt-8 mb-6 space-y-4">
         <RepoSearch />

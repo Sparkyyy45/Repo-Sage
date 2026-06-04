@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
@@ -11,6 +11,12 @@ const LINKS = [
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 768) setOpen(false); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
     <div className="md:hidden">

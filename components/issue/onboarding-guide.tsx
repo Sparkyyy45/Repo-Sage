@@ -60,7 +60,7 @@ export function OnboardingGuide({
     try {
       const result = await generateText(prompt, SYSTEM_ONBOARDING);
       setGuide(result);
-      try { localStorage.setItem(storageKey, result); } catch { /* ignore */ }
+      try { localStorage.setItem(storageKey, result); } catch { console.warn("Failed to save onboarding progress to localStorage"); }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Generation failed";
       setError(msg);

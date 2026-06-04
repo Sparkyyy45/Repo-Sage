@@ -30,7 +30,7 @@ export function SetupGuide({ repo }: { repo: IngestedRepo }) {
     try {
       const cached = localStorage.getItem(storageKey);
       if (cached) return JSON.parse(cached) as SetupResult;
-    } catch { /* ignore */ }
+    } catch { console.warn("Failed to access localStorage"); }
     return null;
   });
 
@@ -84,7 +84,7 @@ export function SetupGuide({ repo }: { repo: IngestedRepo }) {
     setResult(setupResult);
     setLoading(false);
 
-    try { localStorage.setItem(storageKey, JSON.stringify(setupResult)); } catch { /* ignore */ }
+    try { localStorage.setItem(storageKey, JSON.stringify(setupResult)); } catch { console.warn("Failed to access localStorage"); }
   }, [repo, result, storageKey]);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export function SetupGuide({ repo }: { repo: IngestedRepo }) {
       .then((tips) => {
         setAiTips(tips);
         setAiExpanded(true);
-        try { localStorage.setItem(storageKey + "-ai", tips); } catch { /* ignore */ }
+        try { localStorage.setItem(storageKey + "-ai", tips); } catch { console.warn("Failed to access localStorage"); }
       })
       .catch((err: unknown) => {
         setAiError(err instanceof Error ? err.message : "Failed to generate tips");
@@ -116,7 +116,7 @@ export function SetupGuide({ repo }: { repo: IngestedRepo }) {
         setCopiedAll(true);
         setTimeout(() => setCopiedAll(false), 2000);
       }
-    } catch { /* ignore */ }
+    } catch { console.warn("Failed to access localStorage"); }
   }, []);
 
   const copyAll = useCallback(() => {

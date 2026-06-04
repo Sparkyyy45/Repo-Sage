@@ -9,6 +9,20 @@ export function ActivityChart({
   openPRs: number;
   lastPushAgo: string;
 }) {
+  if (weeklyCommits.length === 0) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex items-center gap-2 mb-4">
+          <GitCommitHorizontal className="size-4 text-muted-foreground" />
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Activity</h3>
+        </div>
+        <div className="rounded-xl bg-secondary/50 p-4 text-center">
+          <p className="text-sm text-secondary-foreground">No commit data available for this repository.</p>
+        </div>
+      </div>
+    );
+  }
+
   const maxCommits = Math.max(...weeklyCommits, 1);
   const dayLabels = getWeekLabels(weeklyCommits.length);
 

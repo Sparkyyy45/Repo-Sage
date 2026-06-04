@@ -29,7 +29,7 @@ export function AISettings() {
     try {
       const stored = localStorage.getItem("reposage-llm-config");
       if (stored) return (JSON.parse(stored) as LLMConfig).provider;
-    } catch { /* ignore */ }
+    } catch { console.warn("Failed to update AI settings"); }
     return "openrouter";
   });
 
@@ -37,7 +37,7 @@ export function AISettings() {
     try {
       const stored = localStorage.getItem("reposage-llm-config");
       if (stored) return (JSON.parse(stored) as LLMConfig).apiKey;
-    } catch { /* ignore */ }
+    } catch { console.warn("Failed to update AI settings"); }
     return "";
   });
 
@@ -45,7 +45,7 @@ export function AISettings() {
     try {
       const stored = localStorage.getItem("reposage-llm-config");
       if (stored) return (JSON.parse(stored) as LLMConfig).model;
-    } catch { /* ignore */ }
+    } catch { console.warn("Failed to update AI settings"); }
     return "";
   });
   const [saved, setSaved] = useState(false);

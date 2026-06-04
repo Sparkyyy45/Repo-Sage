@@ -6,6 +6,15 @@ export interface LLMConfig {
   model: string;
 }
 
+interface ChatCompletionChoice {
+  message?: { content?: string };
+  delta?: { content?: string };
+}
+
+interface ChatCompletionResponse {
+  choices?: ChatCompletionChoice[];
+}
+
 const STORAGE_KEY = "reposage-llm-config";
 
 export const DEFAULT_MODELS: Record<AIProvider, string> = {
@@ -74,7 +83,7 @@ export async function generateText(
     throw new Error(`LLM request failed (${res.status}): ${text}`);
   }
 
-  const data = await res.json();
+  const data = (await res.json()) as ChatCompletionResponse;
   return (data.choices?.[0]?.message?.content ?? "").trim();
 }
 
@@ -133,7 +142,7 @@ export async function streamText(
         if (data === "[DONE]") break;
 
         try {
-          const parsed = JSON.parse(data);
+          const parsed = JSON.parse(data) as ChatCompletionResponse;
           const token = parsed.choices?.[0]?.delta?.content ?? "";
           if (token) {
             full += token;
@@ -145,7 +154,7 @@ export async function streamText(
       }
     }
   } finally {
-    try { reader.releaseLock(); } catch { /* ignore */ }
+    try { reader.releaseLock(); } catch { console.warn("Failed to release reader lock"); }
   }
 
   return full;
@@ -173,7 +182,7 @@ export async function testConnection(config: LLMConfig): Promise<boolean> {
     });
 
     if (!res.ok) return false;
-    const data = await res.json();
+    const data = (await res.json()) as ChatCompletionResponse;
     return !!data.choices?.[0]?.message?.content;
   } catch {
     return false;
