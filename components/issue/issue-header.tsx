@@ -17,7 +17,7 @@ export function IssueHeader({
   const maxBodyLength = 1500;
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm overflow-x-auto">
       <div className="mb-4">
         <Link
           href={`/repo/${owner}/${name}`}
@@ -86,8 +86,8 @@ export function IssueHeader({
       </div>
 
       {issue.body && (
-        <div className="mt-5 border-t border-border pt-4">
-          <div className="prose prose-sm max-w-none text-foreground [&_p]:text-sm [&_p]:leading-relaxed [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_pre]:rounded-xl [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:text-sm [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-sm [&_img]:rounded-lg [&_img]:max-w-full]"
+        <div className="mt-5 border-t border-border pt-4 overflow-x-auto">
+          <div className="prose prose-sm max-w-none text-foreground break-words [&_p]:text-sm [&_p]:leading-relaxed [&_p]:break-words [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_pre]:rounded-xl [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:text-sm [&_li]:break-words [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-sm [&_img]:rounded-lg [&_img]:max-w-full]"
             dangerouslySetInnerHTML={{
               __html: renderMarkdown(issue.body.slice(0, maxBodyLength)),
             }}
@@ -98,7 +98,7 @@ export function IssueHeader({
                 Show more ({issue.body.length - maxBodyLength} characters)
               </summary>
               <div
-                className="prose prose-sm max-w-none text-foreground mt-2 [&_p]:text-sm [&_p]:leading-relaxed [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_pre]:rounded-xl [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0]"
+                className="prose prose-sm max-w-none text-foreground mt-2 break-words [&_p]:text-sm [&_p]:leading-relaxed [&_p]:break-words [&_code]:rounded [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-xs [&_pre]:rounded-xl [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0]"
                 dangerouslySetInnerHTML={{
                   __html: renderMarkdown(issue.body.slice(maxBodyLength)),
                 }}
