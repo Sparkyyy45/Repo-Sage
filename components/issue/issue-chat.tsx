@@ -84,7 +84,7 @@ export function IssueChat({
     analysisStartedRef.current = true;
     if (hasKey) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      generateAnalysis();
+      generateAnalysis().catch(() => {});
     }
   }, [hasKey, generateAnalysis]);
 

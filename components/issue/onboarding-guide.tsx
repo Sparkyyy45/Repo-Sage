@@ -74,7 +74,7 @@ export function OnboardingGuide({
     generatedRef.current = true;
     if (!hasKey || guide) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    generate();
+    generate().catch(() => {});
   }, [hasKey, guide, generate]);
 
   if (!hasKey) {
