@@ -3,14 +3,12 @@ import { Code2, GitBranch, Layers, BarChart3 } from "lucide-react";
 export function WelcomeSection({
   name = "Developer",
   languages,
-  totalStars,
   reposCount,
   issuesCount,
   reposWithIssues,
 }: {
   name?: string | null;
   languages: { name: string; percentage: number; color: string | null }[];
-  totalStars: number;
   reposCount: number;
   issuesCount: number;
   reposWithIssues: number;

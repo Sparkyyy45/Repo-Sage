@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { GuideContent } from "@/components/learn/guide-content";
 import { SectionNav } from "@/components/learn/section-nav";
-import { guides, getGuide, getNextGuide, getPrevGuide } from "@/data/guides";
+import { getGuide, getNextGuide, getPrevGuide } from "@/data/guides";
 
 export default async function GuidePage({
   params,

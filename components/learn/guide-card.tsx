@@ -1,20 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import type { Guide } from "@/data/guides";
 import { getSectionProgress } from "@/components/learn/guide-content";
 
 export function GuideCard({ guide }: { guide: Guide }) {
-  const [done, setDone] = useState(0);
-
-  useEffect(() => {
-    const p = getSectionProgress();
-    setDone(guide.sections.filter((s) => p[s.id]).length);
-  }, [guide.sections]);
-
   const total = guide.sections.length;
+  const done = useMemo(() => {
+    const p = getSectionProgress();
+    return guide.sections.filter((s) => p[s.id]).length;
+  }, [guide.sections]);
   const allDone = done === total;
   const pct = total > 0 ? (done / total) * 100 : 0;
 

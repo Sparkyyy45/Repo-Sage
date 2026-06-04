@@ -101,7 +101,7 @@ export function Features() {
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
       >
-        {features.map((f, i) => (
+        {features.map((f) => (
           <motion.div
             key={f.title}
             variants={cardVariants}

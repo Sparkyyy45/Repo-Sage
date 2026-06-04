@@ -5,19 +5,11 @@ import { Check } from "lucide-react";
 import type { GuideSection } from "@/data/guides";
 import { getSectionProgress } from "@/components/learn/guide-content";
 
-const dotColors: Record<string, string> = {
-  info: "bg-blue-500",
-  tip: "bg-amber-500",
-  exercise: "bg-green-500",
-  code: "bg-gray-400",
-};
-
 export function SectionNav({ sections }: { sections: GuideSection[] }) {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
-  const [progress, setProgress] = useState<Record<string, boolean>>({});
+  const [progress, setProgress] = useState<Record<string, boolean>>(getSectionProgress);
 
   useEffect(() => {
-    setProgress(getSectionProgress());
     const h = () => setProgress(getSectionProgress());
     window.addEventListener("storage", h);
     return () => window.removeEventListener("storage", h);

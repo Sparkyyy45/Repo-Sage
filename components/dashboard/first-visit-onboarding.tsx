@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, BookOpen, Cpu, Sparkles, ArrowRight, ChevronDown, ChevronRight, Check, X } from "lucide-react";
+import { Search, BookOpen, Cpu, Sparkles, ArrowRight, ChevronDown, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 
 const GUIDE_KEY = "reposage-guide-dismissed";
@@ -25,13 +25,18 @@ const steps = [
 ];
 
 export function FirstVisitOnboarding() {
-  const [dismissed, setDismissed] = useState(true);
+  const [dismissed, setDismissed] = useState(() => !!localStorage.getItem(GUIDE_KEY));
   const [expanded, setExpanded] = useState(false);
-  const [hasSavedIssue, setHasSavedIssue] = useState(false);
+  const [hasSavedIssue, setHasSavedIssue] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("reposage-saved-issues") || "[]");
+      return saved.length > 0;
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
-    const stored = localStorage.getItem(GUIDE_KEY);
-    if (!stored) setDismissed(false);
     const checkSaved = () => {
       try {
         const saved = JSON.parse(localStorage.getItem("reposage-saved-issues") || "[]");
@@ -40,7 +45,6 @@ export function FirstVisitOnboarding() {
         setHasSavedIssue(false);
       }
     };
-    checkSaved();
     window.addEventListener("storage", checkSaved);
     return () => window.removeEventListener("storage", checkSaved);
   }, []);

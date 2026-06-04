@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, Code2, CheckCircle, GitBranch, MessageCircle, LayoutDashboard, Star, ChevronRight } from "lucide-react";
+import { Sparkles, CheckCircle, GitBranch, MessageCircle, Star, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { SignInButton } from "@/components/sign-in-button";
 

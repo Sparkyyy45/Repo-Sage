@@ -8,7 +8,6 @@ interface StartContributionProps {
   name: string;
   issueNumber: number;
   issueTitle: string;
-  userLogin: string;
 }
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -18,7 +17,6 @@ export function StartContribution({
   name,
   issueNumber,
   issueTitle,
-  userLogin,
 }: StartContributionProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");

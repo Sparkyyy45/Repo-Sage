@@ -1,4 +1,4 @@
-import { ExternalLink, MessageCircle, Search, GitBranch, Clock, Sparkles } from "lucide-react";
+import { ExternalLink, MessageCircle, Search, GitBranch, Clock } from "lucide-react";
 import Link from "next/link";
 import type { Issue } from "@/lib/github/issues";
 import { estimateDifficulty, estimateEffort } from "@/lib/difficulty";

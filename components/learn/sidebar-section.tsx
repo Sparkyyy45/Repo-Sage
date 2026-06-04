@@ -1,29 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BookOpen } from "lucide-react";
 import Link from "next/link";
 import { getSectionProgress } from "@/components/learn/guide-content";
 import { guides } from "@/data/guides";
 
 export function LearnSidebarSection() {
-  const [completedSections, setCompletedSections] = useState(0);
-  const [completedGuides, setCompletedGuides] = useState(0);
-
-  useEffect(() => {
+  const [completedSections] = useState(() => {
     const progress = getSectionProgress();
-    const totalSections = guides.reduce((sum, g) => sum + g.sections.length, 0);
-    const doneSections = guides.reduce(
+    return guides.reduce(
       (sum, g) => sum + g.sections.filter((s) => progress[s.id]).length,
       0
     );
-    const doneGuides = guides.filter((g) =>
+  });
+  const [completedGuides] = useState(() => {
+    const progress = getSectionProgress();
+    return guides.filter((g) =>
       g.sections.every((s) => progress[s.id])
     ).length;
-
-    setCompletedSections(doneSections);
-    setCompletedGuides(doneGuides);
-  }, []);
+  });
 
   const totalSections = guides.reduce((sum, g) => sum + g.sections.length, 0);
   const totalGuides = guides.length;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useInView, useSpring } from "framer-motion";
+import { useInView, useSpring } from "framer-motion";
 
 export function AnimatedCounter({ from = 0, to }: { from?: number; to: number }) {
   const ref = useRef<HTMLSpanElement>(null);

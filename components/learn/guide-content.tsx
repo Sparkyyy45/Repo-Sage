@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Circle, CheckCircle, FileText, Lightbulb, Target, Terminal, PenLine, ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import type { Guide, SectionType } from "@/data/guides";
 
 const typeMeta: Record<SectionType, { icon: React.ElementType; label: string; classes: string }> = {
@@ -44,7 +45,7 @@ export function GuideContent({
   nextGuide?: Guide;
   prevGuide?: Guide;
 }) {
-  const [progress, setProgress] = useState<Record<string, boolean>>({});
+  const [progress, setProgress] = useState<Record<string, boolean>>(readProgress);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const refresh = useCallback(() => setProgress(readProgress()), []);
@@ -64,7 +65,6 @@ export function GuideContent({
   );
 
   useEffect(() => {
-    refresh();
     window.addEventListener("storage", refresh);
     return () => window.removeEventListener("storage", refresh);
   }, [refresh]);
@@ -181,29 +181,29 @@ export function GuideContent({
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
             {nextGuide && (
-              <a
+              <Link
                 href={`/learn/${nextGuide.slug}`}
                 className="inline-flex items-center gap-1 rounded-lg bg-foreground px-3.5 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity"
               >
                 {nextGuide.title}
                 <span aria-hidden="true" className="text-sm leading-none">&rarr;</span>
-              </a>
+              </Link>
             )}
             {!nextGuide && (
-              <a
+              <Link
                 href="/dashboard"
                 className="inline-flex items-center gap-1 rounded-lg bg-foreground px-3.5 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity"
               >
                 Find your first issue
                 <span aria-hidden="true" className="text-sm leading-none">&rarr;</span>
-              </a>
+              </Link>
             )}
-            <a
+            <Link
               href="/learn"
               className="inline-flex items-center gap-1 rounded-lg border border-border/60 px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors"
             >
               All guides
-            </a>
+            </Link>
           </div>
         </section>
       )}
@@ -212,24 +212,24 @@ export function GuideContent({
         <nav className="flex items-center justify-between gap-4 pt-4 border-t border-border/20">
           <div>
             {prevGuide && (
-              <a
+              <Link
                 href={`/learn/${prevGuide.slug}`}
                 className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 <span aria-hidden="true" className="text-sm leading-none">&larr;</span>
                 {prevGuide.title}
-              </a>
+              </Link>
             )}
           </div>
           <div>
             {nextGuide && (
-              <a
+              <Link
                 href={`/learn/${nextGuide.slug}`}
                 className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 {nextGuide.title}
                 <span aria-hidden="true" className="text-sm leading-none">&rarr;</span>
-              </a>
+              </Link>
             )}
           </div>
         </nav>
@@ -250,20 +250,14 @@ function SectionBlock({
   onMark: (done: boolean) => void;
 }) {
   const [notesOpen, setNotesOpen] = useState(false);
-  const [notes, setNotes] = useState("");
-  const meta = typeMeta[section.type];
-  const Icon = meta.icon;
-
-  useEffect(() => {
-    if (section.type === "exercise") {
-      try {
-        const v = localStorage.getItem(`${NOTES_PREFIX}${section.id}`);
-        if (v) setNotes(v);
-      } catch {
-        /* noop */
-      }
+  const [notes, setNotes] = useState(() => {
+    try {
+      return localStorage.getItem(`${NOTES_PREFIX}${section.id}`) ?? "";
+    } catch {
+      return "";
     }
-  }, [section.id, section.type]);
+  });
+  const meta = typeMeta[section.type];
 
   return (
     <section id={`section-${section.id}`} className="scroll-mt-28 space-y-5">
