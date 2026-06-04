@@ -23,13 +23,6 @@
 
 ---
 
-<!-- 🚨 HEY! Replace this image link with a high-quality GIF or Screenshot of your dashboard! Famous repos ALWAYS have a demo image here. -->
-<p align="center">
-  <img src="https://via.placeholder.com/1000x500.png?text=Drop+a+beautiful+screenshot+or+GIF+of+RepoSage+here" alt="RepoSage Demo" width="100%">
-</p>
-
----
-
 ## 📖 What is RepoSage?
 
 The gap between wanting to contribute to open source and actually merging your first PR is enormous. You find an interesting issue. Then what?
