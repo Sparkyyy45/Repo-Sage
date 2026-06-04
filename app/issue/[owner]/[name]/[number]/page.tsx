@@ -9,6 +9,7 @@ import { ArchDiagram } from "@/components/issue/arch-diagram";
 import { SetupGuide } from "@/components/issue/setup-guide";
 import { OnboardingGuide } from "@/components/issue/onboarding-guide";
 import { IssueChat } from "@/components/issue/issue-chat";
+import { StartContribution } from "@/components/issue/start-contribution";
 
 export default async function IssuePage({
   params,
@@ -60,6 +61,14 @@ export default async function IssuePage({
           repoFullName={repoFullName}
           owner={owner}
           name={name}
+        />
+
+        <StartContribution
+          owner={owner}
+          name={name}
+          issueNumber={issueNumber}
+          issueTitle={issueData.issue.title}
+          userLogin={session.user.login!}
         />
 
         {ingested && (
