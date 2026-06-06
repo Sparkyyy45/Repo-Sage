@@ -25,6 +25,9 @@
 
 ## 📖 What is RepoSage?
 
+<img width="1203" height="906" alt="Screenshot 2026-06-06 103046" src="https://github.com/user-attachments/assets/cea80712-e064-4e2b-a3fe-0ec2ddb55fb0" />
+
+
 The gap between wanting to contribute to open source and actually merging your first PR is enormous. You find an interesting issue. Then what?
 
 - Which file do I even edit?
