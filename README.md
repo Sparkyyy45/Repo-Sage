@@ -115,6 +115,52 @@ flowchart TD
 
 ---
 
+## 📁 Project Structure
+
+```
+RepoSage/
+│
+├── app/                    # Next.js App Router pages & API routes
+│   ├── api/                #     API endpoints (feed, start-contribution)
+│   ├── dashboard/          #     Dashboard page
+│   ├── issue/              #     Issue detail page
+│   ├── learn/              #     Learning hub + guides
+│   ├── repo/               #     Repository insights page
+│   ├── settings/           #     AI provider settings
+│   ├── layout.tsx          #     Root layout
+│   └── globals.css         #     Global styles
+│
+├── components/             # React components
+│   ├── dashboard/          #     Issue feed, filters, sidebar, onboarding
+│   ├── issue/              #     Arch diagram, AI chat, setup guide
+│   ├── landing/            #     Landing page sections
+│   ├── learn/              #     Guide content, progress, navigation
+│   ├── repo/               #     File viewer, skill match, activity chart
+│   └── ui/                 #     shadcn primitives (button, sonner)
+│
+├── lib/                    # Business logic & utilities
+│   ├── github/             #     Octokit wrappers (issues, profile, ingest)
+│   ├── llm/                #     AI providers (OpenRouter/Groq), prompts
+│   ├── auth.ts             #     NextAuth v5 configuration
+│   ├── difficulty.ts       #     Issue difficulty scoring
+│   ├── env.ts              #     Zod env validation
+│   ├── markdown.ts         #     Markdown → HTML renderer
+│   ├── rate-limit.ts       #     GitHub API rate limit check
+│   └── utils.ts            #     cn() helper (clsx + tailwind-merge)
+│
+├── data/                   # Static content (learning guides)
+├── types/                  # TypeScript module augmentations
+├── tests/                  # Test files (vitest)
+├── public/                 # Static assets (robots.txt, sitemap)
+│
+├── package.json
+├── tsconfig.json
+├── vitest.config.ts
+└── .env.local.example
+```
+
+---
+
 ## ⚡ Quick Start
 
 Get your local environment up and running in under 2 minutes.
