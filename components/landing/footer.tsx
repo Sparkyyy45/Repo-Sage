@@ -39,7 +39,7 @@ export function Footer() {
                 Contributing
               </a>
               <a
-                href="https://github.com/anomalyco/reposage/blob/main/CODE_OF_CONDUCT.md"
+                href="https://github.com/Sparkyyy45/Repo-Sage/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-muted-foreground hover:text-indigo-600 transition-colors"
@@ -50,7 +50,7 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">Connect</span>
               <a
-                href="https://github.com/anomalyco/reposage"
+                href="https://github.com/Sparkyyy45/Repo-Sage/blob/main/CODE_OF_CONDUCT.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-indigo-600 transition-colors"
