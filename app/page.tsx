@@ -7,6 +7,7 @@ import { Features } from "@/components/landing/features";
 import { SocialProof } from "@/components/landing/social-proof";
 import { CtaSection } from "@/components/landing/cta-section";
 import { Footer } from "@/components/landing/footer";
+import { BackToTopButton } from "@/components/landing/BackToTopButton";
 
 export default async function Home() {
   const session = await auth();
@@ -23,6 +24,7 @@ export default async function Home() {
         <SocialProof />
         <CtaSection signedIn={signedIn} />
       </main>
+      <BackToTopButton/>
       <Footer />
     </div>
   );
