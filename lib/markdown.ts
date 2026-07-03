@@ -25,7 +25,12 @@ export function renderMarkdown(md: string): string {
   html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, text, url) => {
-    const safeUrl = url.startsWith("http") ? url : `https://github.com${url}`;
+    const rawUrl = url.startsWith("http") ? url : `https://github.com${url}`;
+    // The URL comes from untrusted markdown (e.g. GitHub issue bodies) and is
+    // inserted into an HTML attribute below, so quotes must be escaped to
+    // prevent breaking out of the href attribute and injecting new
+    // attributes/event handlers (stored XSS).
+    const safeUrl = rawUrl.replace(/"/g, "&quot;");
     return `<a href="${safeUrl}" class="text-primary underline underline-offset-2 hover:text-primary/80" target="_blank" rel="noopener noreferrer">${text}</a>`;
   });
 
