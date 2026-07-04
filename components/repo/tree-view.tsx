@@ -23,10 +23,10 @@ export function RepoTreeView({ items }: { items: RepoTree[] }) {
           {dirs.slice(0, 50).map((item) => (
             <div
               key={item.path}
-              className="flex items-center gap-2 rounded-md px-3 py-1 text-xs hover:bg-muted/40"
+              className="flex items-center gap-2 rounded-md px-3 py-1 text-xs hover:bg-muted/40 min-w-0"
             >
               <Folder className="size-3.5 shrink-0 text-muted-foreground" />
-              <span className="truncate">{item.path}</span>
+              <span className="truncate min-w-0">{item.path}</span>
             </div>
           ))}
           {dirs.length > 50 && (
@@ -44,10 +44,10 @@ export function RepoTreeView({ items }: { items: RepoTree[] }) {
         {files.slice(0, 100).map((item) => (
           <div
             key={item.path}
-            className="flex items-center gap-2 rounded-md px-3 py-1 text-xs hover:bg-muted/40"
+            className="flex items-center gap-2 rounded-md px-3 py-1 text-xs hover:bg-muted/40 min-w-0"
           >
             <File className="size-3.5 shrink-0 text-muted-foreground" />
-            <span className="truncate">{item.path}</span>
+            <span className="truncate min-w-0">{item.path}</span>
             {item.size != null && (
               <span className="shrink-0 text-muted-foreground">
                 {formatSize(item.size)}

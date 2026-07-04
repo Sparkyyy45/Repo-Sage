@@ -61,7 +61,7 @@ export default async function RepoPage({
       </div>
 
       <div className="mb-8 rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-xl font-semibold tracking-tight text-foreground">
               <span className="font-normal text-muted-foreground">
@@ -94,7 +94,7 @@ export default async function RepoPage({
           <Link
             href={`https://github.com/${ingested.fullName}`}
             target="_blank"
-            className="flex shrink-0 items-center gap-2 rounded-xl border border-border bg-muted/50 px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-border bg-muted/50 px-4 py-2.5 sm:py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground w-full sm:w-auto"
           >
             <ExternalLink className="size-4" />
             View on GitHub

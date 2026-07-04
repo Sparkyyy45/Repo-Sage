@@ -242,7 +242,7 @@ export function SetupGuide({ repo }: { repo: IngestedRepo }) {
               </div>
               <button
                 onClick={() => copyToClipboard(step.commands.join("\n"), step.step)}
-                className="mt-1 flex shrink-0 size-6 items-center justify-center rounded-md text-gray-500 opacity-0 transition-all hover:bg-white/10 hover:text-gray-300 group-hover:opacity-100"
+                className="mt-1 flex shrink-0 size-6 items-center justify-center rounded-md text-gray-500 opacity-100 md:opacity-0 transition-all hover:bg-white/10 hover:text-gray-300 md:group-hover:opacity-100"
                 title="Copy step commands"
               >
                 {copiedStep === step.step ? (
