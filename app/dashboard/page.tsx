@@ -26,7 +26,7 @@ export default async function DashboardPage() {
       <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-6">
         <DashboardNav user={session.user} />
         <div className="flex flex-1 items-center justify-center">
-          <div className="rounded-2xl border border-border bg-white p-10 text-center">
+          <div className="rounded-2xl border border-border bg-card p-10 text-center">
             <p className="text-muted-foreground">
               Unable to authenticate with GitHub. Please sign in again.
             </p>
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
       <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-8">
         <DashboardNav user={session.user} />
         <div className="flex flex-1 items-center justify-center">
-          <div className="rounded-2xl border border-border bg-white p-10 text-center">
+          <div className="rounded-2xl border border-border bg-card p-10 text-center">
             <p className="text-muted-foreground">
               Could not load profile data. Please try again.
             </p>

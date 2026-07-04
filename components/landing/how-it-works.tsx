@@ -54,9 +54,9 @@ const stepVariants: Variants = {
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative overflow-hidden bg-[#FAFAFA] py-24 md:py-32">
+    <section id="how-it-works" className="relative overflow-hidden bg-[#FAFAFA] dark:bg-[#090d16] py-24 md:py-32">
       {/* Extremely subtle, professional dot pattern background */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:20px_20px] opacity-50" />
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:20px_20px] opacity-50" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6">
         <motion.div
@@ -66,7 +66,7 @@ export function HowItWorks() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto mb-20 max-w-3xl text-center"
         >
-          <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700 mb-6 shadow-sm tracking-tight">
+          <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 px-3 py-1 text-sm font-semibold text-indigo-700 dark:text-indigo-400 mb-6 shadow-sm tracking-tight">
             Story of a Contributor
           </div>
           <h2 className="text-4xl font-bold text-foreground md:text-5xl tracking-[-0.02em]">
@@ -92,7 +92,7 @@ export function HowItWorks() {
                 className="group relative flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-10 overflow-hidden rounded-3xl border border-border bg-card p-8 md:p-10 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
               >
                 {/* Giant aesthetic watermark number */}
-                <span className="absolute -bottom-6 -right-2 select-none text-[120px] font-bold leading-none tracking-tighter text-muted/40 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-100/60 font-mono pointer-events-none z-0">
+                <span className="absolute -bottom-6 -right-2 select-none text-[120px] font-bold leading-none tracking-tighter text-muted/40 dark:text-muted/10 transition-all duration-500 group-hover:-translate-y-4 group-hover:text-indigo-100/60 dark:group-hover:text-indigo-950/20 font-mono pointer-events-none z-0">
                   {s.number}
                 </span>
 

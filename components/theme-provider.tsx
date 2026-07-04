@@ -31,9 +31,10 @@ export function ThemeProvider({
   const [theme, setThemeState] = React.useState<Theme>(defaultTheme);
   const [mounted, setMounted] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedTheme = localStorage.getItem(storageKey) as Theme;
     if (storedTheme) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setThemeState(storedTheme);
     }
     setMounted(true);

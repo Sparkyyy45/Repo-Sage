@@ -3,7 +3,7 @@ import { Heart, ExternalLink } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 bg-white relative">
+    <footer className="border-t border-border/40 bg-background relative">
       <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
       <div className="mx-auto w-full max-w-7xl px-6 py-12">
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row">

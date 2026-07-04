@@ -119,13 +119,13 @@ export function StartContribution({
             <p className="text-xs text-muted-foreground mb-2">
               Run this command to start coding:
             </p>
-            <div className="group relative rounded-xl bg-[#0d1117] p-3.5 font-mono text-[13px] leading-relaxed shadow-sm">
+            <div className="group relative rounded-xl bg-[#0d1117] p-3.5 pr-10 font-mono text-[13px] leading-relaxed shadow-sm">
               <code className="text-gray-100 break-all whitespace-pre-wrap">
                 {result.cloneCommand}
               </code>
               <button
                 onClick={handleCopy}
-                className="absolute top-2.5 right-2.5 flex size-7 items-center justify-center rounded-md text-gray-500 opacity-0 transition-all hover:bg-white/10 hover:text-gray-300 group-hover:opacity-100"
+                className="absolute top-2.5 right-2.5 flex size-7 items-center justify-center rounded-md text-gray-500 opacity-100 md:opacity-0 transition-all hover:bg-white/10 hover:text-gray-300 md:group-hover:opacity-100"
                 title="Copy command"
               >
                 {copied ? (

@@ -18,7 +18,7 @@ export function FileViewer({ files }: { files: RepoFile[] }) {
         >
           <div className="flex items-center gap-2 border-b border-border px-5 py-3">
             <FileCode className="size-4 text-muted-foreground" />
-            <span className="truncate font-mono text-xs text-muted-foreground">
+            <span className="truncate font-mono text-xs text-muted-foreground min-w-0">
               {file.path}
             </span>
             <span className="ml-auto text-[11px] text-muted-foreground">
