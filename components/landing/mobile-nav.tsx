@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { SignInButton } from "@/components/sign-in-button";
 
 const LINKS = [
   { href: "#problem", label: "Why" },
@@ -34,7 +35,7 @@ export function MobileNav() {
             className="fixed inset-0 top-16 z-40 bg-black/20 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <nav className="fixed left-0 right-0 top-16 z-50 border-b border-border/30 bg-white/95 backdrop-blur-xl shadow-lg">
+          <nav className="fixed left-0 right-0 top-16 z-50 border-b border-border/30 bg-card/95 backdrop-blur-xl shadow-lg">
             <div className="flex flex-col gap-1 px-6 py-4">
               {LINKS.map((link) => (
                 <a
@@ -46,6 +47,9 @@ export function MobileNav() {
                   {link.label}
                 </a>
               ))}
+              <div className="mt-2 pt-2 border-t border-border/40 flex justify-center">
+                <SignInButton size="sm" label="Sign in with GitHub" />
+              </div>
             </div>
           </nav>
         </>

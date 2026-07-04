@@ -14,7 +14,7 @@ export default async function Home() {
   const signedIn = !!session?.user;
 
   return (
-    <div className="flex min-h-full flex-col bg-white">
+    <div className="flex min-h-full flex-col bg-background">
       <Nav />
       <main className="flex-1">
         <Hero signedIn={signedIn} />

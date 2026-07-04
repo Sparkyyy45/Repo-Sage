@@ -29,7 +29,7 @@ export function CtaSection({ signedIn = false }: { signedIn?: boolean }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="relative mx-auto flex max-w-3xl flex-col items-center rounded-2xl border border-border/50 bg-white/70 backdrop-blur-sm p-10 text-center shadow-2xl shadow-indigo-500/10 md:p-16"
+          className="relative mx-auto flex max-w-3xl flex-col items-center rounded-2xl border border-border/50 bg-card/70 backdrop-blur-sm p-10 text-center shadow-2xl shadow-indigo-500/10 md:p-16"
         >
           <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
           <div className="absolute -bottom-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
