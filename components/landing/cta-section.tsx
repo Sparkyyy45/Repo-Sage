@@ -35,7 +35,7 @@ export function CtaSection({ signedIn = false }: { signedIn?: boolean }) {
           <div className="absolute -bottom-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
           <div className="absolute left-1/2 top-1/2 -z-10 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/5 blur-[80px]" />
 
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-indigo-50 px-4 py-1.5 text-xs font-semibold text-indigo-700 shadow-sm">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200/60 bg-indigo-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-700 dark:text-indigo-400 shadow-sm">
             <Sparkles className="size-3.5 text-indigo-500" />
             It takes 30 seconds
           </span>

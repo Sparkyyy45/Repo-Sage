@@ -61,7 +61,7 @@ export function ProblemSection() {
           transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 mb-6 shadow-sm">
+          <div className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 dark:border-indigo-500/30 dark:bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-400 mb-6 shadow-sm">
             <ArrowRight className="mr-1.5 size-3.5 text-indigo-500" />
             The gap
           </div>
