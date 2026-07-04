@@ -8,6 +8,7 @@ import { estimateDifficulty } from "@/lib/difficulty";
 import type { Difficulty } from "@/lib/difficulty";
 import { IssueFeed } from "./issue-feed";
 import { IssueFilters } from "./issue-filters";
+import { EmptyState } from "./empty-state";
 
 type DifficultyFilter = "all" | Difficulty;
 type SortOrder = "newest" | "oldest" | "comments";
@@ -98,6 +99,8 @@ export function IssueFeedClient({
     [filtered]
   );
 
+  // True only when a filter is actively hiding otherwise-available issues.
+  // Distinct from IssueFeed's own empty state, which covers "nothing fetched at all".
   const zeroResults = filtered.length === 0 && allIssues.length > 0;
 
   return (
@@ -151,37 +154,33 @@ export function IssueFeedClient({
         </div>
       )}
 
-      {zeroResults && (
-        <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 p-8 text-center">
-          <Filter className="size-8 text-muted-foreground/30 mx-auto mb-3" />
-          <h3 className="text-base font-semibold text-foreground">
-            No {difficulty === "Intermediate" ? "intermediate" : difficulty?.toLowerCase()} issues found
-          </h3>
-          <p className="mt-1 text-sm text-muted-foreground max-w-sm mx-auto">
-            Try a different difficulty level or check back later.
-          </p>
-          <div className="mt-4 flex items-center justify-center gap-2">
-            {(["all", "Beginner", "Intermediate", "Advanced"] as const)
-              .filter((d) => d !== difficulty)
-              .map((d) => (
-                <button
-                  key={d}
-                  onClick={() => handleDifficultyChange(d)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                >
-                  {d === "all" ? "All issues" : d}
-                  {d !== "all" && (
-                    <span className="tabular-nums text-muted-foreground/60">
-                      ({counts[d as Difficulty]})
-                    </span>
-                  )}
-                </button>
-              ))}
-          </div>
-        </div>
+      {zeroResults ? (
+        <EmptyState
+          icon={Filter}
+          title={`No ${difficulty === "all" ? "" : difficulty.toLowerCase() + " "}issues found`}
+          description="Try a different difficulty level or check back later."
+          action={{
+            label: "All issues",
+            onClick: () => handleDifficultyChange("all"),
+          }}
+          secondaryActions={(["Beginner", "Intermediate", "Advanced"] as const)
+            .filter((d) => d !== difficulty)
+            .map((d) => (
+              <button
+                key={d}
+                onClick={() => handleDifficultyChange(d)}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                {d}
+                <span className="tabular-nums text-muted-foreground/60">
+                  ({counts[d as Difficulty]})
+                </span>
+              </button>
+            ))}
+        />
+      ) : (
+        <IssueFeed issues={displayed} reposWithIssues={filteredRepos} />
       )}
-
-      <IssueFeed issues={displayed} reposWithIssues={filteredRepos} />
 
       {allIssues.length > 0 && totalPages > 1 && (
         <PaginationBar
