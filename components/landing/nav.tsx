@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { UserMenu } from "@/components/user-menu";
 import { SignInButton } from "@/components/sign-in-button";
 import { MobileNav } from "./mobile-nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export async function Nav() {
   const session = await auth();
@@ -35,6 +36,7 @@ export async function Nav() {
           )}
         </div>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {!session && <MobileNav />}
           {session?.user ? (
             <UserMenu user={session.user} />

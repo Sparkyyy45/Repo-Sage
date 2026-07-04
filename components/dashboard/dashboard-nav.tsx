@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, LogOut, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function DashboardNav({
   user,
@@ -26,6 +27,7 @@ export function DashboardNav({
         <span className="hidden sm:inline">RepoSage</span>
       </Link>
       <div className="flex items-center gap-1.5">
+        <ThemeToggle />
         <Link
           href="/learn"
           className="flex size-8 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
