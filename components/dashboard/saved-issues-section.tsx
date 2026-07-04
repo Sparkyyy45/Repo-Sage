@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Bookmark, BookmarkCheck, GitPullRequest, GitMerge, ExternalLink, MoreHorizontal, Trash2, BookOpen } from "lucide-react";
 import { getSavedIssues, updateIssueStatus, removeIssue, type IssueStatus, type SavedIssue } from "@/lib/saved-issues";
+import { EmptyState } from "./empty-state";
 
 const statusMeta: Record<IssueStatus, { label: string; icon: React.ElementType; classes: string }> = {
   saved: { label: "Saved", icon: Bookmark, classes: "text-indigo-600 bg-indigo-50 border-indigo-200" },
@@ -52,7 +53,17 @@ export function SavedIssuesSection() {
     setRefreshKey((k) => k + 1);
   };
 
-  if (total === 0) return null;
+  if (total === 0) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <EmptyState
+          icon={Bookmark}
+          title="No saved issues yet"
+          description="Bookmark issues from the feed below to start tracking your open-source contributions."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-sm" key={refreshKey}>
@@ -92,14 +103,15 @@ export function SavedIssuesSection() {
 
       <div className="space-y-3">
         {filtered.length === 0 && (
-          <div className="rounded-xl bg-muted/20 border border-dashed border-border/60 p-6 text-center">
-            <BookOpen className="size-6 text-muted-foreground/30 mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">
-              {activeTab === "saved"
+          <EmptyState
+            variant="compact"
+            icon={BookOpen}
+            description={
+              activeTab === "saved"
                 ? "Bookmark issues from the feed below to start tracking."
-                : `No issues marked as "${statusMeta[activeTab].label}".`}
-            </p>
-          </div>
+                : `No issues marked as "${statusMeta[activeTab].label}".`
+            }
+          />
         )}
         {filtered.map((issue) => {
           const [owner, repoName] = issue.repoFullName.split("/");

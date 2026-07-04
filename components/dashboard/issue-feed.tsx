@@ -4,6 +4,7 @@ import type { Issue } from "@/lib/github/issues";
 import { estimateDifficulty, estimateEffort } from "@/lib/difficulty";
 import type { Difficulty } from "@/lib/difficulty";
 import { IssueBookmarkButton } from "./issue-bookmark-button";
+import { EmptyState } from "./empty-state";
 
 export function IssueFeed({
   issues,
@@ -14,24 +15,16 @@ export function IssueFeed({
 }) {
   if (issues.length === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-12 text-center shadow-sm">
-        <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-2xl bg-muted/50">
-          <Search className="size-7 text-muted-foreground" />
-        </div>
-        <h3 className="text-lg font-semibold text-foreground">No issues found yet</h3>
-        <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-          Issues tagged with &ldquo;good first issue&rdquo; matching your tech stack will
-          appear here. Try searching for a specific repo above.
-        </p>
-        <Link
-          href="https://github.com/topics/good-first-issue"
-          target="_blank"
-          className="mt-6 inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 transition-colors"
-        >
-          Browse good first issues on GitHub
-          <ExternalLink className="size-4" />
-        </Link>
-      </div>
+      <EmptyState
+        icon={Search}
+        title="No issues found yet"
+        description='Issues tagged with "good first issue" matching your tech stack will appear here. Try searching for a specific repo above.'
+        action={{
+          label: "Browse good first issues on GitHub",
+          href: "https://github.com/topics/good-first-issue",
+          external: true,
+        }}
+      />
     );
   }
 
