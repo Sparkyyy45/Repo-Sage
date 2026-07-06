@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Repo-Sage",
   description: "Advanced Repository Analytics & Onboarding Platform",
+  icons: {
+    icon: "/fevicon.png",
+  },
 };
 
 export default function RootLayout({
