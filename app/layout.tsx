@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Repo-Sage",
   description: "Advanced Repository Analytics & Onboarding Platform",
   icons: {
-    icon: "/fevicon.png",
+    icon: "/favicon.png",
   },
 };
 
