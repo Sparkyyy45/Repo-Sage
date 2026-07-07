@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, BookOpen, Cpu, Sparkles, ArrowRight, ChevronDown, ChevronRight, X } from "lucide-react";
+import { ArrowRight, BookOpen, ChevronDown, ChevronRight, Cpu, Search, Sparkles, X } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const GUIDE_KEY = "reposage-guide-dismissed";
 
@@ -11,23 +11,29 @@ const steps = [
     icon: Search,
     title: "Find your issue",
     desc: "Browse issues matched to your tech stack below, or search any repo.",
+    grad: "var(--grad-1)",
   },
   {
     icon: BookOpen,
     title: "Understand the code",
     desc: "Every issue comes with an architecture diagram, onboarding guide, and AI chat.",
+    grad: "var(--grad-3)",
   },
   {
     icon: Cpu,
     title: "Track your progress",
     desc: "Save issues and move them through your pipeline: Saved → Working → PR → Merged.",
+    grad: "var(--grad-2)",
   },
 ];
 
 export function FirstVisitOnboarding() {
-  const [dismissed, setDismissed] = useState(() => !!localStorage.getItem(GUIDE_KEY));
+  const [dismissed, setDismissed] = useState(() =>
+    typeof window !== "undefined" ? !!localStorage.getItem(GUIDE_KEY) : false
+  );
   const [expanded, setExpanded] = useState(false);
   const [hasSavedIssue, setHasSavedIssue] = useState(() => {
+    if (typeof window === "undefined") return false;
     try {
       const saved = JSON.parse(localStorage.getItem("reposage-saved-issues") || "[]");
       return saved.length > 0;
@@ -61,7 +67,7 @@ export function FirstVisitOnboarding() {
           setDismissed(false);
           setExpanded(true);
         }}
-        className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-indigo-500 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-[hsl(258_55%_55%)] transition-colors"
         title="Show getting started guide"
       >
         <Sparkles className="size-3" />
@@ -71,7 +77,7 @@ export function FirstVisitOnboarding() {
   }
 
   return (
-    <div className="relative rounded-2xl border border-indigo-200/50 bg-gradient-to-br from-indigo-50/80 to-white p-5 md:p-6 shadow-sm">
+    <div className="relative rounded-2xl p-5 md:p-6 card-glow bg-[linear-gradient(135deg,hsl(var(--grad-1)/0.35),hsl(var(--card))_60%)] border border-[hsl(var(--grad-1)/0.4)]">
       <button
         onClick={dismiss}
         className="absolute top-3 right-3 flex size-6 items-center justify-center rounded-lg text-muted-foreground/40 hover:text-muted-foreground hover:bg-muted/50 transition-colors"
@@ -81,7 +87,7 @@ export function FirstVisitOnboarding() {
       </button>
 
       <div className="flex items-start gap-4">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl gradient-primary">
           <Sparkles className="size-5" />
         </div>
         <div className="min-w-0 flex-1">
@@ -96,7 +102,10 @@ export function FirstVisitOnboarding() {
             <div className="mt-4 space-y-3">
               {steps.map((s, i) => (
                 <div key={s.title} className="flex items-start gap-3">
-                  <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
+                  <div
+                    className="flex size-7 shrink-0 items-center justify-center rounded-lg text-[hsl(258_50%_30%)]"
+                    style={{ background: `hsl(${s.grad} / 0.5)` }}
+                  >
                     <s.icon className="size-3.5" />
                   </div>
                   <div>
@@ -110,7 +119,7 @@ export function FirstVisitOnboarding() {
               <div className="flex items-center gap-3 pt-2">
                 <Link
                   href="/learn"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-medium text-white hover:bg-indigo-500 transition-colors shadow-sm"
+                  className="inline-flex items-center gap-1.5 rounded-lg gradient-primary px-3.5 py-1.5 text-xs font-medium"
                 >
                   <BookOpen className="size-3.5" />
                   Start Learning
@@ -128,7 +137,7 @@ export function FirstVisitOnboarding() {
 
           <button
             onClick={() => setExpanded(!expanded)}
-            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[hsl(258_55%_50%)] hover:text-[hsl(258_55%_60%)] transition-colors"
           >
             {expanded ? (
               <>

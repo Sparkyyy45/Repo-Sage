@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
-import Link from "next/link";
-import { Check } from "lucide-react";
-import type { Guide } from "@/data/guides";
 import { getSectionProgress } from "@/components/learn/guide-content";
+import type { Guide } from "@/data/guides";
+import { Check } from "lucide-react";
+import Link from "next/link";
+import { useMemo } from "react";
 
 export function GuideCard({ guide }: { guide: Guide }) {
   const total = guide.sections.length;
@@ -18,7 +18,7 @@ export function GuideCard({ guide }: { guide: Guide }) {
   return (
     <Link
       href={`/learn/${guide.slug}`}
-      className="group flex items-center gap-4 py-4 border-b border-border/40 last:border-0 transition-colors hover:bg-muted/30 -mx-6 px-6"
+      className="group flex items-center gap-4 py-4 border-b border-border/40 last:border-0 transition-colors hover:bg-[hsl(var(--grad-1)/0.12)] -mx-6 px-6"
     >
       <span className="text-[10px] font-semibold tabular-nums text-muted-foreground/30 w-6 shrink-0 text-right">
         {String(guide.order).padStart(2, "0")}
@@ -26,7 +26,7 @@ export function GuideCard({ guide }: { guide: Guide }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2.5">
-          <h3 className="text-sm font-medium text-foreground group-hover:text-blue-600 transition-colors">
+          <h3 className="text-sm font-medium text-foreground transition-colors group-hover:text-[hsl(258_55%_45%)]">
             {guide.title}
           </h3>
           {allDone && (
@@ -40,7 +40,7 @@ export function GuideCard({ guide }: { guide: Guide }) {
         <div className="flex items-center gap-2 mt-2.5">
           <div className="h-1 flex-1 max-w-[160px] rounded-full bg-muted">
             <div
-              className="h-full rounded-full bg-blue-500 transition-all duration-500"
+              className="h-full rounded-full transition-all duration-500 bg-[linear-gradient(90deg,hsl(var(--grad-1)),hsl(var(--grad-3)))]"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -52,7 +52,7 @@ export function GuideCard({ guide }: { guide: Guide }) {
         </div>
       </div>
 
-      <div className="hidden sm:flex size-7 shrink-0 items-center justify-center rounded-md border border-border/50 text-muted-foreground/30 group-hover:border-border/80 group-hover:text-muted-foreground/60 transition-colors">
+      <div className="hidden sm:flex size-7 shrink-0 items-center justify-center rounded-md border border-border/50 text-muted-foreground/30 transition-colors group-hover:border-[hsl(var(--grad-1))] group-hover:text-[hsl(258_55%_45%)]">
         <span className="text-xs font-medium">{allDone ? "✓" : "→"}</span>
       </div>
     </Link>

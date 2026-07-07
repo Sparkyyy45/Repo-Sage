@@ -1,10 +1,10 @@
-import { ExternalLink, MessageCircle, Search, GitBranch, Clock } from "lucide-react";
-import Link from "next/link";
-import type { Issue } from "@/lib/github/issues";
-import { estimateDifficulty, estimateEffort } from "@/lib/difficulty";
 import type { Difficulty } from "@/lib/difficulty";
-import { IssueBookmarkButton } from "./issue-bookmark-button";
+import { estimateDifficulty, estimateEffort } from "@/lib/difficulty";
+import type { Issue } from "@/lib/github/issues";
+import { Clock, ExternalLink, GitBranch, MessageCircle, Search } from "lucide-react";
+import Link from "next/link";
 import { EmptyState } from "./empty-state";
+import { IssueBookmarkButton } from "./issue-bookmark-button";
 
 export function IssueFeed({
   issues,
@@ -54,8 +54,8 @@ function IssueCard({ issue }: { issue: Issue }) {
   const effort = estimateEffort(issue);
 
   return (
-    <div className="group relative rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-      <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl bg-gradient-to-r from-transparent via-indigo-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+    <div className="group relative rounded-2xl card-glow p-5 transition-all duration-200 hover:-translate-y-0.5">
+      <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity bg-[linear-gradient(90deg,transparent,hsl(var(--grad-1)/0.5),transparent)]" />
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex items-center gap-2 text-sm">
@@ -71,7 +71,7 @@ function IssueCard({ issue }: { issue: Issue }) {
           <div className="flex items-start justify-between gap-2">
             <Link
               href={`/issue/${owner}/${repoName}/${issue.number}`}
-              className="text-base font-semibold text-foreground hover:text-indigo-600 hover:underline leading-snug transition-colors break-words"
+              className="text-base font-semibold text-foreground hover:text-[hsl(258_55%_50%)] hover:underline leading-snug transition-colors break-words"
             >
               {issue.title}
             </Link>
@@ -114,7 +114,7 @@ function IssueCard({ issue }: { issue: Issue }) {
             </div>
           )}
 
-          <div className="relative pl-4 border-l-2 border-indigo-200/60">
+          <div className="relative pl-4 border-l-2 border-[hsl(var(--grad-1)/0.6)]">
             <p className="text-sm text-muted-foreground leading-relaxed">
               <span className="font-medium text-foreground">Why this matches:</span>{" "}
               {issue.labels.length > 0

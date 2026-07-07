@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { Users, GitFork, Star, BookOpen } from "lucide-react";
 import type { ProfileData } from "@/lib/github/profile";
+import { BookOpen, GitFork, Star, Users } from "lucide-react";
+import Image from "next/image";
 
 const statItems = [
   { key: "publicRepos", icon: BookOpen, label: "Repositories" },
@@ -11,14 +11,14 @@ const statItems = [
 
 export function ProfileCard({ profile }: { profile: ProfileData }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-card p-5">
+    <div className="rounded-xl card-glow p-5">
       <div className="flex items-start gap-4">
         <Image
           src={profile.avatarUrl}
           alt=""
           width={56}
           height={56}
-          className="size-14 rounded-full ring-1 ring-foreground/10"
+          className="size-14 rounded-full ring-2 ring-[hsl(var(--grad-1))]"
           unoptimized
         />
         <div className="min-w-0 flex-1">
@@ -35,12 +35,15 @@ export function ProfileCard({ profile }: { profile: ProfileData }) {
       </div>
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {statItems.map(({ key, icon: Icon, label }) => (
-          <div key={key} className="rounded-lg border border-border/40 bg-muted/30 p-3">
+          <div
+            key={key}
+            className="rounded-lg border border-border/40 p-3 bg-[linear-gradient(135deg,hsl(var(--grad-1)/0.15),hsl(var(--grad-3)/0.15))]"
+          >
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Icon className="size-3" />
               <span>{label}</span>
             </div>
-            <div className="mt-1 text-xl font-semibold tabular-nums">
+            <div className="mt-1 text-xl font-semibold tabular-nums gradient-text">
               {profile[key]}
             </div>
           </div>

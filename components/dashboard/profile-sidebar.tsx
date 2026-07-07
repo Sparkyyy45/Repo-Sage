@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { BookOpen, Star, Users, GitFork, Code2 } from "lucide-react";
 import type { ProfileData } from "@/lib/github/profile";
+import { BookOpen, Code2, GitFork, Star, Users } from "lucide-react";
+import Image from "next/image";
 
 const LANGUAGE_COLORS_LIGHT: Record<string, string> = {
   JavaScript: "#f7df1e",
@@ -25,14 +25,14 @@ const LANGUAGE_COLORS_LIGHT: Record<string, string> = {
 export function ProfileSidebar({ profile }: { profile: ProfileData }) {
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="rounded-2xl card-glow p-6">
         <div className="flex flex-col items-center text-center">
           <Image
             src={profile.avatarUrl}
             alt=""
             width={72}
             height={72}
-            className="size-[72px] rounded-full ring-4 ring-border shadow-sm"
+            className="size-[72px] rounded-full ring-4 ring-[hsl(var(--grad-1))]"
             unoptimized
           />
           <h3 className="mt-4 text-lg font-semibold text-foreground">
@@ -47,28 +47,28 @@ export function ProfileSidebar({ profile }: { profile: ProfileData }) {
         </div>
 
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <div className="flex flex-col items-center rounded-xl bg-muted/50 p-2.5">
+          <div className="flex flex-col items-center rounded-xl p-2.5 bg-[linear-gradient(135deg,hsl(var(--grad-1)/0.18),hsl(var(--grad-3)/0.12))]">
             <BookOpen className="size-3.5 text-muted-foreground" />
             <div className="mt-1 text-sm font-bold text-foreground tabular-nums">
               {profile.publicRepos}
             </div>
             <div className="text-[10px] text-muted-foreground/70">Repos</div>
           </div>
-          <div className="flex flex-col items-center rounded-xl bg-muted/50 p-2.5">
+          <div className="flex flex-col items-center rounded-xl p-2.5 bg-[linear-gradient(135deg,hsl(var(--grad-4)/0.2),hsl(var(--grad-2)/0.12))]">
             <Star className="size-3.5 text-muted-foreground" />
             <div className="mt-1 text-sm font-bold text-foreground tabular-nums">
               {profile.totalStars}
             </div>
             <div className="text-[10px] text-muted-foreground/70">Stars</div>
           </div>
-          <div className="flex flex-col items-center rounded-xl bg-muted/50 p-2.5">
+          <div className="flex flex-col items-center rounded-xl p-2.5 bg-[linear-gradient(135deg,hsl(var(--grad-2)/0.18),hsl(var(--grad-1)/0.12))]">
             <Users className="size-3.5 text-muted-foreground" />
             <div className="mt-1 text-sm font-bold text-foreground tabular-nums">
               {profile.followers}
             </div>
             <div className="text-[10px] text-muted-foreground/70">Followers</div>
           </div>
-          <div className="flex flex-col items-center rounded-xl bg-muted/50 p-2.5">
+          <div className="flex flex-col items-center rounded-xl p-2.5 bg-[linear-gradient(135deg,hsl(var(--grad-3)/0.18),hsl(var(--grad-4)/0.12))]">
             <GitFork className="size-3.5 text-muted-foreground" />
             <div className="mt-1 text-sm font-bold text-foreground tabular-nums">
               {profile.following}
@@ -91,7 +91,7 @@ export function ProfileSidebar({ profile }: { profile: ProfileData }) {
                   key={lang.name}
                   style={{
                     width: `${lang.percentage}%`,
-                    backgroundColor: lang.color ?? LANGUAGE_COLORS_LIGHT[lang.name] ?? "#64748B",
+                    backgroundColor: lang.color ?? LANGUAGE_COLORS_LIGHT[lang.name] ?? "hsl(var(--grad-1))",
                   }}
                   title={`${lang.name} ${lang.percentage}%`}
                 />
@@ -108,7 +108,7 @@ export function ProfileSidebar({ profile }: { profile: ProfileData }) {
                       className="size-2.5 rounded"
                       style={{
                         backgroundColor:
-                          lang.color ?? LANGUAGE_COLORS_LIGHT[lang.name] ?? "#64748B",
+                          lang.color ?? LANGUAGE_COLORS_LIGHT[lang.name] ?? "hsl(var(--grad-1))",
                       }}
                     />
                     <span className="text-foreground font-medium">{lang.name}</span>

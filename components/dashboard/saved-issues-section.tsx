@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { getSavedIssues, removeIssue, updateIssueStatus, type IssueStatus, type SavedIssue } from "@/lib/saved-issues";
+import { Bookmark, BookmarkCheck, BookOpen, ExternalLink, GitMerge, GitPullRequest, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { Bookmark, BookmarkCheck, GitPullRequest, GitMerge, ExternalLink, MoreHorizontal, Trash2, BookOpen } from "lucide-react";
-import { getSavedIssues, updateIssueStatus, removeIssue, type IssueStatus, type SavedIssue } from "@/lib/saved-issues";
+import { useState } from "react";
 import { EmptyState } from "./empty-state";
 
 const statusMeta: Record<IssueStatus, { label: string; icon: React.ElementType; classes: string }> = {
-  saved: { label: "Saved", icon: Bookmark, classes: "text-indigo-600 bg-indigo-50 border-indigo-200" },
-  working: { label: "Working on it", icon: BookmarkCheck, classes: "text-amber-600 bg-amber-50 border-amber-200" },
-  "pr-submitted": { label: "PR Submitted", icon: GitPullRequest, classes: "text-purple-600 bg-purple-50 border-purple-200" },
-  merged: { label: "Merged", icon: GitMerge, classes: "text-emerald-600 bg-emerald-50 border-emerald-200" },
+  saved: { label: "Saved", icon: Bookmark, classes: "text-[hsl(258_45%_35%)] bg-[hsl(var(--grad-1)/0.35)] border-[hsl(var(--grad-1))]" },
+  working: { label: "Working on it", icon: BookmarkCheck, classes: "text-[hsl(45_60%_28%)] bg-[hsl(var(--grad-4)/0.45)] border-[hsl(var(--grad-4))]" },
+  "pr-submitted": { label: "PR Submitted", icon: GitPullRequest, classes: "text-[hsl(320_55%_35%)] bg-[hsl(var(--grad-2)/0.4)] border-[hsl(var(--grad-2))]" },
+  merged: { label: "Merged", icon: GitMerge, classes: "text-[hsl(190_60%_25%)] bg-[hsl(var(--grad-3)/0.4)] border-[hsl(var(--grad-3))]" },
 };
 
 const nextStatus: Record<IssueStatus, IssueStatus | null> = {
@@ -55,7 +55,7 @@ export function SavedIssuesSection() {
 
   if (total === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+      <div className="rounded-2xl card-glow p-6">
         <EmptyState
           icon={Bookmark}
           title="No saved issues yet"
@@ -66,7 +66,7 @@ export function SavedIssuesSection() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 shadow-sm" key={refreshKey}>
+    <div className="rounded-2xl card-glow p-6" key={refreshKey}>
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-semibold tracking-tight text-foreground">
@@ -89,8 +89,8 @@ export function SavedIssuesSection() {
               onClick={() => setActiveTab(tab)}
               className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all ${
                 activeTab === tab
-                  ? `${meta.classes} shadow-sm ring-1 ring-black/5`
-                  : "border-border text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? `${meta.classes} shadow-sm`
+                  : "border-border text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--grad-1)/0.15)]"
               }`}
             >
               <meta.icon className={`size-3 ${activeTab === tab ? "" : "text-muted-foreground/60"}`} />
@@ -118,7 +118,7 @@ export function SavedIssuesSection() {
           return (
             <div
               key={issue.id}
-              className="group flex items-start gap-3 rounded-xl border border-border bg-muted/20 p-3 transition-colors hover:bg-muted/40"
+              className="group flex items-start gap-3 rounded-xl border border-border p-3 transition-colors bg-[hsl(var(--grad-1)/0.06)] hover:bg-[hsl(var(--grad-1)/0.12)]"
             >
               <Link
                 href={`/issue/${owner}/${repoName}/${issue.number}`}
@@ -144,7 +144,7 @@ export function SavedIssuesSection() {
                 {nextStatus[issue.status] && (
                   <button
                     onClick={() => handleAdvance(issue)}
-                    className="flex size-7 items-center justify-center rounded-lg text-muted-foreground/50 hover:text-foreground hover:bg-muted transition-colors"
+                    className="flex size-7 items-center justify-center rounded-lg text-muted-foreground/50 hover:text-foreground hover:bg-[hsl(var(--grad-1)/0.2)] transition-colors"
                     title={`Mark as ${statusMeta[nextStatus[issue.status]!].label}`}
                   >
                     <MoreHorizontal className="size-3.5" />
@@ -153,7 +153,7 @@ export function SavedIssuesSection() {
                 <Link
                   href={issue.htmlUrl}
                   target="_blank"
-                  className="flex size-7 items-center justify-center rounded-lg text-muted-foreground/30 hover:text-foreground hover:bg-muted transition-colors"
+                  className="flex size-7 items-center justify-center rounded-lg text-muted-foreground/30 hover:text-foreground hover:bg-[hsl(var(--grad-1)/0.2)] transition-colors"
                   title="Open on GitHub"
                 >
                   <ExternalLink className="size-3" />
