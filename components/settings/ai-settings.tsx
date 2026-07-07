@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, X, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, X, Loader2, Plus, Trash2 } from "lucide-react";
 import { saveConfig, testConnection, DEFAULT_MODELS } from "@/lib/llm/provider";
 import type { AIProvider, LLMConfig } from "@/lib/llm/provider";
 
@@ -52,10 +52,44 @@ export function AISettings() {
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<"success" | "fail" | null>(null);
   const [showKey, setShowKey] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
+  const [fallbackProvider, setFallbackProvider] = useState<AIProvider | "">(() => {
+    try {
+      const stored = localStorage.getItem("reposage-llm-config");
+      if (stored) return (JSON.parse(stored) as LLMConfig).fallbackProvider || "";
+    } catch { console.warn("Failed to update AI settings"); }
+    return "";
+  });
+  const [fallbackApiKey, setFallbackApiKey] = useState(() => {
+    try {
+      const stored = localStorage.getItem("reposage-llm-config");
+      if (stored) return (JSON.parse(stored) as LLMConfig).fallbackApiKey || "";
+    } catch { console.warn("Failed to update AI settings"); }
+    return "";
+  });
+  const [fallbackModel, setFallbackModel] = useState(() => {
+    try {
+      const stored = localStorage.getItem("reposage-llm-config");
+      if (stored) return (JSON.parse(stored) as LLMConfig).fallbackModel || "";
+    } catch { console.warn("Failed to update AI settings"); }
+    return "";
+  });
+  const [showFallbackKey, setShowFallbackKey] = useState(false);
 
   const handleSave = () => {
     if (!apiKey.trim()) return;
-    const config: LLMConfig = { provider, apiKey: apiKey.trim(), model: model || DEFAULT_MODELS[provider] };
+    const config: LLMConfig = {
+      provider,
+      apiKey: apiKey.trim(),
+      model: model || DEFAULT_MODELS[provider],
+      ...(showFallback && fallbackProvider && fallbackApiKey.trim()
+        ? {
+            fallbackProvider,
+            fallbackApiKey: fallbackApiKey.trim(),
+            fallbackModel: fallbackModel || DEFAULT_MODELS[fallbackProvider],
+          }
+        : {}),
+    };
     saveConfig(config);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -65,7 +99,18 @@ export function AISettings() {
     if (!apiKey.trim()) return;
     setTesting(true);
     setTestResult(null);
-    const config: LLMConfig = { provider, apiKey: apiKey.trim(), model: model || DEFAULT_MODELS[provider] };
+    const config: LLMConfig = {
+      provider,
+      apiKey: apiKey.trim(),
+      model: model || DEFAULT_MODELS[provider],
+      ...(showFallback && fallbackProvider && fallbackApiKey.trim()
+        ? {
+            fallbackProvider,
+            fallbackApiKey: fallbackApiKey.trim(),
+            fallbackModel: fallbackModel || DEFAULT_MODELS[fallbackProvider],
+          }
+        : {}),
+    };
     const ok = await testConnection(config);
     setTestResult(ok ? "success" : "fail");
     setTesting(false);
@@ -150,6 +195,97 @@ export function AISettings() {
             </select>
           </div>
 
+          <div className="border-t border-border pt-5">
+            <div className="flex items-center justify-between mb-4">
+              <label className="block text-sm font-medium text-foreground">Fallback Provider (Optional)</label>
+              <button
+                type="button"
+                onClick={() => setShowFallback(!showFallback)}
+                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showFallback ? (
+                  <>
+                    <Trash2 className="size-3.5" />
+                    Remove
+                  </>
+                ) : (
+                  <>
+                    <Plus className="size-3.5" />
+                    Add
+                  </>
+                )}
+              </button>
+            </div>
+
+            {showFallback && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-2">Fallback Provider</label>
+                  <div className="flex gap-2">
+                    {(["openrouter", "groq"] as const).map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => {
+                          setFallbackProvider(p);
+                          setFallbackModel(DEFAULT_MODELS[p]);
+                        }}
+                        className={`flex-1 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
+                          fallbackProvider === p
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-muted/50 text-muted-foreground border-border hover:bg-muted hover:text-foreground"
+                        }`}
+                      >
+                        {p === "openrouter" ? "OpenRouter" : "Groq"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-2">Fallback API Key</label>
+                  <div className="relative">
+                    <input
+                      type={showFallbackKey ? "text" : "password"}
+                      value={fallbackApiKey}
+                      onChange={(e) => setFallbackApiKey(e.target.value)}
+                      placeholder="sk-..."
+                      className="w-full rounded-lg border border-border bg-muted/50 px-3 py-2 pr-10 text-xs text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowFallbackKey(!showFallbackKey)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-[10px]"
+                    >
+                      {showFallbackKey ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-2">Fallback Model</label>
+                  <select
+                    value={fallbackModel}
+                    onChange={(e) => setFallbackModel(e.target.value)}
+                    disabled={!fallbackProvider}
+                    className="w-full rounded-lg border border-border bg-muted/50 px-3 py-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary/20 disabled:opacity-50"
+                  >
+                    {fallbackProvider && MODELS[fallbackProvider].map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="rounded-lg border border-border bg-muted/20 p-2.5">
+                  <p className="text-[10px] text-muted-foreground">
+                    Fallback provider is used when the primary provider times out or is rate-limited (429).
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center gap-3 pt-2">
             <button
               onClick={handleSave}
@@ -184,8 +320,8 @@ export function AISettings() {
 
           <div className="rounded-xl border border-border bg-muted/30 p-3">
             <p className="text-xs text-muted-foreground">
-              🔒 Your API key is stored in <code className="text-xs text-foreground">localStorage</code> and sent directly
-              from your browser to the AI provider. We never see, store, or transmit your key.
+              🔒 Your API keys are stored in <code className="text-xs text-foreground">localStorage</code> and sent directly
+              from your browser to the AI provider. We never see, store, or transmit your keys.
             </p>
           </div>
         </div>
