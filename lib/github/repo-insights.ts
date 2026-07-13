@@ -58,34 +58,31 @@ export async function fetchRepoInsights(
     })
     .then((r) => r.data.total_count)
     .catch(() => 0);
+  const langReq = octokit
+    .request("GET /repos/{owner}/{repo}/languages", { owner, repo: name })
+    .then((r) => Object.keys(r.data))
+    .catch(() => [] as string[]);
 
-  const [repoRes, activityData, searchData, openPRs] = await Promise.all([
-    repoReq,
-    activityReq,
-    goodFirstReq,
-    pullsReq,
-  ]);
+  const [repoRes, activityData, searchData, openPRs, repoLanguages] =
+    await Promise.all([repoReq, activityReq, goodFirstReq, pullsReq, langReq]);
 
   const repoLanguage = repoRes.data.language ?? "Unknown";
 
-  const matched: string[] = [];
-  const unmatched: string[] = [];
+  // Match against the repo's full language breakdown, measuring how much of the
+  // repo's stack the user covers. Denominator is the repo's languages, so the
+  // score never shrinks just because the user knows additional languages.
+  const repoLangs =
+    repoLanguages.length > 0
+      ? repoLanguages
+      : (repoRes.data.language ? [repoRes.data.language] : []);
 
-  for (const ul of userLanguages.slice(0, 5)) {
-    if (ul.name.toLowerCase() === repoLanguage.toLowerCase()) {
-      matched.push(ul.name);
-    } else {
-      unmatched.push(ul.name);
-    }
-  }
+  const userSet = new Set(userLanguages.map((l) => l.name.toLowerCase()));
+  const matched = repoLangs.filter((l) => userSet.has(l.toLowerCase()));
+  const unmatched = repoLangs.filter((l) => !userSet.has(l.toLowerCase()));
 
   const skillPercent =
-    userLanguages.length > 0
-      ? Math.round(
-          (matched.length /
-            Math.min(userLanguages.length, 5)) *
-            100
-        )
+    repoLangs.length > 0
+      ? Math.round((matched.length / repoLangs.length) * 100)
       : 0;
 
   const weeklyCommitData = activityData ?? [];
