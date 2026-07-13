@@ -16,18 +16,48 @@ export async function POST(req: NextRequest) {
   const octokit = createOctokit(session.accessToken);
   const userLogin = session.user.login;
   const branchName = `reposage/issue-${issueNumber}`;
+  const upstreamFullName = `${owner}/${name}`.toLowerCase();
 
-  // 1. Get or create fork
+  // Check whether a repo under the user's account is genuinely a fork of
+  // owner/name. Returns "match" when it is, "collision" when a repo with that
+  // name exists but is not this fork, or "absent" when nothing is there.
+  const inspectFork = async (
+    repo: string
+  ): Promise<"match" | "collision" | "absent"> => {
+    try {
+      const { data } = await octokit.rest.repos.get({ owner: userLogin, repo });
+      const isFork =
+        data.fork &&
+        data.parent?.full_name.toLowerCase() === upstreamFullName;
+      return isFork ? "match" : "collision";
+    } catch {
+      return "absent";
+    }
+  };
+
+  // 1. Resolve the fork's actual repo name, verifying identity (not just that a
+  // same-named repo exists) and falling back to a distinct name on collision.
+  let forkRepo = name;
   let forkExists = false;
-  try {
-    await octokit.rest.repos.get({ owner: userLogin, repo: name });
+
+  const primary = await inspectFork(name);
+  if (primary === "match") {
     forkExists = true;
-  } catch {
-    // fork needs to be created
+  } else if (primary === "collision") {
+    // A repo named `name` exists but is not this fork; use a distinct name.
+    forkRepo = `${owner}-${name}`;
+    forkExists = (await inspectFork(forkRepo)) === "match";
   }
 
   if (!forkExists) {
-    await octokit.rest.repos.createFork({ owner, repo: name });
+    const { data: created } = await octokit.rest.repos.createFork({
+      owner,
+      repo: name,
+      // Only override the name when the default collided with another repo.
+      ...(forkRepo !== name ? { name: forkRepo } : {}),
+    });
+    // GitHub may still rename on collision; trust the resolved name.
+    forkRepo = created.name;
 
     let ready = false;
     for (let i = 0; i < 12; i++) {
@@ -35,7 +65,7 @@ export async function POST(req: NextRequest) {
       try {
         const { data } = await octokit.rest.repos.get({
           owner: userLogin,
-          repo: name,
+          repo: forkRepo,
         });
         if (data.default_branch) {
           ready = true;
@@ -71,7 +101,7 @@ export async function POST(req: NextRequest) {
   try {
     await octokit.rest.git.createRef({
       owner: userLogin,
-      repo: name,
+      repo: forkRepo,
       ref: `refs/heads/${branchName}`,
       sha: latestCommitSha,
     });
@@ -89,7 +119,7 @@ export async function POST(req: NextRequest) {
 
   const { data: emptyCommit } = await octokit.rest.git.createCommit({
     owner: userLogin,
-    repo: name,
+    repo: forkRepo,
     message: `chore: start working on #${issueNumber}`,
     tree: latestCommit.tree.sha,
     parents: [latestCommitSha],
@@ -97,7 +127,7 @@ export async function POST(req: NextRequest) {
 
   await octokit.rest.git.updateRef({
     owner: userLogin,
-    repo: name,
+    repo: forkRepo,
     ref: `heads/${branchName}`,
     sha: emptyCommit.sha,
     force: true,
@@ -129,11 +159,11 @@ _Started via RepoSage_
     draft: true,
   });
 
-  const cloneCommand = `git clone git@github.com:${userLogin}/${name}.git && cd ${name} && git checkout ${branchName}`;
+  const cloneCommand = `git clone git@github.com:${userLogin}/${forkRepo}.git && cd ${forkRepo} && git checkout ${branchName}`;
 
   return Response.json({
     cloneCommand,
     prUrl: pr.html_url,
-    forkUrl: `https://github.com/${userLogin}/${name}`,
+    forkUrl: `https://github.com/${userLogin}/${forkRepo}`,
   });
 }
