@@ -60,7 +60,7 @@ export function SkillMatchCard({
         )}
         {unmatched.length > 0 && percent < 100 && matched.length > 0 && (
           <div>
-            <p className="text-xs font-medium text-muted-foreground mb-2">Different from:</p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">Languages to learn:</p>
             <div className="flex flex-wrap gap-1.5">
               {unmatched.map((lang) => (
                 <span
