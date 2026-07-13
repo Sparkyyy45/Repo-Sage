@@ -1,4 +1,4 @@
-import { ShieldCheck, CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, ShieldCheck, XCircle } from "lucide-react";
 
 export function BeginnerCard({
   score,
@@ -38,7 +38,7 @@ export function BeginnerCard({
   ];
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="rounded-2xl card-glow p-5">
       <div className="flex items-center gap-2 mb-4">
         <ShieldCheck className="size-4 text-muted-foreground" />
         <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Beginner Friendly</h3>

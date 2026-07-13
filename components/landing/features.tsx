@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, BookOpen, BarChart3, MessageCircle, GitBranch, Shield, GraduationCap, BookmarkCheck, SearchCode } from "lucide-react";
+import { BarChart3, BookmarkCheck, BookOpen, GitBranch, GraduationCap, MessageCircle, Search, SearchCode, Shield } from "lucide-react";
 
 const features = [
   {
