@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { RefreshCw, Filter, BarChart3, ChevronLeft, ChevronRight } from "lucide-react";
-import { toast } from "sonner";
-import type { Issue } from "@/lib/github/issues";
-import { estimateDifficulty } from "@/lib/difficulty";
 import type { Difficulty } from "@/lib/difficulty";
+import { estimateDifficulty } from "@/lib/difficulty";
+import type { Issue } from "@/lib/github/issues";
+import { BarChart3, ChevronLeft, ChevronRight, Filter, RefreshCw } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { EmptyState } from "./empty-state";
 import { IssueFeed } from "./issue-feed";
 import { IssueFilters } from "./issue-filters";
-import { EmptyState } from "./empty-state";
 
 type DifficultyFilter = "all" | Difficulty;
 type SortOrder = "newest" | "oldest" | "comments";
@@ -99,8 +99,6 @@ export function IssueFeedClient({
     [filtered]
   );
 
-  // True only when a filter is actively hiding otherwise-available issues.
-  // Distinct from IssueFeed's own empty state, which covers "nothing fetched at all".
   const zeroResults = filtered.length === 0 && allIssues.length > 0;
 
   return (
@@ -116,7 +114,7 @@ export function IssueFeedClient({
         <button
           onClick={refresh}
           disabled={refreshing}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-[hsl(var(--grad-1)/0.15)] transition-colors disabled:opacity-50"
           title="Refresh issues"
         >
           <RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
@@ -125,7 +123,7 @@ export function IssueFeedClient({
       </div>
 
       {allIssues.length > 0 && (
-        <div className="flex items-center gap-4 rounded-xl border border-border/60 bg-muted/20 p-3">
+        <div className="flex items-center gap-4 rounded-xl border border-border/60 p-3 bg-[hsl(var(--grad-1)/0.06)]">
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <BarChart3 className="size-3.5" />
             <span className="font-medium text-foreground">{allIssues.length}</span> total
@@ -250,7 +248,7 @@ function PaginationBar({
               onClick={() => onPageChange(p)}
               className={`inline-flex size-8 items-center justify-center rounded-lg text-xs font-medium transition-colors ${
                 p === currentPage
-                  ? "bg-indigo-600 text-white shadow-sm"
+                  ? "gradient-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >

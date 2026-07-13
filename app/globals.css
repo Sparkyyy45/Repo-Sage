@@ -4,35 +4,41 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --background: 250 45% 98%;
+    --foreground: 250 25% 18%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    
-    --radius: 0.5rem;
+    --card: 0 0% 100%;
+    --card-foreground: 250 25% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 250 25% 18%;
+
+    --primary: 258 70% 72%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 320 60% 96%;
+    --secondary-foreground: 258 40% 28%;
+
+    --muted: 250 30% 96%;
+    --muted-foreground: 250 12% 46%;
+
+    --accent: 190 65% 94%;
+    --accent-foreground: 200 60% 32%;
+
+    --destructive: 350 75% 68%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 250 25% 91%;
+    --input: 250 25% 91%;
+    --ring: 258 70% 72%;
+
+    --radius: 1rem;
+
+    /* Pastel gradient stops, reusable everywhere */
+    --grad-1: 258 85% 88%;   /* lavender */
+    --grad-2: 320 80% 90%;   /* pink */
+    --grad-3: 190 75% 88%;   /* sky */
+    --grad-4: 45 90% 90%;    /* butter yellow */
   }
 
   .dark {
@@ -76,10 +82,96 @@
     color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
-  /* Accessible Focus Indicator Styles */
+
   *:focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------- */
+/* Pastel gradient utilities — light mode only           */
+/* ---------------------------------------------------- */
+@layer utilities {
+  /* Full-page airy wash — use on the outermost hero/page wrapper */
+  .gradient-page {
+    background: radial-gradient(
+        ellipse 80% 50% at 20% 0%,
+        hsl(var(--grad-1) / 0.5),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 70% 50% at 100% 20%,
+        hsl(var(--grad-3) / 0.45),
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 50% 100%,
+        hsl(var(--grad-2) / 0.35),
+        transparent 60%
+      ),
+      hsl(var(--background));
+  }
+  .dark .gradient-page {
+    background: hsl(var(--background));
+  }
+
+  /* Gradient button fill */
+  .gradient-primary {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--grad-1)),
+      hsl(var(--primary)) 55%,
+      hsl(var(--grad-3))
+    );
+    color: hsl(var(--primary-foreground));
+  }
+  .gradient-primary:hover {
+    filter: brightness(1.04) saturate(1.05);
+  }
+
+  /* Gradient text for headlines / accents */
+  .gradient-text {
+    background: linear-gradient(
+      100deg,
+      hsl(258 70% 55%),
+      hsl(320 65% 55%) 50%,
+      hsl(190 70% 40%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dark .gradient-text {
+    background: none;
+    -webkit-text-fill-color: unset;
+    color: hsl(var(--foreground));
+  }
+
+  /* Soft glowing card — use instead of flat border card for feature highlights */
+  .card-glow {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 2px hsl(258 40% 30% / 0.04),
+      0 8px 24px -8px hsl(258 50% 60% / 0.15);
+  }
+  .dark .card-glow {
+    box-shadow: none;
+  }
+
+  /* Pastel badge/pill (matches the "From good first issue..." badge) */
+  .badge-pastel {
+    background: linear-gradient(
+      120deg,
+      hsl(var(--grad-1) / 0.7),
+      hsl(var(--grad-3) / 0.7)
+    );
+    color: hsl(258 45% 32%);
+    border: 1px solid hsl(258 40% 85%);
+  }
+  .dark .badge-pastel {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    border-color: hsl(var(--border));
   }
 }

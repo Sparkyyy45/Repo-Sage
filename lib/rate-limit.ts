@@ -5,6 +5,7 @@ export interface RateLimitInfo {
   total: number;
   reset: number;
   isLimited: boolean;
+  isNearLimit: boolean;
 }
 
 export async function getRateLimitInfo(
@@ -17,7 +18,10 @@ export async function getRateLimitInfo(
       remaining: core.remaining,
       total: core.limit,
       reset: core.reset,
-      isLimited: core.remaining < 10,
+      isLimited: core.remaining==0,
+      isNearLimit: core.remaining >0 && core.remaining <10,
+
+
     };
   } catch {
     return null;
