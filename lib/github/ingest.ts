@@ -1,4 +1,6 @@
 import type { Octokit } from "@octokit/rest";
+import { cache } from "@/lib/cache";
+
 
 export interface RepoTree {
   path: string;
@@ -88,6 +90,10 @@ export async function ingestRepo(
   owner: string,
   name: string
 ): Promise<IngestedRepo> {
+  const cacheKey = `reposage:ingest:${owner}:${name}`;
+  const cached = await cache.get<IngestedRepo>(cacheKey);
+  if (cached) return cached;
+
   const { data: repo } = await octokit.rest.repos.get({ owner, repo: name });
   const defaultBranch = repo.default_branch;
 
@@ -138,7 +144,7 @@ export async function ingestRepo(
     }
   }
 
-  return {
+  const result: IngestedRepo = {
     owner,
     name,
     fullName: repo.full_name,
@@ -154,6 +160,9 @@ export async function ingestRepo(
     contributing: contributingFile?.content ?? null,
     packageJson,
   };
+
+  await cache.set(cacheKey, result, 1800); // 30 minutes
+  return result;
 }
 
 async function fetchRepoTree(

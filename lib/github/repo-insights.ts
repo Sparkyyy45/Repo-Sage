@@ -1,4 +1,6 @@
 import type { Octokit } from "@octokit/rest";
+import { cache } from "@/lib/cache";
+
 
 export interface RepoInsightData {
   skillMatch: {
@@ -37,6 +39,11 @@ export async function fetchRepoInsights(
   userLanguages: { name: string; percentage: number }[],
   filePaths: string[]
 ): Promise<RepoInsightData> {
+  const userLanguagesHash = userLanguages.map((ul) => `${ul.name}:${ul.percentage}`).join(",");
+  const cacheKey = `reposage:insights:${owner}:${name}:${userLanguagesHash}`;
+  const cached = await cache.get<RepoInsightData>(cacheKey);
+  if (cached) return cached;
+
   const repoReq = octokit.rest.repos.get({ owner, repo: name });
   const activityReq = octokit.rest.repos
     .getCommitActivityStats({ owner, repo: name })
@@ -141,7 +148,7 @@ export async function fetchRepoInsights(
       labels: item.labels.map((l) => (typeof l === "string" ? l : l.name ?? "")),
     })) ?? [];
 
-  return {
+  const result: RepoInsightData = {
     skillMatch: {
       percent: skillPercent,
       matched,
@@ -164,4 +171,7 @@ export async function fetchRepoInsights(
     goodFirstIssues,
     matchingIssues,
   };
+
+  await cache.set(cacheKey, result, 1800); // 30 minutes
+  return result;
 }

@@ -136,14 +136,11 @@ export async function fetchGoodFirstIssues(
   const queries: string[] = [];
 
   if (topLanguages.length > 0) {
-    const langs = topLanguages.slice(0, 5);
-    for (const lang of langs) {
-      queries.push(`label:"good first issue" is:issue is:open language:${lang}`);
-    }
-    for (const lang of langs.slice(0, 3)) {
-      queries.push(`label:enhancement is:issue is:open language:${lang}`);
-      queries.push(`label:bug is:issue is:open language:${lang}`);
-    }
+    const gfiLangs = topLanguages.slice(0, 5).map((l) => `language:${l}`).join(" OR ");
+    queries.push(`label:"good first issue" is:issue is:open (${gfiLangs})`);
+
+    const otherLangs = topLanguages.slice(0, 3).map((l) => `language:${l}`).join(" OR ");
+    queries.push(`(label:enhancement OR label:bug) is:issue is:open (${otherLangs})`);
   } else {
     queries.push(`label:"good first issue" is:issue is:open`);
   }
