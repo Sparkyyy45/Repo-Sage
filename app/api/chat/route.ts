@@ -1,11 +1,46 @@
 import { NextRequest } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { createOpenAI } from "@ai-sdk/openai";
 import { streamText } from "ai";
 
 export const runtime = "edge";
 
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || "",
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || "",
+});
+
+// Create a new ratelimiter, that allows 10 requests per 1 minute
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "1 m"),
+  analytics: true,
+});
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.ip ?? "127.0.0.1";
+    
+    // Skip rate limiting if keys are missing (for local dev without redis)
+    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+      const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
+      
+      if (!success) {
+        return Response.json(
+          { error: "Too many requests. Please try again later." },
+          { 
+            status: 429, 
+            headers: { 
+              "X-RateLimit-Limit": limit.toString(), 
+              "X-RateLimit-Remaining": remaining.toString(), 
+              "X-RateLimit-Reset": reset.toString() 
+            } 
+          }
+        );
+      }
+    }
+
     const body = await req.json();
     const { messages, apiKey, provider, model, system } = body;
 
