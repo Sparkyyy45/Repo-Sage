@@ -1,33 +1,30 @@
 import { NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
-import { createOctokit } from "@/lib/github";
-import { fetchGoodFirstIssues } from "@/lib/github/issues";
-import { z } from "zod";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { createOpenAI } from "@ai-sdk/openai";
+import { streamText } from "ai";
+
+export const runtime = "edge";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || "",
   token: process.env.UPSTASH_REDIS_REST_TOKEN || "",
 });
 
+// Create a new ratelimiter, that allows 10 requests per 1 minute
 const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "1 m"),
   analytics: true,
 });
 
-const FeedRequestSchema = z.object({
-  languages: z.array(z.string()),
-  page: z.number().optional().default(1),
-});
-
 export async function POST(req: NextRequest) {
   try {
     const ip = req.ip ?? "127.0.0.1";
     
+    // Skip rate limiting if keys are missing (for local dev without redis)
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-      const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_feed_${ip}`);
+      const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
       
       if (!success) {
         return Response.json(
@@ -44,26 +41,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const session = await auth();
-    if (!session?.accessToken) {
-      return Response.json({ issues: [], reposWithIssues: 0 });
-    }
-
     const body = await req.json();
-    const parsed = FeedRequestSchema.safeParse(body);
-    
-    if (!parsed.success) {
-      return Response.json({ error: "Invalid request payload", details: parsed.error.format() }, { status: 400 });
+    const { messages, apiKey, provider, model, system } = body;
+
+    if (!apiKey) {
+      return Response.json({ error: "No API key provided" }, { status: 401 });
     }
 
-    const { languages, page } = parsed.data;
+    const baseURL = provider === "openrouter" 
+      ? "https://openrouter.ai/api/v1" 
+      : "https://api.groq.com/openai/v1";
 
-    const octokit = createOctokit(session.accessToken);
-    const feed = await fetchGoodFirstIssues(octokit, languages, { page }).catch(
-      () => ({ issues: [], reposWithIssues: 0 })
-    );
+    const headers = provider === "openrouter" ? {
+       "HTTP-Referer": "https://reposage.com",
+       "X-Title": "RepoSage"
+    } : undefined;
 
-    return Response.json(feed);
+    // Set up custom provider using OpenAI compatibility
+    const customOpenAI = createOpenAI({
+      apiKey,
+      baseURL,
+      headers
+    });
+
+    const result = streamText({
+      model: customOpenAI(model),
+      system,
+      messages,
+      maxTokens: 4096,
+    });
+
+    return result.toDataStreamResponse();
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     return Response.json({ error: errorMsg }, { status: 500 });
