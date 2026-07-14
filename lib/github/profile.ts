@@ -1,4 +1,5 @@
 import type { Octokit } from "@octokit/rest";
+import { cache } from "@/lib/cache";
 
 export interface ProfileData {
   login: string;
@@ -30,6 +31,10 @@ export async function fetchProfileData(
   octokit: Octokit,
   login: string
 ): Promise<ProfileData> {
+  const cacheKey = `reposage:profile:${login}`;
+  const cached = await cache.get<ProfileData>(cacheKey);
+  if (cached) return cached;
+
   const { data: user } = await octokit.rest.users.getByUsername({ username: login });
 
   const repos = await fetchAllRepos(octokit);
@@ -50,7 +55,7 @@ export async function fetchProfileData(
         .slice(0, 8)
     : [];
 
-  return {
+  const result: ProfileData = {
     login: user.login,
     name: user.name,
     avatarUrl: user.avatar_url,
@@ -62,6 +67,9 @@ export async function fetchProfileData(
     languages,
     totalStars,
   };
+
+  await cache.set(cacheKey, result, 3600);
+  return result;
 }
 
 async function fetchAllRepos(

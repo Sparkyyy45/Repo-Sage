@@ -32,10 +32,11 @@ describe("getRateLimitInfo", () => {
       total: 60,
       reset: 1234567890,
       isLimited: false,
+      isNearLimit: false,
     });
   });
 
-  it("marks as rate limited when remaining is below threshold", async () => {
+  it("marks as near rate limit when remaining is below threshold", async () => {
     const mockOctokit = {
       rest: {
         rateLimit: {
@@ -60,7 +61,38 @@ describe("getRateLimitInfo", () => {
       remaining: 5,
       total: 60,
       reset: 1234567890,
+      isLimited: false,
+      isNearLimit: true,
+    });
+  });
+
+  it("marks as rate limited when remaining is 0", async () => {
+    const mockOctokit = {
+      rest: {
+        rateLimit: {
+          get: vi.fn().mockResolvedValue({
+            data: {
+              resources: {
+                core: {
+                  remaining: 0,
+                  limit: 60,
+                  reset: 1234567890,
+                },
+              },
+            },
+          }),
+        },
+      },
+    };
+
+    const result = await getRateLimitInfo(mockOctokit as any);
+
+    expect(result).toEqual({
+      remaining: 0,
+      total: 60,
+      reset: 1234567890,
       isLimited: true,
+      isNearLimit: false,
     });
   });
 
