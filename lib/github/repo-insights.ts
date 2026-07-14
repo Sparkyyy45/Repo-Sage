@@ -68,26 +68,32 @@ export async function fetchRepoInsights(
 
   const repoLanguage = repoRes.data.language ?? "Unknown";
 
-  const matched: string[] = [];
-  const unmatched: string[] = [];
+  const repoLangs = Object.keys((await octokit.request(
+    "GET /repos/{owner}/{repo}/languages", { owner, repo: name }
+  )).data);
 
-  for (const ul of userLanguages.slice(0, 5)) {
-    if (ul.name.toLowerCase() === repoLanguage.toLowerCase()) {
-      matched.push(ul.name);
-    } else {
-      unmatched.push(ul.name);
-    }
-  }
+  const userSet = new Set(userLanguages.map((l) => l.name.toLowerCase()));
+  const matched = repoLangs.filter((l) => userSet.has(l.toLowerCase()));
+  const unmatched = repoLangs.filter((l) => !userSet.has(l.toLowerCase()));
+  const skillPercent = repoLangs.length > 0
+    ? Math.round((matched.length / repoLangs.length) * 100)
+    : 0;
 
-  const skillPercent =
-    userLanguages.length > 0
-      ? Math.round(
-          (matched.length /
-            Math.min(userLanguages.length, 5)) *
-            100
-        )
-      : 0;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   const weeklyCommitData = activityData ?? [];
   const weeklyCommits = weeklyCommitData
     .slice(-12)
