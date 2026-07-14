@@ -25,7 +25,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as unknown as import("@octokit/rest").Octokit);
 
     expect(result).toEqual({
       remaining: 50,
@@ -54,7 +54,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as unknown as import("@octokit/rest").Octokit);
 
     expect(result).toEqual({
       remaining: 5,
@@ -73,7 +73,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as unknown as import("@octokit/rest").Octokit);
 
     expect(result).toBeNull();
   });
