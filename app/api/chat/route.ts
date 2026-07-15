@@ -33,10 +33,9 @@ export async function POST(req: NextRequest) {
       model: customOpenAI(model),
       system,
       messages,
-      maxTokens: 4096,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
     return Response.json({ error: errorMsg }, { status: 500 });

@@ -73,14 +73,7 @@ export async function generateText(
       if (done) break;
       
       const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n");
-      for (const line of lines) {
-        if (line.startsWith('0:')) {
-          try {
-            full += JSON.parse(line.slice(2));
-          } catch {}
-        }
-      }
+      full += chunk;
     }
   } finally {
     try { reader.releaseLock(); } catch {}
@@ -131,19 +124,8 @@ export async function streamText(
       if (done) break;
 
       const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n");
-
-      for (const line of lines) {
-        if (line.startsWith('0:')) {
-          try {
-            const token = JSON.parse(line.slice(2));
-            full += token;
-            onToken?.(token);
-          } catch {
-            // skip malformed JSON chunks
-          }
-        }
-      }
+      full += chunk;
+      onToken?.(chunk);
     }
   } finally {
     try { reader.releaseLock(); } catch { console.warn("Failed to release reader lock"); }
@@ -178,14 +160,7 @@ export async function testConnection(config: LLMConfig): Promise<boolean> {
       const { done, value } = await reader.read();
       if (done) break;
       const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split("\n");
-      for (const line of lines) {
-        if (line.startsWith('0:')) {
-          try {
-            full += JSON.parse(line.slice(2));
-          } catch {}
-        }
-      }
+      full += chunk;
     }
     return full.length > 0;
   } catch {
