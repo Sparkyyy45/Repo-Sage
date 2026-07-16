@@ -6,25 +6,11 @@ export interface LLMConfig {
   model: string;
 }
 
-interface ChatCompletionChoice {
-  message?: { content?: string };
-  delta?: { content?: string };
-}
-
-interface ChatCompletionResponse {
-  choices?: ChatCompletionChoice[];
-}
-
 const STORAGE_KEY = "reposage-llm-config";
 
 export const DEFAULT_MODELS: Record<AIProvider, string> = {
   openrouter: "deepseek/deepseek-chat",
   groq: "qwen-2.5-coder-32b",
-};
-
-const API_BASES: Record<AIProvider, string> = {
-  openrouter: "https://openrouter.ai/api/v1/chat/completions",
-  groq: "https://api.groq.com/openai/v1/chat/completions",
 };
 
 export function getStoredConfig(): LLMConfig | null {
@@ -45,18 +31,6 @@ export function clearConfig(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-function getBaseHeaders(config: LLMConfig): Record<string, string> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${config.apiKey}`,
-  };
-  if (config.provider === "openrouter") {
-    headers["HTTP-Referer"] = window.location.origin;
-    headers["X-Title"] = "RepoSage";
-  }
-  return headers;
-}
-
 export async function generateText(
   prompt: string,
   system?: string
@@ -65,16 +39,19 @@ export async function generateText(
   if (!config) throw new Error("No AI provider configured");
 
   const messages: { role: string; content: string }[] = [];
-  if (system) messages.push({ role: "system", content: system });
   messages.push({ role: "user", content: prompt });
 
-  const res = await fetch(API_BASES[config.provider], {
+  const res = await fetch("/api/chat", {
     method: "POST",
-    headers: getBaseHeaders(config),
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
+      apiKey: config.apiKey,
+      provider: config.provider,
       model: config.model,
+      system,
       messages,
-      max_tokens: 4096,
     }),
   });
 
@@ -83,8 +60,26 @@ export async function generateText(
     throw new Error(`LLM request failed (${res.status}): ${text}`);
   }
 
-  const data = (await res.json()) as ChatCompletionResponse;
-  return (data.choices?.[0]?.message?.content ?? "").trim();
+  // /api/chat streams by default, so we can just read the stream or collect it
+  const reader = res.body?.getReader();
+  if (!reader) throw new Error("No response body");
+
+  const decoder = new TextDecoder();
+  let full = "";
+  
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      const chunk = decoder.decode(value, { stream: true });
+      full += chunk;
+    }
+  } finally {
+    try { reader.releaseLock(); } catch {}
+  }
+  
+  return full;
 }
 
 export async function streamText(
@@ -96,20 +91,19 @@ export async function streamText(
   if (!config) throw new Error("No AI provider configured");
 
   const messages: { role: string; content: string }[] = [];
-  if (system) messages.push({ role: "system", content: system });
   messages.push({ role: "user", content: prompt });
 
-  const res = await fetch(API_BASES[config.provider], {
+  const res = await fetch("/api/chat", {
     method: "POST",
     headers: {
-      ...getBaseHeaders(config),
-      Accept: "text/event-stream",
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      apiKey: config.apiKey,
+      provider: config.provider,
       model: config.model,
+      system,
       messages,
-      max_tokens: 4096,
-      stream: true,
     }),
   });
 
@@ -123,35 +117,15 @@ export async function streamText(
 
   const decoder = new TextDecoder();
   let full = "";
-  let buffer = "";
 
   try {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
-
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed || !trimmed.startsWith("data: ")) continue;
-
-        const data = trimmed.slice(6);
-        if (data === "[DONE]") break;
-
-        try {
-          const parsed = JSON.parse(data) as ChatCompletionResponse;
-          const token = parsed.choices?.[0]?.delta?.content ?? "";
-          if (token) {
-            full += token;
-            onToken?.(token);
-          }
-        } catch {
-          // skip malformed JSON chunks
-        }
-      }
+      const chunk = decoder.decode(value, { stream: true });
+      full += chunk;
+      onToken?.(chunk);
     }
   } finally {
     try { reader.releaseLock(); } catch { console.warn("Failed to release reader lock"); }
@@ -162,28 +136,33 @@ export async function streamText(
 
 export async function testConnection(config: LLMConfig): Promise<boolean> {
   try {
-    const res = await fetch(API_BASES[config.provider], {
+    const res = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${config.apiKey}`,
-        ...(config.provider === "openrouter"
-          ? {
-              "HTTP-Referer": window.location.origin,
-              "X-Title": "RepoSage",
-            }
-          : {}),
       },
       body: JSON.stringify({
+        apiKey: config.apiKey,
+        provider: config.provider,
         model: config.model,
         messages: [{ role: "user", content: "Reply with only the word: ok" }],
-        max_tokens: 10,
       }),
     });
 
     if (!res.ok) return false;
-    const data = (await res.json()) as ChatCompletionResponse;
-    return !!data.choices?.[0]?.message?.content;
+    // we can just read the whole stream as string
+    const reader = res.body?.getReader();
+    if (!reader) return false;
+
+    const decoder = new TextDecoder();
+    let full = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value, { stream: true });
+      full += chunk;
+    }
+    return full.length > 0;
   } catch {
     return false;
   }
