@@ -13,6 +13,7 @@ import { SavedIssuesSection } from "@/components/dashboard/saved-issues-section"
 import { FirstVisitOnboarding } from "@/components/dashboard/first-visit-onboarding";
 import { getRateLimitInfo } from "@/lib/rate-limit";
 import { RateLimitBanner } from "@/components/rate-limit-banner";
+import { RepoCollectionsSection } from "@/components/dashboard/repo-collections-section";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -88,6 +89,8 @@ export default async function DashboardPage() {
             issuesCount={feed.issues.length}
             reposWithIssues={feed.reposWithIssues}
           />
+
+          <RepoCollectionsSection />
 
           <SavedIssuesSection />
 

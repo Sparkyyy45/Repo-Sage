@@ -1,5 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getRateLimitInfo, formatResetTime } from "@/lib/rate-limit";
+type MockOctokit = {
+  rest: {
+    rateLimit: {
+      get: () => Promise<{
+        data: {
+          resources: {
+            core: {
+              remaining: number;
+              limit: number;
+              reset: number;
+            };
+          };
+        };
+      }>;
+    };
+  };
+};
 
 describe("getRateLimitInfo", () => {
   beforeEach(() => {
@@ -25,7 +42,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as MockOctokit);
 
     expect(result).toEqual({
       remaining: 50,
@@ -54,7 +71,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as MockOctokit);
 
     expect(result).toEqual({
       remaining: 5,
@@ -73,7 +90,7 @@ describe("getRateLimitInfo", () => {
       },
     };
 
-    const result = await getRateLimitInfo(mockOctokit as any);
+    const result = await getRateLimitInfo(mockOctokit as MockOctokit);
 
     expect(result).toBeNull();
   });
