@@ -180,3 +180,62 @@ export async function fetchGoodFirstIssues(
 
   return { issues: allIssues, reposWithIssues: new Set(allIssues.map((i) => i.repoFullName)).size };
 }
+
+/**
+ * Fetches exactly 3 "good first issue" issues for the landing page preview.
+ * Makes a single GitHub Search API request — intentionally lightweight.
+ * Returns an empty array on any error so the landing page never breaks.
+ */
+export async function fetchLandingPreviewIssues(
+  octokit: Octokit
+): Promise<Issue[]> {
+  try {
+    const { data } = await octokit.rest.search.issuesAndPullRequests({
+      q: `label:"good first issue" is:issue is:open archived:false stars:>100`,
+      sort: "updated",
+      order: "desc",
+      per_page: 3,
+      page: 1,
+    });
+
+    const mapped = (data.items as SearchResultItem[]).map((item) => {
+      const repoFullName = item.repository_url.replace(
+        "https://api.github.com/repos/",
+        ""
+      );
+      const [, repoName] = repoFullName.split("/");
+      return {
+        id: item.id,
+        number: item.number,
+        title: item.title,
+        htmlUrl: item.html_url,
+        repoFullName,
+        repoName,
+        labels: (item.labels || []).map((l) => l.name ?? ""),
+        createdAt: item.created_at,
+        // Null-guard: API guarantees non-null, but the cast hides TS enforcement.
+        updatedAt: item.updated_at ?? new Date().toISOString(),
+        comments: item.comments,
+      };
+    });
+
+    // Audit log — confirms every field is sourced from the GitHub API response.
+    // Safe to remove once the feature is verified in production.
+    console.log("[fetchLandingPreviewIssues] Fetched issues audit:");
+    for (const issue of mapped) {
+      console.log(JSON.stringify({
+        repo:      issue.repoFullName,
+        title:     issue.title,
+        labels:    issue.labels,
+        comments:  issue.comments,
+        updatedAt: issue.updatedAt,
+        htmlUrl:   issue.htmlUrl,
+      }, null, 2));
+    }
+
+    return mapped;
+  } catch (err) {
+    console.warn("[fetchLandingPreviewIssues] GitHub API error:", err);
+    return [];
+  }
+}

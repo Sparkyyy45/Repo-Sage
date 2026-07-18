@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CheckCircle, ChevronRight, GitBranch, MessageCircle, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
+import type { Issue } from "@/lib/github/issues";
 
 const stagger = {
   hidden: { opacity: 0 },
@@ -28,13 +29,41 @@ function HeroBackground() {
   );
 }
 
-const issues = [
-  { repo: "facebook/react", title: "Add aria labels to Button component", labels: ["good first issue", "beginner"], comments: 3, updated: "2d ago" },
-  { repo: "vercel/next.js", title: "Fix typo in documentation sidebar", labels: ["good first issue", "docs"], comments: 1, updated: "5h ago" },
-  { repo: "microsoft/vscode", title: "Improve error message for missing config", labels: ["good first issue", "help wanted"], comments: 5, updated: "1d ago" },
+/** Static fallback shown when no GITHUB_TOKEN is set or the API call fails. */
+const STATIC_ISSUES = [
+  { repo: "facebook/react", title: "Add aria labels to Button component", labels: ["good first issue", "beginner"], comments: 3, updated: "2d ago", htmlUrl: undefined },
+  { repo: "vercel/next.js", title: "Fix typo in documentation sidebar", labels: ["good first issue", "docs"], comments: 1, updated: "5h ago", htmlUrl: undefined },
+  { repo: "microsoft/vscode", title: "Improve error message for missing config", labels: ["good first issue", "help wanted"], comments: 5, updated: "1d ago", htmlUrl: undefined },
 ];
 
-function HeroMockup() {
+/** Converts an ISO date string to a human-readable relative time label. */
+function relativeTime(isoDate: string): string {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  // Guard: if the date is malformed or in the future, return a safe fallback
+  if (isNaN(diffMs) || diffMs < 0) return "recently";
+  const diffMins = Math.floor(diffMs / 60_000);
+  // Sub-minute updates (0m ago would be confusing)
+  if (diffMins < 1) return "just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 30) return `${diffDays}d ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  return `${diffMonths}mo ago`;
+}
+
+function HeroMockup({ dynamicIssues }: { dynamicIssues?: Issue[] }) {
+  const displayIssues = dynamicIssues && dynamicIssues.length > 0
+    ? dynamicIssues.map((issue) => ({
+        repo: issue.repoFullName,
+        title: issue.title,
+        labels: issue.labels,
+        comments: issue.comments,
+        updated: relativeTime(issue.updatedAt),
+        htmlUrl: issue.htmlUrl,
+      }))
+    : STATIC_ISSUES;
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -87,7 +116,7 @@ function HeroMockup() {
               <h3 className="text-lg font-semibold tracking-tight text-foreground">Recommended Issues</h3>
               <p className="text-sm text-muted-foreground">Based on your stack and experience level.</p>
             </div>
-            {issues.map((item, i) => (
+            {displayIssues.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
@@ -116,9 +145,20 @@ function HeroMockup() {
                 </div>
                 <div className="hidden sm:flex shrink-0 flex-col items-end gap-2">
                   <span className="text-xs text-muted-foreground">{item.updated}</span>
-                  <div className="flex items-center justify-center rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-muted transition-colors cursor-pointer">
-                    View Issue
-                  </div>
+                  {item.htmlUrl ? (
+                    <a
+                      href={item.htmlUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-muted transition-colors"
+                    >
+                      View Issue
+                    </a>
+                  ) : (
+                    <div className="flex items-center justify-center rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-muted transition-colors cursor-pointer">
+                      View Issue
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -129,7 +169,7 @@ function HeroMockup() {
   );
 }
 
-export function Hero({ signedIn = false }: { signedIn?: boolean }) {
+export function Hero({ signedIn = false, dynamicIssues }: { signedIn?: boolean; dynamicIssues?: Issue[] }) {
   return (
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden pt-24 pb-16">
       <HeroBackground />
@@ -208,7 +248,7 @@ export function Hero({ signedIn = false }: { signedIn?: boolean }) {
           </motion.div>
         </motion.div>
 
-        <HeroMockup />
+        <HeroMockup dynamicIssues={dynamicIssues} />
       </div>
     </section>
   );
