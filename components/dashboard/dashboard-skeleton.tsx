@@ -1,10 +1,10 @@
 export function DashboardSkeleton() {
   return (
-    <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-6">
+    <div className="mx-auto flex min-h-full max-w-6xl flex-col px-6 py-6 gradient-page">
       <div className="h-16 border-b border-border bg-background/80 backdrop-blur-lg rounded-2xl mb-8" />
       <div className="grid gap-8 lg:grid-cols-12">
         <div className="lg:col-span-8 space-y-8">
-          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+          <div className="rounded-2xl card-glow p-6 md:p-8">
             <div className="space-y-4 animate-pulse">
               <div className="h-4 bg-muted rounded w-24" />
               <div className="h-8 bg-muted rounded w-48" />
@@ -13,7 +13,7 @@ export function DashboardSkeleton() {
           </div>
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-sm animate-pulse">
+              <div key={i} className="rounded-2xl card-glow p-5 animate-pulse">
                 <div className="space-y-3">
                   <div className="h-4 bg-muted rounded w-32" />
                   <div className="h-5 bg-muted rounded w-3/4" />
@@ -28,7 +28,7 @@ export function DashboardSkeleton() {
           </div>
         </div>
         <div className="lg:col-span-4 space-y-6">
-          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm animate-pulse">
+          <div className="rounded-2xl card-glow p-5 animate-pulse">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <div className="size-12 rounded-full bg-muted" />

@@ -1,5 +1,5 @@
+import { ExternalLink, Heart } from "lucide-react";
 import Link from "next/link";
-import { Heart, ExternalLink } from "lucide-react";
 
 export function Footer() {
   return (

@@ -1,9 +1,9 @@
 import type { RepoInsightData } from "@/lib/github/repo-insights";
-import { SkillMatchCard } from "./skill-match-card";
-import { BeginnerCard } from "./beginner-card";
 import { ActivityChart } from "./activity-chart";
+import { BeginnerCard } from "./beginner-card";
 import { ImprovementList } from "./improvement-list";
 import { MatchingIssues } from "./matching-issues";
+import { SkillMatchCard } from "./skill-match-card";
 
 function computeDaysAgo(dateStr: string): string {
   if (!dateStr) return "Unknown";
@@ -29,7 +29,7 @@ export function InsightsSection({
 }) {
   return (
     <div className="space-y-8">
-      <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+      <div className="rounded-2xl card-glow p-6 md:p-8">
         <h2 className="text-lg font-semibold text-foreground mb-2">
           How this repo fits your skills
         </h2>
@@ -64,7 +64,7 @@ export function InsightsSection({
               {topics.map((topic) => (
                 <span
                   key={topic}
-                  className="inline-flex rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-sm text-foreground"
+                  className="inline-flex rounded-lg border border-[hsl(var(--grad-1)/0.4)] px-3 py-1.5 text-sm text-foreground bg-[hsl(var(--grad-1)/0.1)]"
                 >
                   {topic}
                 </span>
@@ -79,7 +79,7 @@ export function InsightsSection({
       )}
 
       <div>
-        <h2 className="text-lg font-semibold text-foreground mb-5">
+        <h2 className="text-lg font-semibold text-foreground mb-5 gradient-text inline-block">
           Good First Issues for You
         </h2>
         <div className="grid gap-5 md:grid-cols-3">

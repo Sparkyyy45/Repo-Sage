@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Circle, CheckCircle, FileText, Lightbulb, Target, Terminal, PenLine, ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import type { Guide, SectionType } from "@/data/guides";
+import { CheckCircle, ChevronLeft, ChevronRight, Circle, FileText, Lightbulb, PenLine, Target, Terminal } from "lucide-react";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 
 const typeMeta: Record<SectionType, { icon: React.ElementType; label: string; classes: string }> = {
   info: { icon: FileText, label: "Learn", classes: "bg-blue-50 text-blue-700" },
@@ -109,7 +109,7 @@ export function GuideContent({
         </div>
         <div className="h-1.5 w-full rounded-full bg-muted/70 overflow-hidden">
           <div
-            className="h-full rounded-full bg-blue-500 transition-all duration-700 ease-out"
+            className="h-full rounded-full transition-all duration-700 ease-out bg-[linear-gradient(90deg,hsl(var(--grad-1)),hsl(var(--grad-3)))]"
             style={{ width: total > 0 ? `${(done / total) * 100}%` : "0%" }}
           />
         </div>
@@ -130,7 +130,7 @@ export function GuideContent({
           className={`inline-flex items-center gap-2 rounded-xl border-2 px-6 py-2.5 text-sm font-semibold transition-all ${
             progress[section.id]
               ? "border-green-200 bg-green-50 text-green-700"
-              : "border-border text-foreground hover:border-blue-400 hover:bg-blue-50/50 hover:text-blue-700"
+              : "border-border text-foreground hover:border-[hsl(var(--grad-1))] hover:bg-[hsl(var(--grad-1)/0.1)] hover:text-[hsl(258_55%_45%)]"
           }`}
         >
           {progress[section.id] ? (
@@ -159,7 +159,7 @@ export function GuideContent({
           {!isLastSection && (
             <button
               onClick={() => goTo(currentIndex + 1)}
-              className="inline-flex items-center gap-1 rounded-lg bg-foreground px-4 py-2 text-xs font-medium text-background hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-1 rounded-lg gradient-primary px-4 py-2 text-xs font-medium"
             >
               Next section
               <ChevronRight className="size-3.5" />
@@ -183,7 +183,7 @@ export function GuideContent({
             {nextGuide && (
               <Link
                 href={`/learn/${nextGuide.slug}`}
-                className="inline-flex items-center gap-1 rounded-lg bg-foreground px-3.5 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1 rounded-lg gradient-primary px-3.5 py-1.5 text-xs font-medium"
               >
                 {nextGuide.title}
                 <span aria-hidden="true" className="text-sm leading-none">&rarr;</span>
@@ -192,7 +192,7 @@ export function GuideContent({
             {!nextGuide && (
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1 rounded-lg bg-foreground px-3.5 py-1.5 text-xs font-medium text-background hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-1 rounded-lg gradient-primary px-3.5 py-1.5 text-xs font-medium"
               >
                 Find your first issue
                 <span aria-hidden="true" className="text-sm leading-none">&rarr;</span>
@@ -325,7 +325,7 @@ function SectionBlock({
           }}
           placeholder="What did you try? Paste command output here..."
           rows={2}
-          className="mt-1 w-full resize-y rounded-lg border border-border bg-muted/20 p-2.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-blue-400/30"
+          className="mt-1 w-full resize-y rounded-lg border border-border bg-muted/20 p-2.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-1 focus:ring-[hsl(var(--grad-1))]"
         />
       )}
 
